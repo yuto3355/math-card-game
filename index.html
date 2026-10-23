@@ -869,10 +869,17 @@ const isPrime = n => { if(!Number.isInteger(n) || n < 2) return false; for(let i
 const YAKU_LIST = [
   ['ボーナス札','ボーナス札1枚につき',1],
   ['素数の場','場の数が素数',1],
-  ['スピード','3ターン以内に完成(一人用)',1],
+  ['スピード','1・2・3ターン目に完成(一人用): +5・+4・+3','5/4/3'],
+  ['小さい数だけ','数字カードが0〜5のみ',1],
+  ['大きい数だけ','数字カードが6〜9のみ',1],
   ['中間の数字','数字カードが2〜8のみ',1],
   ['偶数だけ','数字カードが偶数のみ',1],
   ['奇数だけ','数字カードが奇数のみ',2],
+  ['3桁の数','式の中に3桁の数がある',2],
+  ['4桁の数','式の中に4桁の数がある',3],
+  ['同じ数字3枚','同じ数字カードが3枚',3],
+  ['同じ数字3枚×2','3枚ずつそろった数字が2種類(全体で)',5],
+  ['同じ数字4枚','同じ数字カードが4枚',4],
   ['記号づかい','√ ! ^ を計2枚以上',1],
   ['素数だけ','式内の数がすべて素数',3],
   ['記号そろい','√ ! ^ を1つずつ',3],
@@ -884,13 +891,27 @@ function judge(hand, target, turn){
   const dora = hand.filter(k => k === S.dora).length;
   if(dora) add(`ボーナス札「${SYMBOL[S.dora] || S.dora}」${dora}枚`, dora);
   if(isPrime(target)) add('素数の場', 1, target + ' は素数');
-  if(turn <= 3) add('スピード', 1, turn + 'ターン目');
+  if(turn <= 3) add('スピード', 6 - turn, turn + 'ターン目');
   const digits = hand.filter(k => k >= '0' && k <= '9').map(Number);
+  if(digits.length && digits.every(d => d <= 5)) add('小さい数だけ', 1, '0〜5');
+  else if(digits.length && digits.every(d => d >= 6)) add('大きい数だけ', 1, '6〜9');
+  const cnt = {};
+  digits.forEach(d => { cnt[d] = (cnt[d] || 0) + 1; });
+  const same = Math.max(0, ...Object.values(cnt));
+  if(same >= 4) add('同じ数字4枚', 4, Object.keys(cnt).filter(d => cnt[d] >= 4).join('・'));
+  else if(same === 3){
+    const triples = Object.keys(cnt).filter(d => cnt[d] === 3);
+    if(triples.length >= 2) add('同じ数字3枚×2', 5, triples.join('・'));
+    else add('同じ数字3枚', 3, triples.join('・'));
+  }
   if(digits.length && digits.every(d => d >= 2 && d <= 8)) add('中間の数字', 1);
   if(digits.length && digits.every(d => d % 2 === 0)) add('偶数だけ', 1);
   if(digits.length && digits.every(d => d % 2 === 1)) add('奇数だけ', 2);
   const nums = (tokenize(hand) || []).filter(t => t.t === 'n');
   if(nums.length && nums.every(t => isPrime(t.v))) add('素数だけ', 3, nums.map(t => t.s).join('・'));
+  const maxLen = Math.max(0, ...nums.map(t => t.s.length));
+  if(maxLen >= 4) add('4桁の数', 3, nums.filter(t => t.s.length >= 4).map(t => t.s).join('・'));
+  else if(maxLen === 3) add('3桁の数', 2, nums.filter(t => t.s.length === 3).map(t => t.s).join('・'));
   const sp = hand.filter(k => k === 'r' || k === '!' || k === '^').length;
   if(['r','!','^'].every(k => hand.includes(k))) add('記号そろい', 3);
   else if(sp >= 2) add('記号づかい', 1);
