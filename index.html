@@ -505,19 +505,23 @@ body.tutorial .rule-cap{display:none}
 .bg-eq{font-weight:700;font-size:16px;margin:6px 0 0;font-variant-numeric:tabular-nums}
 .bg-item .t-row{justify-content:flex-start;margin:8px 0 0}
 .bg-item .t-tile{width:min(11.4vw,40px);font-size:20px;border-bottom-width:5px}
+.hero-tiles .t-tile{flex:0 1 auto;min-width:0}
+.bpre{margin:2px 0 6px;font-size:14px;font-weight:800;color:#c0392b}
+.cg-warn{color:#c0392b;font-weight:800}
 </style>
 </head>
 <body>
 <section class="screen" id="title" aria-label="タイトル">
   <div class="hero">
     <div class="logo"><b>立式</b><br>カードゲーム</div>
-    <p class="tag">7枚の札で、場の数をつくる。</p>
-    <div class="hero-tiles" data-tiles="3 * 8 + 5 - 5" aria-hidden="true"></div>
-    <div class="hero-eq" aria-hidden="true">= 24</div>
+    <p class="tag">7枚のカードで、場の数を作る。</p>
+    <div class="hero-tiles" id="clock-tiles" aria-hidden="true"></div>
+    <div class="hero-eq" id="clock-eq" aria-hidden="true"></div>
   </div>
   <div class="menu">
     <button class="b primary" id="t-start">はじめる</button>
     <button class="b hide" id="t-continue">つづきから</button>
+    <button class="b" id="t-daily">今日の一戦<small id="t-daily-sub"></small></button>
     <button class="b" id="t-practice">練習</button>
     <button class="b" id="t-howto">遊び方</button>
     <div class="menu-row"><button class="b" id="t-cards">カードの使い方</button><button class="b" id="t-bonus">ボーナスの例</button></div>
@@ -528,99 +532,109 @@ body.tutorial .rule-cap{display:none}
 
 <section class="screen hide" id="cardguide" aria-label="カードの使い方">
   <div class="howto-h"><h2>カードの使い方</h2></div>
-  <p class="cg-lead">札は17種類。まず基本の使い方、そのあとに特別な決まりです。</p>
+  <p class="cg-lead">カードは、0〜9の数字、四則演算(＋ − × ÷)、√、!、^ の17種類で構成されています。このページでは、1. 基本の使い方、2. その他のルールと禁止事項について解説します。</p>
 
-  <h3 class="cg-h">基本の使い方</h3>
+  <h3 class="cg-h">1. 基本の使い方</h3>
 
   <div class="cg-item">
     <div class="cg-head"><div class="t-row" data-tiles="0 1 9"></div><h4>数字</h4></div>
-    <p>並べると、くっついて<b>1つの数</b>になります。</p>
+    <p>数字カードを続けて並べると、<b>1つの数</b>として扱われます。</p>
     <div class="cg-ex"><div class="t-row" data-tiles="1 2"></div><span class="cg-eq">= 12</span></div>
   </div>
 
   <div class="cg-item">
-    <div class="cg-head"><div class="t-row" data-tiles="+ -"></div><h4>たす・ひく</h4></div>
+    <div class="cg-head"><div class="t-row" data-tiles="+ -"></div><h4>足し算・引き算</h4></div>
+    <p>通常の足し算と引き算です。</p>
     <div class="cg-ex"><div class="t-row" data-tiles="3 + 5"></div><span class="cg-eq">= 8</span></div>
   </div>
 
   <div class="cg-item">
-    <div class="cg-head"><div class="t-row" data-tiles="* /"></div><h4>かける・わる</h4></div>
-    <p>たす・ひくより<b>先に</b>計算します(カッコはありません)。小数になってもOKです。</p>
-    <div class="cg-ex"><div class="t-row" data-tiles="2 + 3 * 4"></div><span class="cg-eq">= 14<small>3×4 が先</small></span></div>
+    <div class="cg-head"><div class="t-row" data-tiles="* /"></div><h4>掛け算・割り算</h4></div>
+    <p>足し算・引き算より<b>先に</b>計算します。カッコのカードはありません。計算の途中や結果が小数になってもかまいません。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="2 + 3 * 4"></div><span class="cg-eq">= 14<small>3×4 を先に計算</small></span></div>
     <div class="cg-ex"><div class="t-row" data-tiles="9 / 2"></div><span class="cg-eq">= 4.5</span></div>
   </div>
 
   <div class="cg-item">
     <div class="cg-head"><div class="t-row" data-tiles="!"></div><h4>階乗</h4></div>
-    <p>1からその数まで、ぜんぶかけます。</p>
+    <p>1からその数までの整数をすべて掛け合わせます。ただし、0! は 1 と定義されています。</p>
     <div class="cg-ex"><div class="t-row" data-tiles="4 !"></div><span class="cg-eq">= 24<small>4×3×2×1</small></span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="0 !"></div><span class="cg-eq">= 1<small>定義</small></span></div>
   </div>
 
   <div class="cg-item">
     <div class="cg-head"><div class="t-row" data-tiles="^"></div><h4>べき乗</h4></div>
-    <p>左の数を、右の数の回数ぶん かけます。</p>
+    <p>左の数を、右の数の回数だけ掛け合わせます。</p>
     <div class="cg-ex"><div class="t-row" data-tiles="2 ^ 3"></div><span class="cg-eq">= 8<small>2×2×2</small></span></div>
   </div>
 
   <div class="cg-item">
     <div class="cg-head"><div class="t-row" data-tiles="r"></div><h4>ルート</h4></div>
-    <p>2回かけて中の数になる数です。</p>
+    <p>2回掛けると中の数になる、正の数を表します。</p>
     <div class="cg-ex"><div class="t-row" data-tiles="r 9"></div><span class="cg-eq">= 3<small>3×3 = 9</small></span></div>
   </div>
 
-  <h3 class="cg-h">特別な決まり・禁止</h3>
+  <h3 class="cg-h">2. その他のルールと禁止事項</h3>
 
   <div class="cg-item">
-    <div class="cg-head"><h4>先頭が0の数は、作れません</h4><span class="cg-tag ng">禁止</span></div>
+    <div class="cg-head"><h4>先頭が0の数は作れません</h4><span class="cg-tag ng">禁止</span></div>
+    <p>数字カードを続けて並べるとき、一番左に 0 は置けません。</p>
     <div class="cg-ex"><div class="t-row" data-tiles="0 5"></div><span class="cg-eq ng">作れません</span></div>
     <div class="cg-ex"><div class="t-row" data-tiles="5 0"></div><span class="cg-eq">= 50</span></div>
   </div>
 
   <div class="cg-item">
-    <div class="cg-head"><h4>− は、式の最初だけ「マイナスの数」</h4><span class="cg-tag">特別</span></div>
-    <div class="cg-ex"><div class="t-row" data-tiles="- 3 + 1 3"></div><span class="cg-eq">= 10<small>−3 を使う</small></span></div>
+    <div class="cg-head"><h4>0で割る計算と 0^0 はできません</h4><span class="cg-tag ng">禁止</span></div>
+    <p>どちらも、式として認められません。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="6 / 0"></div><span class="cg-eq ng">作れません</span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="0 ^ 0"></div><span class="cg-eq ng">作れません</span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><h4>マイナスの数は、式の先頭でのみ使えます</h4><span class="cg-tag">ルール</span></div>
+    <p>− を「マイナスの数」として使えるのは、式の先頭だけです。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="- 3 + 1 3"></div><span class="cg-eq">= 10<small>−3 ＋ 13</small></span></div>
     <div class="cg-ex"><div class="t-row" data-tiles="5 - - 5"></div><span class="cg-eq ng">作れません</span></div>
   </div>
 
   <div class="cg-item">
-    <div class="cg-head"><h4>数字や ! のすぐ後ろの √ は、かけ算の省略</h4><span class="cg-tag">特別</span></div>
-    <p>A√B は A×√B です。</p>
+    <div class="cg-head"><h4>数字や ! の直後の √ は、掛け算の省略です</h4><span class="cg-tag">ルール</span></div>
+    <p>A√B は A×√B を意味します。</p>
     <div class="cg-ex"><div class="t-row" data-tiles="7 r 9"></div><span class="cg-eq">= 21<small>7×3</small></span></div>
   </div>
 
   <div class="cg-item">
-    <div class="cg-head"><h4>省略のかけ算は、×÷より先</h4><span class="cg-tag">特別</span></div>
-    <p>A√B は、ひとかたまりとして先に計算します。</p>
+    <div class="cg-head"><h4>省略した掛け算は、× ÷ より先に計算します</h4><span class="cg-tag">ルール</span></div>
+    <p>A√B をひとまとまりとして、先に計算します。</p>
     <div class="cg-ex"><div class="t-row" data-tiles="8 / 2 r 4"></div><span class="cg-eq">= 2<small>8÷(2√4)</small></span></div>
   </div>
 
   <div class="cg-item">
-    <div class="cg-head"><h4>べき乗の連続は、右から</h4><span class="cg-tag">特別</span></div>
-    <p>^ を続けたときは、右から計算します(数学の決まりです)。</p>
+    <div class="cg-head"><h4>^ は、× ÷ より先に計算します</h4><span class="cg-tag">ルール</span></div>
+    <p>指数になるのは、^ の直後の数だけです。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="1 + 2 ^ 3 * 4"></div><span class="cg-eq">= 33<small>2^3 = 8、8×4 = 32</small></span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><h4>^ が続くときは、右から計算します</h4><span class="cg-tag">ルール</span></div>
+    <p>数学の慣例に従い、右から順に計算します。</p>
     <div class="cg-ex"><div class="t-row" data-tiles="2 ^ 3 ^ 2"></div><span class="cg-eq">= 512<small>2^(3^2) = 2^9</small></span></div>
   </div>
 
   <div class="cg-item">
-    <div class="cg-head"><h4>√ のかかる範囲だけは、自由</h4><span class="cg-tag">特別</span></div>
-    <p>カッコのカードがないので、√ がどこまでにかかるかだけは、自由に決めてかまいません。</p>
-    <div class="cg-ex"><div class="t-row" data-tiles="r 4 + 1"></div><span class="cg-eq">= 3 か √5<small>(√4)＋1 か √(4＋1)</small></span></div>
+    <div class="cg-head"><h4>√ のかかる範囲は、自由に決められます</h4><span class="cg-tag">ルール</span></div>
+    <p>カッコのカードがないため、√ がどこまでかかるかは、プレイヤーが自由に決められます。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="r 4 + 1"></div><span class="cg-eq">= 3 または √5<small>(√4)＋1 または √(4＋1)</small></span></div>
   </div>
 
   <div class="cg-item">
-    <div class="cg-head"><h4>重ねて使える</h4><span class="cg-tag">特別</span></div>
-    <p>! を続けると1つおき(5!! = 5×3×1)、7!!! = 7×4×1 のように増やせます。√ も重ねられます。</p>
+    <div class="cg-head"><h4>! と √ は重ねて使えます</h4><span class="cg-tag">ルール</span></div>
+    <p>! を2つ続けると2ずつ、3つ続けると3ずつ数を減らしながら掛け合わせます。√ は重ねて使えます。</p>
     <div class="cg-ex"><div class="t-row" data-tiles="5 ! !"></div><span class="cg-eq">= 15<small>5×3×1</small></span></div>
     <div class="cg-ex"><div class="t-row" data-tiles="7 ! ! !"></div><span class="cg-eq">= 28<small>7×4×1</small></span></div>
-    <div class="cg-ex"><div class="t-row" data-tiles="r r 1 6"></div><span class="cg-eq">= 2<small>√4 = 2</small></span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="r r 1 6"></div><span class="cg-eq">= 2<small>√16 = 4、√4 = 2</small></span></div>
   </div>
 
-  <div class="cg-item">
-    <div class="cg-head"><div class="t-row" data-tiles="0 1"></div><h4>余った札の消し方</h4><span class="cg-tag">特別</span></div>
-    <p>7枚ぜんぶ使うので、余った札は、値が変わらない形で消します。</p>
-    <div class="cg-ex"><div class="t-row" data-tiles="2 * 6 + 0"></div><span class="cg-eq">= 12<small>＋0</small></span></div>
-    <div class="cg-ex"><div class="t-row" data-tiles="2 * 6 * 1"></div><span class="cg-eq">= 12<small>×1</small></span></div>
-    <div class="cg-ex"><div class="t-row" data-tiles="0 !"></div><span class="cg-eq">= 1<small>0! は 1</small></span></div>
-  </div>
 
   
   <button class="b cg-link" id="c-bonus">ボーナスの例</button>
@@ -634,9 +648,9 @@ body.tutorial .rule-cap{display:none}
 
 <section class="screen hide" id="bonusguide" aria-label="ボーナスの例">
   <div class="howto-h"><h2>ボーナスの例</h2></div>
-  <p class="cg-lead">場の数が <b>28</b> のとき、<b>1つのボーナスだけ</b>を満たす式の例です。ブースト +1 ごとに、点数は2倍になります。</p>
+  <p class="cg-lead">場の数が <b>89</b> の場合に、各ボーナスが成立する式の例を紹介します。ブーストが1増えるごとに、点数は2倍になります。<span class="cg-warn">89 は素数のため、すべての式で「素数の場」も成立します。</span></p>
   <div id="bonus-list"></div>
-  <p class="cg-note">ボーナスは重ねて付きます。ここでは、できるだけ1つだけ付く式を選びました。</p>
+  <p class="cg-note">すべてのボーナスが成立する2桁の場の数は、89 だけです。実際のゲームでは、複数のボーナスが同時に成立することがあります。</p>
   <div class="how-bar">
     <button class="b" id="b-back">戻る</button>
     <button class="b" id="b-cards">カードの使い方</button>
@@ -649,17 +663,17 @@ body.tutorial .rule-cap{display:none}
 
   <div class="how-sec">
     <h3>基本ルール</h3>
-    <p class="how-lead">手札の<span class="hl">7枚をぜんぶ使って</span>、<span class="hl">場の数</span>と同じ値になる式を作ろう。</p>
+    <p class="how-lead">手札の<span class="hl">7枚をすべて使って</span>、<span class="hl">場の数</span>と同じ値になる式を作ります。</p>
   </div>
 
   <div class="how-sec">
-    <h3>すすめ方</h3>
+    <h3>ゲームの流れ</h3>
     <ol class="how-steps">
-      <li>場の数(2桁)が決まり、手札7枚が配られます。</li>
-      <li>札を<b>ドラッグ</b>して並べ替え、式を作ります。数字の札を並べると、くっついて1つの数になります(1と2で12)。</li>
-      <li>7枚ぜんぶ使って場の数になったら「<b>完成</b>」を押します。</li>
-      <li>作れないときは、いらない札を<b>1枚捨てて</b>、山札から1枚引きます。<b>25ターン</b>以内に完成させましょう。</li>
-      <li>3ラウンド遊んだ<b>合計点</b>で、称号が決まります。</li>
+      <li>場の数(目標の数)が決まり、手札が7枚配られます。</li>
+      <li>カードを<b>ドラッグ</b>して並べ替え、式を作ります。数字カードを続けて並べると、1つの数として扱われます(1と2で12)。</li>
+      <li>7枚すべてを使って場の数を作れたら、「<b>完成</b>」を押します。</li>
+      <li>作れないときは、カードを<b>1枚捨てて</b>、山札から1枚引きます。<b>25ターン</b>以内の完成を目指します。</li>
+      <li>3ラウンドの<b>合計点</b>で、称号が決まります。</li>
     </ol>
   </div>
 
@@ -667,35 +681,36 @@ body.tutorial .rule-cap{display:none}
     <h3>具体例</h3>
     <button class="b cg-link" id="h-cards">カードの使い方</button> <button class="b cg-link" id="h-bonus">ボーナスの例</button>
     <div class="how-ex">
-      <p>場の数が <span class="hl">24</span> のとき、手札がこの7枚なら…</p>
+      <p>場の数が <span class="hl">24</span> で、手札が次の7枚の場合</p>
       <div class="t-row" data-tiles="3 * 8 + 5 - 5"></div>
       <p class="how-eq">3 × 8 ＋ 5 − 5 = 24</p>
-      <p>かけ算・わり算が先に計算されます(カッコはありません)。<br>「<span class="hl">＋5−5</span>」のように、足して引けば<span class="hl">余った札を消せます</span>。0 の札は「＋0」「−0」、1 の札は「×1」「÷1」でも消せます。</p>
+      <p>掛け算・割り算を先に計算します。カッコのカードはありません。<br>数字4枚と <span class="hl">×　＋　−</span> の3枚、合計7枚をすべて使っています。</p>
     </div>
   </div>
 
   <div class="how-sec">
-    <h3>ことば</h3>
+    <h3>用語</h3>
     <div class="how-terms">
-      <div><b>場の数</b> 作る目標の2桁の数です。</div>
-      <div><b>基本点</b> 札ごとの「使いにくさ」です(札の右下の小さい数字)。7枚ぶんが点数のもとになります。</div>
-      <div><b>ブースト</b> 条件を満たすと付くボーナスです。+1 ごとに点数が<b>2倍</b>になります。</div>
-      <div><b>ボーナス札</b> ラウンドごとに決まる札(★)です。手札に同じ札があると、1枚ごとにブースト+1。</div>
-      <div><b>点数</b> 基本点の合計 × 2^ブースト × 場の数。</div>
-      <div><b>山札・捨て札</b> 引く札の山と、捨てた札の列です。</div>
+      <div><b>場の数</b> 式で作る目標の数です。</div>
+      <div><b>基本点</b> カードごとの使いにくさを表す点数です(カードの右下の小さい数字)。7枚の合計が点数の基礎になります。</div>
+      <div><b>ブースト</b> ボーナスの条件を満たすと増える値です。1増えるごとに点数が<b>2倍</b>になります。</div>
+      <div><b>ボーナス札</b> ラウンドごとに決まるカードです。手札の同じカード(★)1枚につき、ブーストが1増えます。</div>
+      <div><b>点数</b> 基本点の合計 × 2^ブースト × 100 で計算します。</div>
+      <div><b>山札・捨て札</b> 山札はこれから引くカードの山、捨て札は捨てたカードの列です。</div>
     </div>
   </div>
 
   <div class="how-sec">
-    <h3>注意すること</h3>
+    <h3>注意事項</h3>
     <ul class="how-notes">
-      <li>1ラウンドは25ターンまで。完成できないと、そのラウンドは0点です。</li>
-      <li>数字をつなげて、先頭が0になる数(05 など)は作れません。</li>
-      <li>カッコのカードがないので、<b>√ がどこまでにかかるかは自由</b>です(√4＋1 は √(4＋1) とも読めます)。</li>
-      <li>ヒントで式が出ると、そのラウンドの得点は半分。電卓を使うと、そのターンの得点は半分です。</li>
-      <li>最初の手の数字が3枚以下なら、ラウンドに1回だけ配り直せます。</li>
-      <li>記録は、この端末のブラウザの中だけに保存されます。</li>
-      <li>くわしい表(基本点・ボーナス・称号)は、ゲーム画面の下の「くわしいルール・設定」にあります。</li>
+      <li>1ラウンドは25ターンまでです。完成できなかったラウンドは0点になります。</li>
+      <li>先頭が0になる数(05 など)は作れません。</li>
+      <li>カッコのカードがないため、<b>√ のかかる範囲は自由に決められます</b>(√4＋1 は √(4＋1) とも読めます)。</li>
+      <li>ヒントで式を表示すると、そのラウンドの得点は半分になります。電卓を使ったターンに完成した場合も、得点は半分になります。</li>
+      <li>最初の手札の数字カードが3枚以下の場合は、1ラウンドに1回だけ配り直せます。</li>
+      <li>「今日の一戦」では、日付によって場の数とカードの順番が決まります(11/09 の場合、場の数は 11 → 9 → 20)。同じ日であれば、全員が同じ盤面で遊びます。</li>
+      <li>記録は、お使いの端末のブラウザにのみ保存されます。</li>
+      <li>基本点・ボーナス・称号の一覧は、ゲーム画面下部の「くわしいルール・設定」に掲載しています。</li>
     </ul>
   </div>
 
@@ -722,14 +737,14 @@ body.tutorial .rule-cap{display:none}
 
   <section class="panel" id="play">
     <div class="goal" id="goal" aria-live="polite"></div>
-    <div class="expr empty" id="expr">7枚すべてを使って場の数を作る</div>
+    <div class="expr empty" id="expr">7枚すべてを使って場の数を作ります</div>
     <div class="coach hide" id="coach" role="region" aria-label="遊び方のガイド">
       <div class="coach-t" id="coach-t"></div>
       <div class="coach-b"><button class="b" id="coach-skip">スキップ</button><button class="b primary" id="coach-next">次へ</button></div>
     </div>
     <div class="live" id="live"></div>
     <div class="cards" id="cards" role="group" aria-label="手札(ドラッグで並べ替え、矢印キーで移動)"></div>
-    <div class="cap" id="cap">札の右下の数字は<b>基本点</b><button class="qm" data-term="base" aria-label="基本点とは">?</button> ・ ★は<b>ボーナス札</b></div>
+    <div class="cap" id="cap">カードの右下の数字は<b>基本点</b><button class="qm" data-term="base" aria-label="基本点とは">?</button> ・ ★は<b>ボーナス札</b>です</div>
     <div class="river" id="river"><span class="lbl">捨て札<button class="qm" data-term="river" aria-label="捨て札とは">?</button></span><span id="riverTiles" style="display:contents"></span></div>
     <div class="btns">
       <button class="b primary" id="declare">完成</button>
@@ -739,7 +754,7 @@ body.tutorial .rule-cap{display:none}
       <button class="b" id="cheatbtn">早見表</button>
       <button class="b" id="calc">電卓</button>
     </div>
-    <div class="rule-cap" id="rule-cap">ヒントで式が出る・電卓を使うと、その分の得点は半分</div>
+    <div class="rule-cap" id="rule-cap">ヒントで式を表示したラウンドと、電卓を使ったターンの得点は半分になります。</div>
     <div class="msg" id="msg" role="status" aria-live="polite"></div>
     <div class="ready hide" id="ready">
       <div class="ready-in">
@@ -756,31 +771,31 @@ body.tutorial .rule-cap{display:none}
   <section class="panel help">
     <details>
       <summary>くわしいルール・設定</summary>
-      <div class="settings"><button class="b" id="dbl" aria-live="polite"></button><span>選んだ札をもう一度タップで捨てる</span></div>
-      <div class="settings"><button class="b" id="restart2">はじめから</button><span>ラウンド1からやり直す(途中の点数は消えます)</span></div>
+      <div class="settings"><button class="b" id="dbl" aria-live="polite"></button><span>選んだカードをもう一度タップすると捨てます</span></div>
+      <div class="settings"><button class="b" id="restart2">はじめから</button><span>ラウンド1からやり直します(途中の点数は消えます)</span></div>
       <ol>
-        <li>手札6枚+引いた1枚の<b>7枚をすべて使い</b>、並べた式が場の数になれば完成。</li>
-        <li>カードは<b>ドラッグして好きな位置に差し込めます</b>。タップすると捨てる札として選べます(選んだ札をもう一度タップすると捨てられます。この欄の「2回タップで捨てる」でON/OFF)。キーボードは、←→で移動、Shift+←→で並べ替え、Enter で選択、Delete で捨てる。</li>
-        <li>完成しなければ1枚捨てて次のターン(山札から1枚引く)。</li>
-        <li><b>配り直し</b>: 最初の手の数字カードが3枚以下なら、ラウンドに1回だけ、ターンを消費せず手札を引き直せます。</li>
-        <li>数字カードが並ぶと連結(1,2→12)。先頭が0の数は不可。</li>
-        <li>乗除が先、加減が後。括弧はなし。小数になってもOK。</li>
-        <li><b>√の範囲だけは自由</b>: カッコのカードがないので、<span id="ex">√4＋1</span> は √(4＋1) とも読めます。どの読み方でも場の数になれば完成です。^の連続は右から、!の連続は多重階乗、省略のかけ算(A√B)は×÷より先に計算します。</li>
-        <li>式の最初の−はOK(−3+13)。</li>
-        <li>数字や!の直後の√は掛け算の省略として使えます(7√9 = 7×√9)。</li>
-        <li>最後のラウンドまで遊ぶと記録が残ります(この端末のブラウザの中だけ)。「記録」で一覧を見られ、終了画面から結果を共有できます。</li>
-        <li><b>電卓</b>: 押したターンだけ、いまの並びの値を「標準の読み方」で表示します。そのターンに完成すると点数は半分(ヒントと重なると4分の1)。標準の読み方=√は右隣の数だけ。完成の判定は、√の範囲だけ自由に読みます。</li>
+        <li>手札6枚と引いた1枚の、合計<b>7枚をすべて使って</b>、場の数と同じ値になる式を作ると完成です。</li>
+        <li>カードは<b>ドラッグして好きな位置に移動</b>できます。タップすると捨てるカードとして選択され、もう一度タップすると捨てられます(この欄の「2回タップで捨てる」で切り替えられます)。キーボードでは、←→で移動、Shift+←→で並べ替え、Enter で選択、Delete で捨てる操作ができます。</li>
+        <li>完成できない場合は、カードを1枚捨てて山札から1枚引き、次のターンに進みます。</li>
+        <li><b>配り直し</b>: 最初の手札の数字カードが3枚以下の場合は、1ラウンドに1回だけ、ターンを消費せずに手札を引き直せます。</li>
+        <li>数字カードを続けて並べると、1つの数として扱われます(1と2で12)。先頭が0の数は作れません。</li>
+        <li>掛け算・割り算を、足し算・引き算より先に計算します。カッコのカードはありません。計算の途中や結果が小数になってもかまいません。</li>
+        <li><b>√ のかかる範囲</b>: カッコのカードがないため、<span id="ex">√4＋1</span> は √(4＋1) とも読めます。いずれかの読み方で場の数になれば完成です。^ は × ÷ より先に、続くときは右から計算します。! が続くときは多重階乗として扱います。省略した掛け算(A√B)は × ÷ より先に計算します。</li>
+        <li>式の先頭の − は、マイナスの数として使えます(−3＋13)。</li>
+        <li>数字や ! の直後の √ は、掛け算の省略として扱います(7√9 = 7×√9)。</li>
+        <li>最後のラウンドまで遊ぶと、結果がお使いの端末のブラウザに保存されます。「記録」から一覧を確認でき、終了画面から結果を共有できます。</li>
+        <li><b>電卓</b>: 押したターンに限り、現在の並びの値を「標準の読み方」で表示します。そのターンに完成すると、点数は半分になります(ヒントと重なると4分の1)。標準の読み方では、√ は右隣の数だけにかかります。完成の判定では、√ のかかる範囲を自由に読みます。</li>
       </ol>
-      <p>基本点(カードの使いづらさ。札の右下の小さい数字):</p>
+      <p>基本点(カードの使いにくさ。カードの右下の小さい数字):</p>
       <table id="legend"></table>
-      <p><b>点数 = 7枚の基本点の合計 × 2^ブースト × 場の数</b>(ヒントで式が出ると、そのラウンドの得点は半分。「作れません」と返ったときは減りません)。</p>
+      <p><b>点数 = 7枚の基本点の合計 × 2^ブースト × 100</b>(ヒントで式を表示すると、そのラウンドの得点は半分になります。「作れません」と表示された場合は減りません)。</p>
       <p>ボーナス(ブースト):</p>
       <table id="yakulist"></table>
       <p>称号(3ラウンドの合計点):</p>
       <table id="ranklist"></table>
       <p>1回の完成ごとの評価(完成の演出で出る言葉):</p>
       <table id="tierlist"></table>
-      <p class="help">※ボーナス札=ラウンドごとに表示される札(★)。同じ札1枚につきブースト+1。「記号そろい」は「記号づかい」を含むので、どちらか高い方だけ数えます(仮)。「スピード」は一人用だけのボーナスです。</p>
+      <p class="help">※ボーナス札は、ラウンドごとに表示されるカードです。手札の同じカード(★)1枚につき、ブーストが1増えます。「記号そろい」が成立した場合、「記号づかい」は数えません。「スピード」と「ギリギリ」は一人用のみのボーナスです。</p>
     </details>
   </section>
 </main>
@@ -798,8 +813,8 @@ body.tutorial .rule-cap{display:none}
 </dialog>
 <dialog id="tut-done" aria-labelledby="td-title">
   <div class="rs-body">
-    <b id="td-title">練習おわり!</b>
-    <p>「動かす → 捨てる → 完成」の流れは、これで全部です。本番は3ラウンド。点数を伸ばして、称号をめざしましょう。</p>
+    <b id="td-title">練習は以上です</b>
+    <p>カードを動かす、捨てる、完成させる、という流れは以上です。本番は3ラウンドで、合計点によって称号が決まります。</p>
     <div class="rs-btns col"><button class="b primary" id="td-play">本番</button><button class="b" id="td-again">もう一度</button><button class="b" id="td-title-btn">タイトルへ</button></div>
   </div>
 </dialog>
@@ -814,7 +829,7 @@ body.tutorial .rule-cap{display:none}
   <div class="rec-head"><b id="rec-title">自分の記録(上位20)</b><button class="b" id="rec-close">閉じる</button></div>
   <div class="rec-rank" id="rec-rank"></div>
   <div class="rec-body" id="rec-body"></div>
-  <div class="rec-foot"><span>この端末のブラウザの中だけに保存されます。</span><button class="b" id="rec-clear">記録を消す</button></div>
+  <div class="rec-foot"><span>お使いの端末のブラウザにのみ保存されます。</span><button class="b" id="rec-clear">記録を消す</button></div>
 </dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="banner" id="banner"></div>
@@ -1126,7 +1141,7 @@ const PTS = { '0':1,'1':1,'2':2,'3':3,'4':2,'5':2,'6':2,'7':3,'8':2,'9':2,'+':1,
 const $ = id => document.getElementById(id);
 let S = {};
 
-function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function shuffle(a){ const rnd = (S && S.rng) || Math.random; for(let i=a.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 const kindClass = k => (k==='+'||k==='-'||k==='*'||k==='/') ? 'op' : (k==='!'||k==='^'||k==='r') ? 'sp' : '';
 
 function drawField(){
@@ -1140,18 +1155,31 @@ function newGame(){
   S = { round:0, total:0, scores:[], log:[] };
   nextRound();
 }
+function newDaily(){
+  S = { round:0, total:0, scores:[], log:[], daily: dailyInfo() };
+  nextRound();
+}
 
 function nextRound(){
   S.round++;
-  const deck = [];
-  KINDS.forEach(k => { for(let i=0;i<4;i++) deck.push(k); });
-  shuffle(deck);
+  let deck;
+  const fresh = () => { const d = []; KINDS.forEach(k => { for(let i=0;i<4;i++) d.push(k); }); shuffle(d); return d; };
+  if(S.daily){
+    // 同じ日・同じラウンドなら、札の並びも同じ。最初の手が極端に悪い(数字が少なすぎ・多すぎ、四則が1枚以下)ときは、次の候補に進む(順番は日付で決まる)
+    for(let at = 0; at < 80; at++){
+      S.rng = mulberry32(seedFrom(`${S.daily.key}:${S.round}:${at}`));
+      deck = fresh();
+      const h = deck.slice(0, 6).concat(deck[deck.length - 1]);
+      const dg = h.filter(k => k >= '0' && k <= '9').length, op4 = h.filter(k => '+-*/'.includes(k)).length;
+      if(dg >= 3 && dg <= 5 && op4 >= 2) break;
+    }
+  } else deck = fresh();
   S.deck = deck;
   S.hand = deck.splice(0,6);
   S.hand.push(deck.pop());
   S.newIdx = 6;
-  S.dora = KINDS[Math.floor(Math.random()*KINDS.length)];
-  S.target = drawField();
+  S.dora = KINDS[Math.floor((S.rng || Math.random)() * KINDS.length)];
+  S.target = S.daily ? S.daily.fields[S.round - 1] : drawField();
   S.turn = 1;
   S.sel = -1;
   S.hinted = false;
@@ -1188,13 +1216,13 @@ function beginRound(){
   for(let i = 0; i < 7; i++) setTimeout(() => clack(0.16, 1500 + i * 120), 80 + i * 70);
 }
 const TIPS = [
-  '余った札は「＋0」「−0」「×1」「÷1」で消せます。',
-  '数字の札を並べると、くっついて1つの数になります(1と2で12)。',
-  '作れない手は、早めに1枚捨てて入れ替えるのがコツです。',
+  '余ったカードは、「＋0」や「×1」のように値を変えない形で使えます。',
+  '数字カードを続けて並べると、大きな数を作れます(1と2で12)。',
+  '完成できそうにない手札は、早めに入れ替えましょう。',
   'ボーナス札(★)を手札に集めると、ブーストが増えます。',
-  '3ターン以内に完成すると「スピード」で最大ブースト+5。',
-  '√ や ! は数を作りかえる札です(4! = 24、√9 = 3)。',
-  '同じ数字を3枚そろえるとブースト+3、4枚で+4です。'
+  '3ターン以内に完成すると、「スピード」で最大ブースト+5を得られます。',
+  '√ や ! を使うと、数を大きく変えられます(4! = 24、√9 = 3)。',
+  '同じ数字を3枚そろえるとブースト+3、4枚そろえると+4です。'
 ];
 function syncReady(){
   const w = !!S.waiting;
@@ -1202,8 +1230,8 @@ function syncReady(){
   $('play').classList.toggle('waiting', w);
   if(w){
     $('ready-round').textContent = `ROUND ${S.round} / ${ROUNDS}`;
-    $('ready-sub').textContent = S.round > 1 ? `ここまでの合計 ${S.total.toLocaleString()}点。準備ができたら始めましょう。` : '場の数と手札が配られます。準備ができたら始めましょう。';
-    $('ready-tip').textContent = TIPS[S.readyTip || 0];
+    $('ready-sub').textContent = (S.daily ? `今日の一戦 ${S.daily.md} です。全員が同じ盤面で遊びます。` : '') + (S.round > 1 ? `現在の合計は ${S.total.toLocaleString()}点です。準備ができたら「スタート」を押してください。` : '準備ができたら「スタート」を押してください。場の数と手札が配られます。');
+    $('ready-tip').textContent = 'コツ: ' + TIPS[S.readyTip || 0];
   }
 }
 // 7) 今やることの1行
@@ -1212,10 +1240,10 @@ function updateGoal(){
   if(S.tutorial || S.waiting || S.over){ g.textContent = ''; return; }
   const left = MAX_TURN - S.turn;
   let t;
-  if(S.sel >= 0) t = dblDiscard ? '選んだ札を、もう一度タップで捨てられます' : '「捨てる」で捨てられます';
-  else if(S.turn === 1 && !S.redealt && redealReason()) t = '数字が少なめです。配り直しもできます';
-  else if(left <= 2) t = `ラスト${left + 1}ターン! 完成しないと、このラウンドは0点です`;
-  else t = `手札の7枚で「${S.target}」をつくろう`;
+  if(S.sel >= 0) t = dblDiscard ? '選んだカードをもう一度タップすると捨てられます' : '「捨てる」を押すと捨てられます';
+  else if(S.turn === 1 && !S.redealt && redealReason()) t = '数字カードが少ないため、配り直しができます';
+  else if(left <= 2) t = `残り${left + 1}ターンです。完成できないと、このラウンドは0点になります`;
+  else t = `手札の7枚で「${S.target}」を作りましょう`;
   g.textContent = t;
 }
 $('ready-go').addEventListener('click', () => { if(!S.waiting) return; audio(); clack(0.2, 1800); beginRound(); });
@@ -1223,7 +1251,7 @@ $('ready-go').addEventListener('click', () => { if(!S.waiting) return; audio(); 
 function setMsg(t, cls){ const m=$('msg'); m.textContent=t; m.className='msg '+(cls||''); }
 
 function render(){
-  $('round').textContent = S.tutorial ? '練習ラウンド' : `ラウンド ${S.round} / ${ROUNDS}`;
+  $('round').textContent = S.tutorial ? '練習ラウンド' : S.daily ? `今日の一戦 ${S.round} / ${ROUNDS}` : `ラウンド ${S.round} / ${ROUNDS}`;
   $('total').textContent = S.tutorial ? '' : `合計 ${S.total.toLocaleString()} 点`;
   if(!$('target').classList.contains('rolling')) $('target').textContent = S.waiting ? '--' : S.target;
   $('pips').innerHTML = S.tutorial ? '' : Array.from({length:ROUNDS}, (_, i) => `<i class="${i < S.round - 1 ? 'done' : i === S.round - 1 ? 'cur' : ''}"></i>`).join('');
@@ -1278,7 +1306,7 @@ function updateLive(){
   $('live').textContent = '';
   if(!on) return;
   const r = standardEval(S.hand);
-  $('live').textContent = r.ok ? `いまの並び = ${Math.round(r.v * 1e6) / 1e6}` : r.reason;
+  $('live').textContent = r.ok ? `現在の並び = ${Math.round(r.v * 1e6) / 1e6}` : r.reason;
 }
 $('calc').addEventListener('click', () => {
   if(S.over || S.busy) return;
@@ -1365,9 +1393,10 @@ function onDown(e, i){
 // ---- 役と点数 ----
 const isPrime = n => { if(!Number.isInteger(n) || n < 2) return false; for(let i=2;i*i<=n;i++) if(n%i===0) return false; return true; };
 const YAKU_LIST = [
-  ['ボーナス札','ボーナス札1枚につき',1],
+  ['ボーナス札','手札にボーナス札と同じカードがある(1枚ごと)',1],
   ['素数の場','場の数が素数',1],
-  ['スピード','1・2・3ターン目に完成(一人用): +5・+4・+3','5/4/3'],
+  ['スピード','1、2、3ターン目に完成する(+5、+4、+3)','5/4/3'],
+  ['ギリギリ','23、24、25ターン目に完成する(+3、+4、+5)','3/4/5'],
   ['小さい数だけ','数字カードが0〜5のみ',1],
   ['大きい数だけ','数字カードが6〜9のみ',1],
   ['中間の数字','数字カードが2〜8のみ',1],
@@ -1376,7 +1405,7 @@ const YAKU_LIST = [
   ['3桁の数','式の中に3桁の数がある',2],
   ['4桁の数','式の中に4桁の数がある',3],
   ['同じ数字3枚','同じ数字カードが3枚',3],
-  ['同じ数字3枚×2','3枚ずつそろった数字が2種類(全体で)',5],
+  ['同じ数字3枚×2','同じ数字3枚の組が2種類ある',5],
   ['同じ数字4枚','同じ数字カードが4枚',4],
   ['記号づかい','√ ! ^ を計2枚以上',1],
   ['素数だけ','式内の数がすべて素数',3],
@@ -1390,6 +1419,7 @@ function judge(hand, target, turn){
   if(dora) add(`ボーナス札「${SYMBOL[S.dora] || S.dora}」${dora}枚`, dora);
   if(isPrime(target)) add('素数の場', 1, target + ' は素数');
   if(turn <= 3) add('スピード', 6 - turn, turn + 'ターン目');
+  if(turn >= MAX_TURN - 2 && turn <= MAX_TURN) add('ギリギリ', turn - MAX_TURN + 5, turn + 'ターン目');
   const digits = hand.filter(k => k >= '0' && k <= '9').map(Number);
   if(digits.length && digits.every(d => d <= 5)) add('小さい数だけ', 1, '0〜5');
   else if(digits.length && digits.every(d => d >= 6)) add('大きい数だけ', 1, '6〜9');
@@ -1416,13 +1446,14 @@ function judge(hand, target, turn){
   if(hand.join('') === hand.slice().reverse().join('')) add('左右対称', 3);
   const fu = hand.reduce((x,k) => x + PTS[k], 0);
   const han = yaku.reduce((x,y) => x + y.han, 0);
-  let points = fu * Math.pow(2, han) * target;
+  let points = fu * Math.pow(2, han) * SCORE_MULT;   // 場の数は点数に入れない(運の偏りをなくす)
   if(S.hinted) points = Math.floor(points / 2);
   const calcUsed = S.calcTurn === turn;
   if(calcUsed) points = Math.floor(points / 2);
   return { fu, han, yaku, points, calcUsed };
 }
-const TIERS = [[50000,'レジェンド'],[20000,'ワンダフル'],[10000,'エクセレント'],[5000,'グレート'],[2000,'ナイス']];
+const SCORE_MULT = 100;
+const TIERS = [[90000,'レジェンド'],[45000,'ワンダフル'],[20000,'エクセレント'],[12000,'グレート'],[5000,'ナイス']];
 const tierOf = pts => { const t = TIERS.find(x => pts >= x[0]); return t ? t[1] : ''; };
 
 // ---- 音(WebAudioで合成。素材ファイルなし) ----
@@ -1601,9 +1632,9 @@ $('cards').addEventListener('keydown', e => {
 
 // 初回ガイド(3ステップ。一度見たら出ない)
 const COACH = [
-  '札を<b>ドラッグ</b>して、好きな位置に差し込めます。',
-  '札を<b>タップで選び</b>、もう一度タップで捨てられます。',
-  '7枚すべてを使って<b>場の数</b>がつくれたら「完成！」を押そう。'
+  'カードを<b>ドラッグ</b>して、好きな位置に移動できます。',
+  'カードを<b>タップして選び</b>、もう一度タップすると捨てられます。',
+  '7枚すべてを使って<b>場の数</b>を作れたら、「完成」を押します。'
 ];
 let coachStep = 0;
 function showCoach(){
@@ -1620,7 +1651,7 @@ function startCoach(){
   coachStep = 0; showCoach();
 }
 $('coach-next').addEventListener('click', () => {
-  if(S.tutorial){ setMsg('例: 3×4＋5−0 = 17(ほかの並べ方でもOK)', 'ok'); return; }
+  if(S.tutorial){ setMsg('例: 3×4＋5−0 = 17(他の並べ方でもかまいません)', 'ok'); return; }
   if(coachStep >= COACH.length - 1) endCoach(); else { coachStep++; showCoach(); }
 });
 $('coach-skip').addEventListener('click', () => { if(S.tutorial){ exitTutorial(true); showView('title'); return; } endCoach(); });
@@ -1630,8 +1661,9 @@ const SHARE_URL = 'https://yuto3355.github.io/math-card-game/';
 const REC_KEY = 'tachishiki-records';
 const loadRecords = () => { try { return JSON.parse(localStorage.getItem(REC_KEY) || '[]'); } catch(e) { return []; } };
 const saveRecords = a => { try { localStorage.setItem(REC_KEY, JSON.stringify(a)); } catch(e) {} };
-function addRecord(total, scores, title){
+function addRecord(total, scores, title, daily){
   const rec = { t: Date.now(), total, scores: scores.slice(), title };
+  if(daily) rec.daily = daily;
   const all = loadRecords();
   all.push(rec);
   all.sort((a, b) => b.total - a.total || a.t - b.t);
@@ -1650,9 +1682,9 @@ function showRecords(){
   $('rec-body').innerHTML = all.length
     ? all.map((r, i) => {
         const d = new Date(r.t);
-        return `<div class="rec-row"><span class="rec-no">${i + 1}</span><span class="rec-pt">${r.total.toLocaleString()}点</span><span class="rec-title">${r.title}</span><span class="rec-sub">${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ・ ${r.scores.map(v => v.toLocaleString()).join(' / ')}</span></div>`;
+        return `<div class="rec-row"><span class="rec-no">${i + 1}</span><span class="rec-pt">${r.total.toLocaleString()}点</span><span class="rec-title">${r.title}</span><span class="rec-sub">${r.daily ? '今日の一戦 ' + r.daily + ' ・ ' : ''}${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ・ ${r.scores.map(v => v.toLocaleString()).join(' / ')}</span></div>`;
       }).join('')
-    : '<div class="rec-empty">まだ記録がありません。最後のラウンドまで遊ぶと残ります。</div>';
+    : '<div class="rec-empty">まだ記録がありません。最後のラウンドまで遊ぶと記録されます。</div>';
   $('rec-clear').disabled = !all.length;
   $('rec-rank').textContent = '称号: ' + DAN.slice().reverse().map(d => `${d[1]} ${d[0].toLocaleString()}点〜`).join(' / ');
   if(typeof $('records').showModal === 'function') $('records').showModal(); else $('records').setAttribute('open', '');
@@ -1664,7 +1696,9 @@ $('rec-clear').addEventListener('click', () => {
   if(confirm('この端末の記録をすべて消します。よろしいですか?')){ saveRecords([]); showRecords(); toast('記録を消しました'); }
 });
 
-const shareText = () => `立式カードゲームで ${S.total.toLocaleString()}点(${S.lastDan})!\n7枚の札で場の数をつくる数式カードゲーム #立式カードゲーム`;
+const shareText = () => S.daily
+  ? `立式カードゲーム 今日の一戦 ${S.daily.md} で ${S.total.toLocaleString()}点(${S.lastDan})!\n同じ盤面で遊べます。 #立式カードゲーム`
+  : `立式カードゲームで ${S.total.toLocaleString()}点(${S.lastDan})!\n7枚のカードで場の数を作る数式カードゲーム #立式カードゲーム`;
 async function copyText(text){
   try { await navigator.clipboard.writeText(text); return true; }
   catch(e) {
@@ -1687,7 +1721,7 @@ function drawShareCard(){
   c.strokeRect(28, 28, W - 56, H - 56); c.setLineDash([]);
   c.fillStyle = '#fff'; c.textBaseline = 'alphabetic';
   c.font = `800 54px ${font}`; c.fillText('立式カードゲーム', 72, 120);
-  c.font = `500 28px ${font}`; c.fillStyle = 'rgba(255,255,255,.75)'; c.fillText('7枚の札で、場の数をつくる。', 72, 166);
+  c.font = `500 28px ${font}`; c.fillStyle = 'rgba(255,255,255,.75)'; c.fillText('7枚のカードで、場の数を作る。', 72, 166);
   c.fillStyle = '#ffd84a'; c.font = `800 190px ${font}`;
   const pts = S.total.toLocaleString();
   c.fillText(pts, 72, 400);
@@ -1729,23 +1763,25 @@ $('sh-img').addEventListener('click', () => {
 if(!navigator.share) $('sh-native').classList.add('hide');
 
 // ---- はじめから ----
+let restartMode = 'normal';
 function restartGame(){
   const dlg = $('restart-confirm');
   if(dlg.open) dlg.close();
-  newGame();
+  if(restartMode === 'daily') newDaily(); else newGame();
   showView('game');
   toast('ラウンド1から始めました');
 }
-function askRestart(){
+function askRestart(mode){
   if(S.busy) return;
+  restartMode = typeof mode === 'string' ? mode : (S.daily ? 'daily' : 'normal');
   // まだ何も進んでいないときは確認なしで最初から
   const untouched = S.round === 1 && S.turn === 1 && !S.scores.length && !S.hinted && S.calcTurn !== 1;
   if(untouched){ restartGame(); return; }
-  $('rs-text').textContent = `いまは ラウンド${S.round} の ${S.turn}ターン目、合計 ${S.total.toLocaleString()}点です。やり直すと、この途中経過は消えます(保存済みの記録は残ります)。`;
+  $('rs-text').textContent = `現在はラウンド${S.round}の${S.turn}ターン目、合計${S.total.toLocaleString()}点です。やり直すと、途中経過は消えます(保存済みの記録は残ります)。`;
   if(typeof $('restart-confirm').showModal === 'function') $('restart-confirm').showModal(); else $('restart-confirm').setAttribute('open', '');
 }
 $('homebtn').addEventListener('click', () => { if(S.tutorial) exitTutorial(true); showView('title'); });
-$('restart2').addEventListener('click', askRestart);
+$('restart2').addEventListener('click', () => askRestart());
 $('rs-cancel').addEventListener('click', () => $('restart-confirm').close());
 $('rs-ok').addEventListener('click', restartGame);
 
@@ -1766,6 +1802,8 @@ function refreshTitle(){
   const p = progressed();
   $('t-continue').classList.toggle('hide', !p);
   $('t-start').textContent = p ? 'はじめから' : 'はじめる';
+  const di = dailyInfo(), db = dailyBest(di.key);
+  $('t-daily-sub').textContent = di.md + (db ? ` ・ 今日の最高 ${db.toLocaleString()}点` : '');
   $('t-practice').classList.toggle('suggest', !practiced);
   const rec = loadRecords();
   $('t-best').textContent = rec.length ? `自己ベスト ${rec[0].total.toLocaleString()}点(${rec[0].title})` : 'まだ記録がありません';
@@ -1787,12 +1825,17 @@ function showView(name){
 }
 function startFromTitle(){
   if(!cardsSeen && !progressed()){ showView('cardguide'); return; }   // はじめての人は、先にカードの使い方
-  if(progressed()){ askRestart(); return; }
+  if(progressed()){ askRestart('normal'); return; }
   newGame(); showView('game');
 }
 $('t-start').addEventListener('click', startFromTitle);
 $('h-start').addEventListener('click', startFromTitle);
 $('t-continue').addEventListener('click', () => { render(); showView('game'); });
+function startDaily(){
+  if(progressed()){ askRestart('daily'); return; }
+  newDaily(); showView('game');
+}
+$('t-daily').addEventListener('click', startDaily);
 $('t-practice').addEventListener('click', startTutorial);
 $('h-practice').addEventListener('click', startTutorial);
 $('t-howto').addEventListener('click', () => showView('howto'));
@@ -1814,10 +1857,10 @@ $('t-sound').addEventListener('click', () => { $('mute').click(); $('t-sound').t
 // ---- 練習ラウンド(操作を体験する) ----
 const TUT_BAD = '8';
 const TUT_TEXT = [
-  '札を<b>ドラッグ</b>して、左右に動かしてみよう。',
-  '場の数は <b>17</b>。7枚ぜんぶ使って作れるかな? まず「<b>完成</b>」を押してみよう。',
-  '作れないときは、いらない札を<b>1枚捨てて</b>入れ替えます。<b>「8」</b>の札をタップして選び、もう一度タップ(または「捨てる」)で捨ててみよう。',
-  '山札から <b>「0」</b> が来た! 余った札は <b>＋0</b> や <b>−0</b> で消せます。たとえば <b>3×4＋5−0</b> と並べて「<b>完成</b>」を押そう。'
+  'カードを<b>ドラッグ</b>して、左右に動かしてみましょう。',
+  '場の数は <b>17</b> です。この7枚で作れるかどうか、「<b>完成</b>」を押して確かめてみましょう。',
+  '作れないときは、カードを<b>1枚捨てて</b>入れ替えます。<b>「8」</b>のカードをタップして選び、もう一度タップ(または「捨てる」を押す)して捨ててみましょう。',
+  '山札から <b>「0」</b> を引きました。「0」は <b>−0</b> のように、値を変えない形で使えます。たとえば <b>3×4＋5−0</b> と並べて、「<b>完成</b>」を押してみましょう。'
 ];
 let savedGame = null;
 function setTut(step){
@@ -1861,13 +1904,13 @@ $('td-title-btn').addEventListener('click', () => { $('tut-done').close(); exitT
 
 // ---- 用語の「?」 ----
 const TERMS = {
-  target: ['場の数', '作る目標の2桁の数です。手札の7枚をぜんぶ使って、この数と同じ値になる式を作ります。'],
-  bonus:  ['ボーナス札', 'ラウンドごとに決まる札です。手札に同じ札があると(★が付きます)、1枚ごとにブースト+1になります。'],
-  deck:   ['山札', 'これから引く札の山です。札を捨てると、ここから1枚引きます。数字は残りの枚数です。'],
-  turn:   ['ターン', '札を1枚捨てて引くと、1ターン進みます。1ラウンドは25ターンまで。完成できないと、そのラウンドは0点です。'],
-  river:  ['捨て札', 'これまでに捨てた札の列です。'],
-  base:   ['基本点', '札ごとの「使いにくさ」を表す点です(札の右下の小さい数字)。完成した7枚ぶんの合計が、点数のもとになります。'],
-  boost:  ['ブースト', '条件を満たすと付くボーナスです。+1ごとに点数が2倍になります。点数 = 基本点の合計 × 2^ブースト × 場の数。']
+  target: ['場の数', '式で作る目標の数です。手札の7枚をすべて使って、この数と同じ値になる式を作ります。'],
+  bonus:  ['ボーナス札', 'ラウンドごとに決まるカードです。手札の同じカード(★)1枚につき、ブーストが1増えます。'],
+  deck:   ['山札', 'これから引くカードの山です。カードを捨てると、ここから1枚引きます。数字は残りの枚数を表します。'],
+  turn:   ['ターン', 'カードを1枚捨てて山札から引くと、1ターン進みます。1ラウンドは25ターンまでで、完成できなかったラウンドは0点になります。'],
+  river:  ['捨て札', 'これまでに捨てたカードの列です。'],
+  base:   ['基本点', 'カードごとの使いにくさを表す点数です(カードの右下の小さい数字)。完成した7枚の合計が、点数の基礎になります。'],
+  boost:  ['ブースト', 'ボーナスの条件を満たすと増える値です。1増えるごとに点数が2倍になります。点数は、基本点の合計 × 2^ブースト × 100 で計算します。']
 };
 function openTerm(key){
   const t = TERMS[key]; if(!t) return;
@@ -1884,28 +1927,30 @@ $('term-close').addEventListener('click', () => $('term').close());
 
 // ---- ボーナスの例(場の数28。1つだけ満たす式を、判定エンジンで探して選んだ) ----
 const BONUS_EX = [
-  { n:'偶数だけ', b:'+1', c:'数字カードがすべて偶数です(0も偶数)。', t:'6 2 - 4 0 + 6', e:'62−40＋6 = 22＋6 = 28', want:['偶数だけ'] },
-  { n:'奇数だけ', b:'+2', c:'数字カードがすべて奇数です。', t:'9 * 3 + 5 / 5', e:'9×3＋5÷5 = 27＋1 = 28', want:['奇数だけ'] },
-  { n:'小さい数だけ', b:'+1', c:'数字カードがすべて 0〜5 です。', t:'2 1 + 1 2 - 5', e:'21＋12−5 = 33−5 = 28', want:['小さい数だけ'] },
-  { n:'大きい数だけ', b:'+1', c:'数字カードがすべて 6〜9 です。', t:'6 + 9 8 - 7 6', e:'6＋98−76 = 104−76 = 28', want:['大きい数だけ'] },
-  { n:'中間の数字', b:'+1', c:'数字カードがすべて 2〜8 です(0・1・9 がない)。', t:'3 4 - 8 + r 4', e:'34−8＋√4 = 26＋2 = 28', want:['中間の数字'] },
-  { n:'3桁の数', b:'+2', c:'式の中に、3桁の数があります。', t:'7 + 1 8 9 / 9', e:'7＋189÷9 = 7＋21 = 28', want:['3桁の数'] },
-  { n:'4桁の数', b:'+3', c:'式の中に、4桁の数があります。', t:'1 9 6 0 / 7 0', e:'1960÷70 = 28', want:['4桁の数'] },
-  { n:'同じ数字3枚', b:'+3', c:'同じ数字のカードが3枚あります。', t:'9 6 - 6 2 - 6', e:'96−62−6 = 34−6 = 28', n2:'6 が3枚', want:['同じ数字3枚'] },
-  { n:'同じ数字4枚', b:'+4', c:'同じ数字のカードが4枚あります。', t:'1 + 1 6 + 1 1', e:'1＋16＋11 = 28', n2:'1 が4枚', want:['同じ数字4枚'] },
-  { n:'同じ数字3枚×2', b:'+5', c:'3枚ずつそろった数字が、2種類あります。', t:'1 1 8 8 / 1 8', e:'1188÷18 = 66', target:66, n2:'1 が3枚、8 が3枚。数字6枚+記号1枚の式なので、場の数は 66 の例です(4桁の数も付きます)。', want:['同じ数字3枚×2','4桁の数'] },
-  { n:'素数だけ', b:'+3', c:'式の中の数が、すべて素数です。', t:'9 7 - 7 1 + 2', e:'97−71＋2 = 26＋2 = 28', n2:'97・71・2 はどれも素数', want:['素数だけ'] },
-  { n:'記号づかい', b:'+1', c:'√ ! ^ を、合わせて2枚以上使っています(3種類はそろっていない)。', t:'9 + 4 + 5 ! !', e:'9＋4＋5!! = 9＋4＋15 = 28', n2:'5!! = 5×3×1 = 15', want:['記号づかい'] },
-  { n:'記号そろい', b:'+3', c:'√ ! ^ を、1枚ずつ使っています。', t:'r 9 + 5 ^ 2 !', e:'√9＋5^2! = 3＋5^2 = 3＋25 = 28', n2:'2! は 2', want:['記号そろい'] },
-  { n:'左右対称', b:'+3', c:'7枚の並びが、左右対称です。', t:'5 1 - 8 - 1 5', e:'51−8−15 = 43−15 = 28', n2:'5 1 − 8 − 1 5 と、まん中の 8 をはさんで同じ札が並ぶ', want:['左右対称'] },
-  { n:'ボーナス札', b:'+1(1枚ごと)', c:'ボーナス札(★)と同じ札が、手札にあります。', t:'3 3 + 7 - 1 2', e:'33＋7−12 = 40−12 = 28', n2:'ボーナス札が 7 のとき、7 が1枚で +1', dora:'7', want:['ボーナス札'] },
-  { n:'素数の場', b:'+1', c:'場の数が素数です。', t:'6 9 - 9 - 3 1', e:'69−9−31 = 60−31 = 29', target:29, n2:'場の数は 29(素数)の例です。', want:['素数の場'] },
-  { n:'スピード', b:'+5 / +4 / +3', c:'1・2・3ターン目に完成すると付きます(4ターン目以降はなし)。', t:'7 + 4 * 3 + 9', e:'7＋4×3＋9 = 7＋12＋9 = 28', n2:'どんな式でもOK。この式は、ほかのボーナスが付かない例です。', want:[] }
+  { n:'偶数だけ', b:'+1', c:'数字カードがすべて偶数である(0は偶数に含みます)。', t:'4 0 / 8 + 8 4', e:'40÷8＋84 = 5＋84 = 89', want:['偶数だけ'] },
+  { n:'奇数だけ', b:'+2', c:'数字カードがすべて奇数である。', t:'1 7 + 7 3 - 1', e:'17＋73−1 = 90−1 = 89', want:['奇数だけ'] },
+  { n:'小さい数だけ', b:'+1', c:'数字カードがすべて 0〜5 である。', t:'4 5 + 4 3 + 1', e:'45＋43＋1 = 89', want:['小さい数だけ'] },
+  { n:'大きい数だけ', b:'+1', c:'数字カードがすべて 6〜9 である。', t:'8 * 9 + 8 + 9', e:'8×9＋8＋9 = 72＋17 = 89', want:['大きい数だけ'] },
+  { n:'中間の数字', b:'+1', c:'数字カードがすべて 2〜8 である(0、1、9 を含まない)。', t:'3 4 - 8 + 6 3', e:'34−8＋63 = 26＋63 = 89', want:['中間の数字'] },
+  { n:'3桁の数', b:'+2', c:'式の中に3桁の数がある。', t:'9 3 2 - 8 4 3', e:'932−843 = 89', want:['3桁の数'] },
+  { n:'4桁の数', b:'+3', c:'式の中に4桁の数がある。', t:'1 0 6 8 / 1 2', e:'1068÷12 = 89', want:['4桁の数'] },
+  { n:'同じ数字3枚', b:'+3', c:'同じ数字のカードを3枚使っている。', t:'8 1 - 3 + 1 1', e:'81−3＋11 = 78＋11 = 89', n2:'1 のカードを3枚使っています。', want:['同じ数字3枚'] },
+  { n:'同じ数字4枚', b:'+4', c:'同じ数字のカードを4枚使っている。', t:'4 4 + 4 9 - 4', e:'44＋49−4 = 93−4 = 89', n2:'4 のカードを4枚使っています。', want:['同じ数字4枚'] },
+  { n:'同じ数字3枚×2', b:'+5', c:'同じ数字3枚の組が2種類ある。', t:'9 8 8 - 8 9 9', e:'988−899 = 89', n2:'8 と 9 を3枚ずつ使っています。数字カードが6枚になるため、「大きい数だけ」と「3桁の数」も同時に成立します。', want:['同じ数字3枚×2','大きい数だけ','3桁の数'] },
+  { n:'素数だけ', b:'+3', c:'式の中の数がすべて素数である。', t:'7 + 5 3 + 2 9', e:'7＋53＋29 = 89', n2:'7、53、29 はいずれも素数です。', want:['素数だけ'] },
+  { n:'記号づかい', b:'+1', c:'√、!、^ を合計2枚以上使っている(3種類すべてを使う場合は「記号そろい」になります)。', t:'4 3 r 4 + r 9', e:'43√4＋√9 = 86＋3 = 89', n2:'√ を2枚使っています。43√4 は 43×√4 です。', want:['記号づかい'] },
+  { n:'記号そろい', b:'+3', c:'√、!、^ の3種類をすべて使っている。', t:'9 ^ r 4 ! + 8', e:'9^√4!＋8 = 81＋8 = 89', n2:'√4 = 2、2! = 2 なので、9^2 = 81 です。', want:['記号そろい'] },
+  { n:'左右対称', b:'+3', c:'7枚の並びが左右対称である。', t:'2 6 + 1 + 6 2', e:'26＋1＋62 = 89', n2:'中央の 1 を挟んで、左右に同じカードが並んでいます。', want:['左右対称'] },
+  { n:'素数の場', b:'+1', pre:'場の数が素数であること', c:'場の数が素数の場合に成立します。', t:'2 6 + 4 + 5 9', e:'26＋4＋59 = 89', n2:'式の内容は問いません。', want:[] },
+  { n:'ボーナス札', b:'+1(1枚ごと)', pre:'ボーナス札が 7 であること', c:'ボーナス札(★)と同じカードが手札にある。', t:'6 + 7 1 + 1 2', e:'6＋71＋12 = 89', n2:'7 のカード1枚につき、ブーストが1増えます。', dora:'7', want:['ボーナス札'] },
+  { n:'スピード', b:'+5 / +4 / +3', pre:'1、2、3ターン目に完成すること', c:'1ターン目は+5、2ターン目は+4、3ターン目は+3です。', t:'7 4 - 3 + 1 8', e:'74−3＋18 = 71＋18 = 89', n2:'式の内容は問いません。', want:[] },
+  { n:'ギリギリ', b:'+3 / +4 / +5', pre:'23、24、25ターン目に完成すること', c:'23ターン目は+3、24ターン目は+4、25ターン目は+5です。', t:'3 2 + 4 9 + 8', e:'32＋49＋8 = 89', n2:'式の内容は問いません。', want:[] }
 ];
 function buildBonusGuide(){
   $('bonus-list').innerHTML = BONUS_EX.map(x => `
     <div class="cg-item bg-item">
       <div class="cg-head"><h4>${x.n}</h4><span class="bchip">ブースト${x.b}</span></div>
+      ${x.pre ? `<p class="bpre">前提: ${x.pre}</p>` : ''}
       <p>${x.c}</p>
       <div class="t-row" data-tiles="${x.t}"></div>
       <div class="bg-eq">${x.e}</div>
@@ -1918,17 +1963,48 @@ function verifyBonusExamples(){
   const out = BONUS_EX.map(x => {
     const hand = x.t.split(' ');
     S.dora = x.dora || ''; S.hinted = false; S.calcTurn = 0;
-    const jd = judge(hand, x.target || 28, 99);
+    const jd = judge(hand, 89, 10);
     const names = jd.yaku.map(y => y.name.replace(/^ボーナス札.*/, 'ボーナス札'));
     const std = standardEval(hand);
-    const okVal = std.ok && Math.abs(std.v - (x.target || 28)) < 1e-9;
-    const okSet = names.length === x.want.length && x.want.every(w => names.includes(w));
+    const okVal = std.ok && Math.abs(std.v - 89) < 1e-9;
+    const want = ['素数の場', ...x.want];   // 89 は素数なので、すべての式で「素数の場」が成立する
+    const okSet = names.length === want.length && want.every(w => names.includes(w));
     return { n: x.n, cards: hand.length, okVal, okSet, names: names.join('・') };
   });
   S.dora = saveDora; S.hinted = saveHinted; S.calcTurn = saveCalc;
   return out;
 }
 buildBonusGuide();
+
+// ---- 今日の一戦(日付で盤面が決まる。同じ日は、だれが遊んでも同じ盤面) ----
+// 場の数: 月 → 日 → 月+日(例: 11/09 なら 11 → 9 → 20)。札の並び・ボーナス札も日付から決まる。
+function dailyInfo(){
+  const d = new Date(), m = d.getMonth() + 1, dd = d.getDate();
+  return { key: `${d.getFullYear()}-${m}-${dd}`, md: `${String(m).padStart(2, '0')}/${String(dd).padStart(2, '0')}`, fields: [m, dd, m + dd] };
+}
+function seedFrom(str){
+  let h = 1779033703 ^ str.length;
+  for(let i = 0; i < str.length; i++){ h = Math.imul(h ^ str.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
+  h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909);
+  return (h ^ (h >>> 16)) >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const DAILY_KEY = 'tachishiki-daily';
+function dailyBest(key){
+  try { const o = JSON.parse(localStorage.getItem(DAILY_KEY) || '{}'); return o.key === key ? (o.best || 0) : 0; } catch(e) { return 0; }
+}
+function updateDailyBest(key, total){
+  const prev = dailyBest(key), isBest = total > prev;
+  if(isBest){ try { localStorage.setItem(DAILY_KEY, JSON.stringify({ key, best: total })); } catch(e) {} }
+  return { best: Math.max(prev, total), isBest };
+}
 
 // ---- 紙吹雪 ----
 let fxRun = 0;
@@ -1993,7 +2069,7 @@ async function reveal(hand, str, target, jd){
     jan(i + 1);
     await sleep(750);
   }
-  $('ov-calc').textContent = `基本点 ${jd.fu} × 2^${jd.han}(${Math.pow(2, jd.han).toLocaleString()}) × 場の数 ${target}` + (S.hinted ? ' ÷ 2(ヒント)' : '') + (jd.calcUsed ? ' ÷ 2(電卓)' : '');
+  $('ov-calc').textContent = `基本点 ${jd.fu} × 2^${jd.han}(${Math.pow(2, jd.han).toLocaleString()}) × 100` + (S.hinted ? ' ÷ 2(ヒント)' : '') + (jd.calcUsed ? ' ÷ 2(電卓)' : '');
   $('ov-qm').classList.remove('hide');
   tick(0.5);
   await sleep(700);
@@ -2009,7 +2085,7 @@ async function reveal(hand, str, target, jd){
   $('ov-score').innerHTML = jd.points.toLocaleString() + '<small>点</small>';
   skip = false;
   const tier = tierOf(jd.points);
-  const big = jd.points >= 10000;
+  const big = jd.points >= 20000;
   fanfare(big);
   burst(tier ? (big ? 220 : 120) : 50, big ? 1.4 : 1);
   if(tier){
@@ -2064,7 +2140,7 @@ function buildReview(){
   const rows = S.scores.map((v, i) => {
     const l = L[i];
     if(!l) return `<div class="rv-row"><b>R${i + 1}</b><span>-</span><i>${v.toLocaleString()}点</i></div>`;
-    if(!l.win) return `<div class="rv-row"><b>R${i + 1}</b><span>完成できず(${l.turn}ターン)</span><i>0点</i><small>作れない手は、早めに捨てて入れ替えよう</small></div>`;
+    if(!l.win) return `<div class="rv-row"><b>R${i + 1}</b><span>未完成(${l.turn}ターン)</span><i>0点</i><small>完成できない手札は、早めに入れ替えましょう</small></div>`;
     const flags = [l.hinted ? 'ヒント' : '', l.calc ? '電卓' : ''].filter(Boolean).join('・');
     const names = l.yaku.slice(0, 4).join('・') + (l.yaku.length > 4 ? ' ほか' : '');
     return `<div class="rv-row"><b>R${i + 1}</b><span>${l.turn}ターンで完成 ・ ブースト+${l.han}</span><i>${l.points.toLocaleString()}点</i><small>${names || 'ボーナスなし'}${flags ? ' ・ ' + flags + 'で半分' : ''}</small></div>`;
@@ -2072,14 +2148,14 @@ function buildReview(){
   const wins = L.filter(l => l.win);
   const bi = S.scores.indexOf(Math.max(...S.scores));
   let tip;
-  if(L.some(l => !l.win)) tip = '完成できなかったラウンドは0点。余った札は「＋0」「×1」で消せます。';
-  else if(L.some(l => l.hinted || l.calc)) tip = 'ヒントや電卓を使うと得点は半分。使わずに完成できると、大きく伸びます。';
-  else if(wins.every(l => l.turn > 3)) tip = '3ターン以内に完成すると「スピード」で最大ブースト+5。さらに伸ばせます。';
-  else tip = 'いい調子! 同じ数字をそろえる(3枚で+3、4枚で+4)も狙ってみよう。';
+  if(L.some(l => !l.win)) tip = '完成できなかったラウンドは0点です。余ったカードは、「＋0」や「×1」のように値を変えない形で使えます。';
+  else if(L.some(l => l.hinted || l.calc)) tip = 'ヒントや電卓を使うと、得点は半分になります。使わずに完成できれば、点数は大きく伸びます。';
+  else if(wins.every(l => l.turn > 3)) tip = '3ターン以内に完成すると、「スピード」で最大ブースト+5を得られます。';
+  else tip = '次は、同じ数字を3枚(+3)や4枚(+4)そろえることも狙ってみましょう。';
   $('ov-review').innerHTML = rows + `<div class="rv-best">最高の1回: <b>R${bi + 1} ${S.scores[bi].toLocaleString()}点</b></div><div class="rv-tip">${tip}</div>`;
   $('ov-review').classList.remove('hide');
 }
-const DAN = [[25000,'数神'],[10000,'名人'],[4000,'達人'],[1500,'一人前'],[0,'見習い']];
+const DAN = [[55000,'数神'],[22000,'名人'],[9000,'達人'],[3500,'一人前'],[0,'見習い']];
 async function finalScreen(){
   const ov = resetOverlay('RESULT', false);
   $('ov-hand').innerHTML = '<div class="rchips">' + S.scores.map((v,i) => `<span class="rchip">R${i+1} <b>${v.toLocaleString()}</b></span>`).join('') + '</div>';
@@ -2098,13 +2174,17 @@ async function finalScreen(){
   skip = false;
   const dan = DAN.find(x => S.total >= x[0])[1];
   S.lastDan = dan;
-  const rk = addRecord(S.total, S.scores, dan);
+  const rk = addRecord(S.total, S.scores, dan, S.daily ? S.daily.md : null);
   const di = DAN.findIndex(x => S.total >= x[0]), nx = di > 0 ? DAN[di - 1] : null;
   $('ov-rank').innerHTML = (rk.isBest ? '<b>自己ベスト更新!</b>' : `自己ベスト <b>${rk.best.toLocaleString()}点</b>`) + `(今回 ${rk.rank}位 / ${rk.count}件)`
-    + '<br>' + (nx ? `次の称号「${nx[1]}」まであと <b>${(nx[0] - S.total).toLocaleString()}点</b>` : '最高の称号です!');
+    + '<br>' + (nx ? `次の称号「${nx[1]}」まであと <b>${(nx[0] - S.total).toLocaleString()}点</b>` : '最高の称号です。');
+  if(S.daily){
+    const db = updateDailyBest(S.daily.key, S.total);
+    $('ov-rank').innerHTML = `今日の一戦 ${S.daily.md} ・ ` + (db.isBest ? '<b>今日の最高を更新!</b>' : `今日の最高 <b>${db.best.toLocaleString()}点</b>`) + '<br>' + $('ov-rank').innerHTML;
+  }
   buildReview();
   $('ov-extra').classList.remove('hide');
-  const big = S.total >= 10000;
+  const big = S.total >= 22000;
   fanfare(big);
   burst(big ? 220 : 120, big ? 1.4 : 1);
   const tr = $('ov-tier'); tr.textContent = dan; tr.classList.add('pop');
@@ -2116,7 +2196,7 @@ async function finalScreen(){
   $('ov-extra').classList.add('hide');
   $('ov-review').classList.add('hide');
   fxRun++;
-  newGame();
+  if(S.daily) newDaily(); else newGame();   // 今日の一戦は、同じ盤面でもう一度
 }
 $('ov').addEventListener('click', e => { if(e.target.closest('button')) return; skip = true; });
 
@@ -2125,7 +2205,7 @@ $('declare').addEventListener('click', async () => {
   audio(); // ユーザー操作のタイミングで音を有効化
   const r = findReading(S.hand, S.target);
   if(!r.found){
-    setMsg(r.reason || 'その並びでは場の数になりません。並べ替えるか、1枚捨てましょう。', 'ng');
+    setMsg(r.reason || 'この並びでは場の数になりません。並べ替えるか、カードを1枚捨ててください。', 'ng');
     buzz(); vib([30, 40, 30]);
     if(S.tutorial && S.tutStep <= 1) setTut(2);
     const cb = $('cards'); cb.classList.remove('shake'); void cb.offsetWidth; cb.classList.add('shake');
@@ -2146,8 +2226,8 @@ $('declare').addEventListener('click', async () => {
 $('discard').addEventListener('click', async () => {
   if(S.over || S.busy || S.sel < 0) return;
   if(S.tutorial){
-    if(S.tutStep !== 2){ setMsg(S.tutStep < 2 ? '捨てる練習は、このあとのステップです' : '今は並べ替えて「完成！」を押そう', 'ng'); S.sel = -1; render(); return; }
-    if(S.hand[S.sel] !== TUT_BAD){ setMsg('練習では「8」の札を選んで捨ててみよう', 'ng'); return; }
+    if(S.tutStep !== 2){ setMsg(S.tutStep < 2 ? 'カードを捨てる練習は、このあとの手順で行います' : 'カードを並べ替えて、「完成」を押してください', 'ng'); S.sel = -1; render(); return; }
+    if(S.hand[S.sel] !== TUT_BAD){ setMsg('練習では、「8」のカードを選んで捨ててください', 'ng'); return; }
   }
   S.hintTask++;
   S.busy = true;
@@ -2184,7 +2264,7 @@ $('redeal').addEventListener('click', () => {
   S.hand.push(deck.pop());
   S.newIdx = 6; S.enterIdx = 6; S.dealAll = true; S.sel = -1;
   S.hintTask++;
-  setMsg('配り直しました(ラウンドに1回だけ)', 'ok');
+  setMsg('手札を配り直しました(1ラウンドに1回のみ)。', 'ok');
   render();
   for(let i = 0; i < 7; i++) setTimeout(() => clack(0.16, 1500 + i * 120), 60 + i * 70);
 });
@@ -2193,19 +2273,19 @@ $('hint').addEventListener('click', () => {
   if(S.over) return;
   const task = ++S.hintTask;
   const gen = solveGen(S.hand, S.target);
-  setMsg('探しています…');
+  setMsg('式を探しています…');
   $('hint').disabled = true;
   const step = () => {
     if(task !== S.hintTask) return;
     const t0 = performance.now();
     while(performance.now() - t0 < 30){
       const { value, done } = gen.next();
-      if(done){ $('hint').disabled = false; setMsg('この7枚ではどう並べても作れません。1枚捨てましょう。(「作れません」のときは得点は減りません)'); return; }
+      if(done){ $('hint').disabled = false; setMsg('この7枚では、どう並べても場の数を作れません。カードを1枚捨ててください(この場合、得点は減りません)。'); return; }
       if(value){
         S.hinted = true;
         $('hint').disabled = false;
         render();
-        setMsg('例: ' + value.str + ' = ' + S.target + '  (ヒントで式が出たので、このラウンドの得点は半分)', 'ok');
+        setMsg('例: ' + value.str + ' = ' + S.target + '(ヒントで式を表示したため、このラウンドの得点は半分になります)', 'ok');
         return;
       }
     }
@@ -2290,6 +2370,39 @@ const toggleSheet = open => {
 $('cheatbtn').addEventListener('click', () => toggleSheet());
 $('sheetclose').addEventListener('click', () => toggleSheet(false));
 document.addEventListener('keydown', e => { if(e.key === 'Escape') toggleSheet(false); });
+// タイトルの式: HH:MM の4つの数字を順に使い、答えが2桁になる式を出す(例: 12:34 → 1＋2^3×4 = 33)
+function clockExpr(hh, mm){
+  const d = (hh + mm).split(''), bin = ['+','-','*','/','^'], all = ['', ...bin];
+  for(const stage of [1, 2, 3]){   // 1: 数字の間に記号 → 2: 数字の連結も使う → 3: ! と √ も使う
+    const ops = stage === 1 ? bin : all, masks = stage === 3 ? 256 : 1, found = [];
+    for(const a of ops) for(const b of ops) for(const c of ops) for(let mk = 0; mk < masks; mk++){
+      const g = [a, b, c], h = [];
+      for(let i = 0; i < 4; i++){
+        if(mk >> (i + 4) & 1) h.push('r');
+        h.push(d[i]);
+        if(mk >> i & 1) h.push('!');
+        if(i < 3 && g[i]) h.push(g[i]);
+      }
+      const r = standardEval(h);
+      if(!r.ok || !Number.isInteger(r.v)) continue;
+      if(r.v >= 10 && r.v <= 99) found.push(h);
+    }
+    if(found.length) return found[Math.floor(mulberry32(seedFrom(hh + mm))() * found.length)];
+  }
+}
+let clockKey = '';
+function updateClock(){
+  const n = new Date(), mm = String(n.getMinutes()).padStart(2, '0');
+  // 00:00〜00:30 は 24:00〜24:30 として扱う(00:00 などは答えが2桁の式を作れないため)
+  const hh = n.getHours() === 0 && n.getMinutes() <= 30 ? '24' : String(n.getHours()).padStart(2, '0');
+  if(hh + mm === clockKey) return;
+  clockKey = hh + mm;
+  const h = clockExpr(hh, mm);
+  $('clock-tiles').innerHTML = h.map(tileEl).join('');
+  $('clock-eq').textContent = '= ' + standardEval(h).v;
+}
+updateClock();
+setInterval(updateClock, 1000);
 showView('title');
 </script>
 </body>
