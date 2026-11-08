@@ -296,7 +296,7 @@ button.b.primary{background:linear-gradient(180deg,#2f7ae0,#1a5fb4);border-color
 .btns #redeal{grid-column:span 6}
 .btns #hint,.btns #cheatbtn,.btns #calc{grid-column:span 2}
 .btns #calc{line-height:1.2}
-#calc small{display:block;font-size:10px;font-weight:500;opacity:.7;letter-spacing:0;line-height:1.1;margin-top:1px}
+#calc small,#hint small{display:block;font-size:10px;font-weight:500;opacity:.7;letter-spacing:0;line-height:1.1;margin-top:1px}
 .btns #cheatbtn{font-size:14px}
 .msg:empty{min-height:0;margin-top:0}
 /* ---- v2.5: 320px級の狭い端末 ---- */
@@ -327,24 +327,401 @@ button.b.primary{background:linear-gradient(180deg,#2f7ae0,#1a5fb4);border-color
 .ov .tile{border-bottom:5px solid var(--edge);box-shadow:0 4px 8px rgba(0,0,0,.4)}
 .yk{background:linear-gradient(90deg,rgba(255,216,74,.2),rgba(255,216,74,.03));backdrop-filter:blur(2px)}
 .rchip{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.06)}
+
+/* ---- 記録・共有 ---- */
+.ov-extra{margin:16px 0 8px}
+.ov-extra.hide{display:none}
+.ov-rank{font-size:15px;margin-bottom:10px;opacity:.95;font-variant-numeric:tabular-nums}
+.ov-rank b{color:#ffd84a}
+.ov-share{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+.ov-share .b{min-height:44px;padding:8px 14px;font-size:14px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3);box-shadow:none}
+.ov-share .b.hide{display:none}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(8px);background:rgba(20,20,20,.92);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;z-index:200;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s var(--ease)}
+.toast.show{opacity:1;transform:translateX(-50%)}
+dialog#records{border:none;border-radius:16px;padding:0;width:min(92vw,460px);background:var(--panel);color:var(--ink);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+dialog#records::backdrop{background:rgba(0,0,0,.55)}
+.rec-head,.rec-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px}
+.rec-head{border-bottom:1px solid var(--line)}
+.rec-foot{border-top:1px solid var(--line);font-size:12px;color:var(--sub)}
+.rec-head .b,.rec-foot .b{min-height:40px;padding:6px 12px;font-size:13px}
+.rec-rank{padding:8px 16px;font-size:12px;color:var(--sub);border-bottom:1px solid var(--line);line-height:1.6}
+.rec-body{max-height:52vh;overflow:auto;padding:6px 16px}
+.rec-row{display:grid;grid-template-columns:2.2em 1fr auto;gap:2px 10px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.rec-row:last-child{border-bottom:none}
+.rec-no{font-weight:800;color:var(--sub)}
+.rec-row:nth-child(1) .rec-no{color:#c99a00}
+.rec-pt{font-size:18px;font-weight:700}
+.rec-title{font-size:13px;color:var(--ink);justify-self:end}
+.rec-sub{grid-column:2 / 4;font-size:12px;color:var(--sub)}
+.rec-empty{padding:24px 0;text-align:center;color:var(--sub);font-size:14px}
+.top .tools #recbtn{min-width:44px;font-size:14px}
+dialog#restart-confirm{border:none;border-radius:16px;padding:0;width:min(88vw,380px);background:var(--panel);color:var(--ink);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+dialog#restart-confirm::backdrop{background:rgba(0,0,0,.55)}
+.rs-body{padding:20px 20px 16px}
+.rs-body b{font-size:17px}
+.rs-body p{margin:10px 0 16px;font-size:14px;color:var(--sub);line-height:1.6}
+.rs-btns{display:flex;gap:8px}
+.rs-btns .b{flex:1 1 0;min-height:46px}
+.top .tools #restartbtn{min-width:44px;font-size:15px}
+
+/* ---- v3: タイトル・遊び方・練習 ---- */
+:root{--hl:#0f6b43}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--hl:#7be0a4}}
+[tabindex="-1"]:focus{outline:none}
+.screen{max-width:640px;margin:0 auto;padding:18px 16px 44px;position:relative;z-index:1;animation:rise .6s var(--ease) both}
+.screen.hide{display:none}
+.hero{position:relative;border-radius:22px;padding:36px 18px 28px;text-align:center;color:#fff;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.35'/></svg>"),
+    radial-gradient(120% 90% at 50% 0%,var(--felt-1) 0%,var(--felt-2) 55%,var(--felt-3) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -40px 60px rgba(0,0,0,.22),0 2px 0 #072a1b,0 18px 34px -12px rgba(8,41,28,.55)}
+.hero::before{content:'';position:absolute;inset:8px;border-radius:15px;border:1px dashed rgba(255,255,255,.14);pointer-events:none}
+.hero .logo{font-size:30px;font-weight:800;letter-spacing:.14em;line-height:1.25;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+.hero .logo b{font-size:68px;letter-spacing:.08em}
+.hero .tag{margin:10px 0 0;font-size:15px;opacity:.9;letter-spacing:.08em}
+.hero-tiles{display:flex;gap:6px;justify-content:center;margin:26px 0 12px}
+.t-tile{width:min(11.5vw,46px);aspect-ratio:3/4;border-radius:7px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#fffef8,#f3ecd8);border:1px solid #cfc5a8;border-bottom:7px solid var(--edge);
+  font-weight:700;font-size:clamp(18px,5.4vw,26px);color:#1d1a16;box-shadow:0 5px 6px rgba(0,0,0,.4),inset 0 1px 0 #fff;text-shadow:0 1px 0 #fff}
+.t-tile.op{color:#1a5fb4} .t-tile.sp{color:#c64600}
+.hero-tiles .t-tile{animation:float 3.2s ease-in-out infinite;animation-delay:calc(var(--i) * .12s)}
+@keyframes float{50%{transform:translateY(-6px)}}
+.hero-eq{font-size:24px;font-weight:700;letter-spacing:.08em;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+.menu{display:grid;gap:10px;margin:18px 0 12px}
+.menu .b{min-height:58px;font-size:18px;text-align:left;padding:10px 18px;display:flex;flex-direction:column;justify-content:center;gap:1px}
+.menu .b.hide{display:none}
+.menu .b small{font-size:12px;font-weight:500;opacity:.7;letter-spacing:0}
+.menu .b.primary{text-align:center;align-items:center;font-size:21px;letter-spacing:.2em;min-height:62px}
+.menu .b.primary small{opacity:.85}
+.menu .b.suggest{border-color:var(--edge);box-shadow:0 0 0 2px var(--edge),0 8px 16px -10px rgba(0,0,0,.5);position:relative}
+.menu .b.suggest::after{content:'はじめての方へ';position:absolute;top:-9px;right:14px;background:var(--edge);color:#fff;font-size:11px;font-weight:700;padding:1px 9px;border-radius:999px}
+.menu-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.menu-row .b{min-height:50px;font-size:15px;text-align:center;align-items:center}
+.title-foot{text-align:center;font-size:12px;color:var(--sub);margin-top:16px;line-height:2}
+.title-best{display:inline-block;padding:3px 14px;border-radius:999px;border:1px solid var(--line);font-size:13px;color:var(--ink);background:var(--panel)}
+.howto-h h2{font-size:30px;font-weight:800;margin:0 0 4px;letter-spacing:.1em}
+.how-sec{margin:20px 0}
+.how-sec h3{font-size:14px;margin:0 0 8px;color:var(--hl);letter-spacing:.14em;font-weight:800}
+.how-lead{margin:0;font-size:19px;font-weight:700;line-height:1.7;padding:16px 18px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+.hl{background:linear-gradient(transparent 58%,rgba(255,216,74,.6) 58%);font-weight:700}
+.how-steps{list-style:none;counter-reset:s;padding:0;margin:0;display:grid;gap:10px}
+.how-steps li{counter-increment:s;position:relative;padding:13px 14px 13px 56px;border-radius:14px;background:var(--panel);border:1px solid var(--line);line-height:1.7;font-size:15px}
+.how-steps li::before{content:counter(s);position:absolute;left:15px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:var(--edge);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+.how-ex{padding:18px 16px;border-radius:18px;color:#fff;text-align:center;
+  background:radial-gradient(120% 90% at 50% 0%,var(--felt-1) 0%,var(--felt-2) 60%,var(--felt-3) 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 12px 24px -12px rgba(8,41,28,.5)}
+.how-ex p{margin:8px 0;font-size:14px;line-height:1.8}
+.how-ex .how-eq{font-size:22px;font-weight:700;letter-spacing:.06em;margin:4px 0 10px}
+.how-ex .hl{background:linear-gradient(transparent 58%,rgba(255,216,74,.45) 58%)}
+.t-row{display:flex;gap:6px;justify-content:center;margin:12px 0 8px}
+.how-terms{display:grid;gap:8px}
+.how-terms div{padding:11px 14px;border-radius:12px;background:var(--panel);border:1px solid var(--line);line-height:1.7;font-size:14px}
+.how-terms b{color:var(--hl);margin-right:6px}
+.how-notes{margin:0;padding:0 0 0 1.2em;line-height:1.9;font-size:14px}
+.how-bar{position:sticky;bottom:0;display:flex;gap:10px;padding:14px 0 calc(12px + env(safe-area-inset-bottom));margin-top:18px;background:linear-gradient(to top,var(--bg) 62%,rgba(0,0,0,0))}
+.how-bar .b{flex:1 1 0;min-height:52px;font-size:15px;padding:8px 6px}
+.how-bar .b.primary{flex:1.3 1 0;font-size:16px}
+body.tutorial #hint,body.tutorial #calc{display:none}
+body.tutorial .btns #cheatbtn{grid-column:span 6}
+.coach.tut{background:rgba(255,216,74,.2);border-color:rgba(255,216,74,.65)}
+dialog#tut-done{border:none;border-radius:16px;padding:0;width:min(88vw,380px);background:var(--panel);color:var(--ink);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+dialog#tut-done::backdrop{background:rgba(0,0,0,.55)}
+.rs-btns.col{flex-direction:column}
+@media (max-width:480px){
+  .screen{padding:14px 12px 40px}
+  .hero .logo b{font-size:60px}
+}
+
+/* ---- v4: ラベル付きボタン・「?」・今やること・準備画面・振り返り ---- */
+.top{align-items:center;gap:8px}
+.rd{display:flex;flex-direction:column;gap:2px;align-items:flex-start}
+.rd1{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.rd2{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;min-height:16px;white-space:nowrap}
+.tools{gap:6px}
+.top .tools .b{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;min-width:54px;min-height:46px;padding:3px 6px;border-radius:12px}
+.top .tools #homebtn,.top .tools #recbtn,.top .tools #mute{min-width:54px}
+.top .tools .b .ic{font-size:17px;line-height:1.15}
+.top .tools .b .lb{font-size:10px;font-weight:600;letter-spacing:.02em;line-height:1.2}
+.qm{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-left:5px;padding:0;border-radius:50%;border:1px solid currentColor;
+  background:transparent;color:inherit;font:700 12px/1 system-ui,sans-serif;cursor:pointer;opacity:.85;position:relative;vertical-align:middle;letter-spacing:0}
+.qm::after{content:'';position:absolute;inset:-12px}
+.qm:hover{opacity:1;background:rgba(255,255,255,.15)}
+.qm.wide{width:auto;height:auto;padding:5px 14px;border-radius:999px;margin:8px 0 0;font-size:13px;font-weight:600}
+.qm.wide.hide{display:none}
+.cap{text-align:center;font-size:12px;color:#bfe3cf;margin:-2px 0 10px}
+.cap b{color:#fff}
+.goal{text-align:center;font-size:14px;font-weight:600;color:#ffe9a8;margin:0 0 8px;min-height:20px;letter-spacing:.02em}
+body.tutorial .goal{display:none}
+#play .ready{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:18px;border-radius:18px;color:#fff;text-align:center;
+  background:radial-gradient(ellipse at 50% 40%,rgba(8,41,28,.15),rgba(8,41,28,.55))}
+#play .ready.hide{display:none}
+.ready-in{max-width:340px}
+.ready-round{font-size:36px;font-weight:800;letter-spacing:.14em;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+.ready-sub{margin:8px 0 14px;font-size:14px;line-height:1.7;opacity:.95}
+.ready-tip{margin:0 0 18px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.12);font-size:13px;line-height:1.7}
+#play .ready .b.primary{min-width:190px;min-height:54px;font-size:19px;letter-spacing:.2em}
+#play.waiting > *:not(.ready){visibility:hidden}
+dialog#term{border:none;border-radius:16px;padding:0;width:min(88vw,380px);background:var(--panel);color:var(--ink);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+dialog#term::backdrop{background:rgba(0,0,0,.55)}
+.ov-review{margin:14px auto 0;max-width:430px;text-align:left;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:8px 14px 10px;font-size:13px;line-height:1.6}
+.ov-review.hide{display:none}
+.rv-row{display:grid;grid-template-columns:2.2em 1fr auto;gap:0 8px;align-items:baseline;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+.rv-row b{color:rgba(255,255,255,.7)}
+.rv-row i{font-style:normal;font-weight:700;color:#ffd84a;font-variant-numeric:tabular-nums}
+.rv-row small{grid-column:2 / 4;opacity:.72;font-size:12px}
+.rv-best{margin-top:8px;font-size:13px}
+.rv-best b{color:#ffd84a}
+.rv-tip{margin-top:6px;color:#ffe9a8;font-weight:600}
+
+/* ---- v5: 文字を最小限に・カードの使い方 ---- */
+.menu .b{text-align:center;align-items:center}
+.menu .b.suggest::after{content:none}
+.top .tools .b .lb{font-size:13px;font-weight:600}
+.btns .b.used{border-color:#e0a21a;box-shadow:0 0 0 2px rgba(224,162,26,.6),0 8px 16px -10px rgba(0,0,0,.5)}
+.rule-cap{text-align:center;font-size:11px;color:#bfe3cf;margin:8px 0 0;opacity:.9}
+body.tutorial .rule-cap{display:none}
+.cg-lead{margin:0 0 14px;font-size:15px;color:var(--sub)}
+.cg-item{padding:14px 16px;margin:0 0 12px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+.cg-head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.cg-head .t-row{margin:0;flex:none}
+.cg-head .t-tile{width:34px;font-size:19px}
+.cg-head h4{margin:0;font-size:17px}
+.cg-item p{margin:4px 0 8px;font-size:14px;line-height:1.7}
+.cg-ex{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0}
+.cg-ex .t-row{margin:0;justify-content:flex-start}
+.cg-ex .t-tile{width:34px;font-size:19px;border-bottom-width:5px}
+.cg-eq{font-weight:700;font-size:17px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cg-eq small{font-weight:400;font-size:12px;color:var(--sub);margin-left:8px}
+.cg-note{margin:6px 2px 0;font-size:13px;color:var(--sub)}
+.cg-link{margin:0 0 10px;min-height:42px;padding:6px 16px;font-size:14px}
+
+/* ---- v6: カードの使い方の整理・ボーナスの例 ---- */
+.cg-h{font-size:14px;margin:22px 0 10px;color:var(--hl);letter-spacing:.14em;font-weight:800}
+.cg-head{justify-content:flex-start}
+.cg-tag{margin-left:auto;flex:none;padding:2px 10px;border-radius:999px;border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--sub)}
+.cg-tag.ng,.cg-eq.ng{color:#c0392b;border-color:#c0392b}
+.cg-eq.ng{border:none;font-size:15px}
+.bchip{margin-left:auto;flex:none;padding:2px 11px;border-radius:999px;background:var(--edge);color:#fff;font-size:12px;font-weight:700}
+.bnote{margin:4px 0 0;font-size:12px;color:var(--sub);line-height:1.6}
+.bg-eq{font-weight:700;font-size:16px;margin:6px 0 0;font-variant-numeric:tabular-nums}
+.bg-item .t-row{justify-content:flex-start;margin:8px 0 0}
+.bg-item .t-tile{width:min(11.4vw,40px);font-size:20px;border-bottom-width:5px}
 </style>
 </head>
 <body>
-<main>
+<section class="screen" id="title" aria-label="タイトル">
+  <div class="hero">
+    <div class="logo"><b>立式</b><br>カードゲーム</div>
+    <p class="tag">7枚の札で、場の数をつくる。</p>
+    <div class="hero-tiles" data-tiles="3 * 8 + 5 - 5" aria-hidden="true"></div>
+    <div class="hero-eq" aria-hidden="true">= 24</div>
+  </div>
+  <div class="menu">
+    <button class="b primary" id="t-start">はじめる</button>
+    <button class="b hide" id="t-continue">つづきから</button>
+    <button class="b" id="t-practice">練習</button>
+    <button class="b" id="t-howto">遊び方</button>
+    <div class="menu-row"><button class="b" id="t-cards">カードの使い方</button><button class="b" id="t-bonus">ボーナスの例</button></div>
+    <div class="menu-row"><button class="b" id="t-rec">記録</button><button class="b" id="t-sound">音 ON</button></div>
+  </div>
+  <div class="title-foot"><span class="title-best" id="t-best"></span><br>一人用 試作 ・ 2026-11-08 版</div>
+</section>
+
+<section class="screen hide" id="cardguide" aria-label="カードの使い方">
+  <div class="howto-h"><h2>カードの使い方</h2></div>
+  <p class="cg-lead">札は17種類。まず基本の使い方、そのあとに特別な決まりです。</p>
+
+  <h3 class="cg-h">基本の使い方</h3>
+
+  <div class="cg-item">
+    <div class="cg-head"><div class="t-row" data-tiles="0 1 9"></div><h4>数字</h4></div>
+    <p>並べると、くっついて<b>1つの数</b>になります。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="1 2"></div><span class="cg-eq">= 12</span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><div class="t-row" data-tiles="+ -"></div><h4>たす・ひく</h4></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="3 + 5"></div><span class="cg-eq">= 8</span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><div class="t-row" data-tiles="* /"></div><h4>かける・わる</h4></div>
+    <p>たす・ひくより<b>先に</b>計算します(カッコはありません)。小数になってもOKです。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="2 + 3 * 4"></div><span class="cg-eq">= 14<small>3×4 が先</small></span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="9 / 2"></div><span class="cg-eq">= 4.5</span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><div class="t-row" data-tiles="!"></div><h4>階乗</h4></div>
+    <p>1からその数まで、ぜんぶかけます。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="4 !"></div><span class="cg-eq">= 24<small>4×3×2×1</small></span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><div class="t-row" data-tiles="^"></div><h4>べき乗</h4></div>
+    <p>左の数を、右の数の回数ぶん かけます。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="2 ^ 3"></div><span class="cg-eq">= 8<small>2×2×2</small></span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><div class="t-row" data-tiles="r"></div><h4>ルート</h4></div>
+    <p>2回かけて中の数になる数です。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="r 9"></div><span class="cg-eq">= 3<small>3×3 = 9</small></span></div>
+  </div>
+
+  <h3 class="cg-h">特別な決まり・禁止</h3>
+
+  <div class="cg-item">
+    <div class="cg-head"><h4>先頭が0の数は、作れません</h4><span class="cg-tag ng">禁止</span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="0 5"></div><span class="cg-eq ng">作れません</span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="5 0"></div><span class="cg-eq">= 50</span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><h4>− は、式の最初だけ「マイナスの数」</h4><span class="cg-tag">特別</span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="- 3 + 1 3"></div><span class="cg-eq">= 10<small>−3 を使う</small></span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="5 - - 5"></div><span class="cg-eq ng">作れません</span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><h4>数字や ! のすぐ後ろの √ は、かけ算の省略</h4><span class="cg-tag">特別</span></div>
+    <p>A√B は A×√B です。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="7 r 9"></div><span class="cg-eq">= 21<small>7×3</small></span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><h4>省略のかけ算は、×÷より先</h4><span class="cg-tag">特別</span></div>
+    <p>A√B は、ひとかたまりとして先に計算します。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="8 / 2 r 4"></div><span class="cg-eq">= 2<small>8÷(2√4)</small></span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><h4>べき乗の連続は、右から</h4><span class="cg-tag">特別</span></div>
+    <p>^ を続けたときは、右から計算します(数学の決まりです)。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="2 ^ 3 ^ 2"></div><span class="cg-eq">= 512<small>2^(3^2) = 2^9</small></span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><h4>√ のかかる範囲だけは、自由</h4><span class="cg-tag">特別</span></div>
+    <p>カッコのカードがないので、√ がどこまでにかかるかだけは、自由に決めてかまいません。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="r 4 + 1"></div><span class="cg-eq">= 3 か √5<small>(√4)＋1 か √(4＋1)</small></span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><h4>重ねて使える</h4><span class="cg-tag">特別</span></div>
+    <p>! を続けると1つおき(5!! = 5×3×1)、7!!! = 7×4×1 のように増やせます。√ も重ねられます。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="5 ! !"></div><span class="cg-eq">= 15<small>5×3×1</small></span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="7 ! ! !"></div><span class="cg-eq">= 28<small>7×4×1</small></span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="r r 1 6"></div><span class="cg-eq">= 2<small>√4 = 2</small></span></div>
+  </div>
+
+  <div class="cg-item">
+    <div class="cg-head"><div class="t-row" data-tiles="0 1"></div><h4>余った札の消し方</h4><span class="cg-tag">特別</span></div>
+    <p>7枚ぜんぶ使うので、余った札は、値が変わらない形で消します。</p>
+    <div class="cg-ex"><div class="t-row" data-tiles="2 * 6 + 0"></div><span class="cg-eq">= 12<small>＋0</small></span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="2 * 6 * 1"></div><span class="cg-eq">= 12<small>×1</small></span></div>
+    <div class="cg-ex"><div class="t-row" data-tiles="0 !"></div><span class="cg-eq">= 1<small>0! は 1</small></span></div>
+  </div>
+
+  
+  <button class="b cg-link" id="c-bonus">ボーナスの例</button>
+
+  <div class="how-bar">
+    <button class="b" id="c-back">戻る</button>
+    <button class="b" id="c-practice">練習</button>
+    <button class="b primary" id="c-start">はじめる</button>
+  </div>
+</section>
+
+<section class="screen hide" id="bonusguide" aria-label="ボーナスの例">
+  <div class="howto-h"><h2>ボーナスの例</h2></div>
+  <p class="cg-lead">場の数が <b>28</b> のとき、<b>1つのボーナスだけ</b>を満たす式の例です。ブースト +1 ごとに、点数は2倍になります。</p>
+  <div id="bonus-list"></div>
+  <p class="cg-note">ボーナスは重ねて付きます。ここでは、できるだけ1つだけ付く式を選びました。</p>
+  <div class="how-bar">
+    <button class="b" id="b-back">戻る</button>
+    <button class="b" id="b-cards">カードの使い方</button>
+    <button class="b primary" id="b-start">はじめる</button>
+  </div>
+</section>
+
+<section class="screen hide" id="howto" aria-label="遊び方">
+  <div class="howto-h"><h2>遊び方</h2></div>
+
+  <div class="how-sec">
+    <h3>基本ルール</h3>
+    <p class="how-lead">手札の<span class="hl">7枚をぜんぶ使って</span>、<span class="hl">場の数</span>と同じ値になる式を作ろう。</p>
+  </div>
+
+  <div class="how-sec">
+    <h3>すすめ方</h3>
+    <ol class="how-steps">
+      <li>場の数(2桁)が決まり、手札7枚が配られます。</li>
+      <li>札を<b>ドラッグ</b>して並べ替え、式を作ります。数字の札を並べると、くっついて1つの数になります(1と2で12)。</li>
+      <li>7枚ぜんぶ使って場の数になったら「<b>完成</b>」を押します。</li>
+      <li>作れないときは、いらない札を<b>1枚捨てて</b>、山札から1枚引きます。<b>25ターン</b>以内に完成させましょう。</li>
+      <li>3ラウンド遊んだ<b>合計点</b>で、称号が決まります。</li>
+    </ol>
+  </div>
+
+  <div class="how-sec">
+    <h3>具体例</h3>
+    <button class="b cg-link" id="h-cards">カードの使い方</button> <button class="b cg-link" id="h-bonus">ボーナスの例</button>
+    <div class="how-ex">
+      <p>場の数が <span class="hl">24</span> のとき、手札がこの7枚なら…</p>
+      <div class="t-row" data-tiles="3 * 8 + 5 - 5"></div>
+      <p class="how-eq">3 × 8 ＋ 5 − 5 = 24</p>
+      <p>かけ算・わり算が先に計算されます(カッコはありません)。<br>「<span class="hl">＋5−5</span>」のように、足して引けば<span class="hl">余った札を消せます</span>。0 の札は「＋0」「−0」、1 の札は「×1」「÷1」でも消せます。</p>
+    </div>
+  </div>
+
+  <div class="how-sec">
+    <h3>ことば</h3>
+    <div class="how-terms">
+      <div><b>場の数</b> 作る目標の2桁の数です。</div>
+      <div><b>基本点</b> 札ごとの「使いにくさ」です(札の右下の小さい数字)。7枚ぶんが点数のもとになります。</div>
+      <div><b>ブースト</b> 条件を満たすと付くボーナスです。+1 ごとに点数が<b>2倍</b>になります。</div>
+      <div><b>ボーナス札</b> ラウンドごとに決まる札(★)です。手札に同じ札があると、1枚ごとにブースト+1。</div>
+      <div><b>点数</b> 基本点の合計 × 2^ブースト × 場の数。</div>
+      <div><b>山札・捨て札</b> 引く札の山と、捨てた札の列です。</div>
+    </div>
+  </div>
+
+  <div class="how-sec">
+    <h3>注意すること</h3>
+    <ul class="how-notes">
+      <li>1ラウンドは25ターンまで。完成できないと、そのラウンドは0点です。</li>
+      <li>数字をつなげて、先頭が0になる数(05 など)は作れません。</li>
+      <li>カッコのカードがないので、<b>√ がどこまでにかかるかは自由</b>です(√4＋1 は √(4＋1) とも読めます)。</li>
+      <li>ヒントで式が出ると、そのラウンドの得点は半分。電卓を使うと、そのターンの得点は半分です。</li>
+      <li>最初の手の数字が3枚以下なら、ラウンドに1回だけ配り直せます。</li>
+      <li>記録は、この端末のブラウザの中だけに保存されます。</li>
+      <li>くわしい表(基本点・ボーナス・称号)は、ゲーム画面の下の「くわしいルール・設定」にあります。</li>
+    </ul>
+  </div>
+
+  <div class="how-bar">
+    <button class="b" id="h-back">戻る</button>
+    <button class="b" id="h-practice">練習</button>
+    <button class="b primary" id="h-start">はじめる</button>
+  </div>
+</section>
+
+<main id="game" class="hide">
   <h1><b>立式</b>カードゲーム<small>一人用 試作</small></h1>
-  <div class="top"><span class="rd"><span id="round"></span><span class="pips" id="pips" aria-hidden="true"></span></span><span class="tools"><span id="total"></span> <button class="b" id="mute" title="音" aria-label="音のオン・オフ">🔊</button></span></div>
+  <div class="top"><div class="rd"><div class="rd1"><span id="round"></span><span class="pips" id="pips" aria-hidden="true"></span></div><div class="rd2" id="total"></div></div><span class="tools"><button class="b" id="homebtn" aria-label="タイトルへ"><span class="lb">タイトル</span></button><button class="b" id="recbtn" aria-label="記録を見る"><span class="lb">記録</span></button><button class="b" id="mute" aria-label="音のオン・オフ"><span class="lb">音</span></button></span></div>
 
   <section class="panel" id="board">
     <div class="field">
-      <div><div class="lbl">場の数</div><div class="num" id="target">--</div></div>
-      <div class="dorabox"><div class="lbl">ボーナス札</div><span class="tile" id="dora"></span></div>
-      <div class="deckbox"><div class="lbl">山札</div><div class="deck" id="deck" aria-hidden="true"><i></i><i></i><i></i><em id="decknum"></em></div></div>
-      <div class="turn">ターン<br><b id="turn">1</b> / <span id="maxturn"></span></div>
+      <div><div class="lbl">場の数<button class="qm" data-term="target" aria-label="場の数とは">?</button></div><div class="num" id="target">--</div></div>
+      <div class="dorabox"><div class="lbl">ボーナス札<button class="qm" data-term="bonus" aria-label="ボーナス札とは">?</button></div><span class="tile" id="dora"></span></div>
+      <div class="deckbox"><div class="lbl">山札<button class="qm" data-term="deck" aria-label="山札とは">?</button></div><div class="deck" id="deck" aria-hidden="true"><i></i><i></i><i></i><em id="decknum"></em></div></div>
+      <div class="turn">ターン<button class="qm" data-term="turn" aria-label="ターンとは">?</button><br><b id="turn">1</b> / <span id="maxturn"></span></div>
     </div>
     <div class="bar" id="bar"><i id="barfill"></i></div>
   </section>
 
   <section class="panel" id="play">
+    <div class="goal" id="goal" aria-live="polite"></div>
     <div class="expr empty" id="expr">7枚すべてを使って場の数を作る</div>
     <div class="coach hide" id="coach" role="region" aria-label="遊び方のガイド">
       <div class="coach-t" id="coach-t"></div>
@@ -352,24 +729,35 @@ button.b.primary{background:linear-gradient(180deg,#2f7ae0,#1a5fb4);border-color
     </div>
     <div class="live" id="live"></div>
     <div class="cards" id="cards" role="group" aria-label="手札(ドラッグで並べ替え、矢印キーで移動)"></div>
-    <div class="river" id="river"><span class="lbl">捨て札</span><span id="riverTiles" style="display:contents"></span></div>
+    <div class="cap" id="cap">札の右下の数字は<b>基本点</b><button class="qm" data-term="base" aria-label="基本点とは">?</button> ・ ★は<b>ボーナス札</b></div>
+    <div class="river" id="river"><span class="lbl">捨て札<button class="qm" data-term="river" aria-label="捨て札とは">?</button></span><span id="riverTiles" style="display:contents"></span></div>
     <div class="btns">
-      <button class="b primary" id="declare">完成！</button>
-      <button class="b" id="discard" disabled>選んだ1枚を捨てる</button>
+      <button class="b primary" id="declare">完成</button>
+      <button class="b" id="discard" disabled>捨てる</button>
       <button class="b hide" id="redeal">配り直し</button>
       <button class="b" id="hint">ヒント</button>
       <button class="b" id="cheatbtn">早見表</button>
-      <button class="b" id="calc">電卓<small>このターン点数半分</small></button>
+      <button class="b" id="calc">電卓</button>
     </div>
+    <div class="rule-cap" id="rule-cap">ヒントで式が出る・電卓を使うと、その分の得点は半分</div>
     <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    <div class="ready hide" id="ready">
+      <div class="ready-in">
+        <div class="ready-round" id="ready-round"></div>
+        <p class="ready-sub" id="ready-sub"></p>
+        <p class="ready-tip" id="ready-tip"></p>
+        <button class="b primary" id="ready-go">スタート</button>
+      </div>
+    </div>
   </section>
 
   <section class="panel result hide" id="result"></section>
 
   <section class="panel help">
     <details>
-      <summary>遊び方・設定</summary>
+      <summary>くわしいルール・設定</summary>
       <div class="settings"><button class="b" id="dbl" aria-live="polite"></button><span>選んだ札をもう一度タップで捨てる</span></div>
+      <div class="settings"><button class="b" id="restart2">はじめから</button><span>ラウンド1からやり直す(途中の点数は消えます)</span></div>
       <ol>
         <li>手札6枚+引いた1枚の<b>7枚をすべて使い</b>、並べた式が場の数になれば完成。</li>
         <li>カードは<b>ドラッグして好きな位置に差し込めます</b>。タップすると捨てる札として選べます(選んだ札をもう一度タップすると捨てられます。この欄の「2回タップで捨てる」でON/OFF)。キーボードは、←→で移動、Shift+←→で並べ替え、Enter で選択、Delete で捨てる。</li>
@@ -377,16 +765,21 @@ button.b.primary{background:linear-gradient(180deg,#2f7ae0,#1a5fb4);border-color
         <li><b>配り直し</b>: 最初の手の数字カードが3枚以下なら、ラウンドに1回だけ、ターンを消費せず手札を引き直せます。</li>
         <li>数字カードが並ぶと連結(1,2→12)。先頭が0の数は不可。</li>
         <li>乗除が先、加減が後。括弧はなし。小数になってもOK。</li>
-        <li><b>解釈は自由</b>:<span id="ex">√4!+1^3</span> のようにあいまいな並びは、どの読み方でも場の数になれば完成(√は右のどこまでにかかってもよい、^は左からでも右からでもよい、!!は二重階乗)。</li>
+        <li><b>√の範囲だけは自由</b>: カッコのカードがないので、<span id="ex">√4＋1</span> は √(4＋1) とも読めます。どの読み方でも場の数になれば完成です。^の連続は右から、!の連続は多重階乗、省略のかけ算(A√B)は×÷より先に計算します。</li>
         <li>式の最初の−はOK(−3+13)。</li>
         <li>数字や!の直後の√は掛け算の省略として使えます(7√9 = 7×√9)。</li>
-        <li><b>電卓</b>: 押したターンだけ、いまの並びの値を「標準の読み方」で表示します。そのターンに完成すると点数は半分(ヒントと重なると4分の1)。標準の読み方=^は右から、√は右隣の数だけ、!!は二重階乗。完成の判定は今までどおりどの読み方でもOK。</li>
+        <li>最後のラウンドまで遊ぶと記録が残ります(この端末のブラウザの中だけ)。「記録」で一覧を見られ、終了画面から結果を共有できます。</li>
+        <li><b>電卓</b>: 押したターンだけ、いまの並びの値を「標準の読み方」で表示します。そのターンに完成すると点数は半分(ヒントと重なると4分の1)。標準の読み方=√は右隣の数だけ。完成の判定は、√の範囲だけ自由に読みます。</li>
       </ol>
       <p>基本点(カードの使いづらさ。札の右下の小さい数字):</p>
       <table id="legend"></table>
-      <p><b>点数 = 7枚の基本点の合計 × 2^ブースト × 場の数</b>(ヒントで答えを見ると半分)。</p>
+      <p><b>点数 = 7枚の基本点の合計 × 2^ブースト × 場の数</b>(ヒントで式が出ると、そのラウンドの得点は半分。「作れません」と返ったときは減りません)。</p>
       <p>ボーナス(ブースト):</p>
       <table id="yakulist"></table>
+      <p>称号(3ラウンドの合計点):</p>
+      <table id="ranklist"></table>
+      <p>1回の完成ごとの評価(完成の演出で出る言葉):</p>
+      <table id="tierlist"></table>
       <p class="help">※ボーナス札=ラウンドごとに表示される札(★)。同じ札1枚につきブースト+1。「記号そろい」は「記号づかい」を含むので、どちらか高い方だけ数えます(仮)。「スピード」は一人用だけのボーナスです。</p>
     </details>
   </section>
@@ -396,6 +789,34 @@ button.b.primary{background:linear-gradient(180deg,#2f7ae0,#1a5fb4);border-color
   <div class="sheet-head"><b>早見表</b><span class="sheet-note">500以下に限る</span><button class="b" id="sheetclose">閉じる</button></div>
   <div class="sheet-body cheat"><div class="now" id="cheatNow"></div><div id="cheat"></div></div>
 </aside>
+<dialog id="term" aria-labelledby="term-title">
+  <div class="rs-body">
+    <b id="term-title"></b>
+    <p id="term-text"></p>
+    <div class="rs-btns"><button class="b primary" id="term-close">閉じる</button></div>
+  </div>
+</dialog>
+<dialog id="tut-done" aria-labelledby="td-title">
+  <div class="rs-body">
+    <b id="td-title">練習おわり!</b>
+    <p>「動かす → 捨てる → 完成」の流れは、これで全部です。本番は3ラウンド。点数を伸ばして、称号をめざしましょう。</p>
+    <div class="rs-btns col"><button class="b primary" id="td-play">本番</button><button class="b" id="td-again">もう一度</button><button class="b" id="td-title-btn">タイトルへ</button></div>
+  </div>
+</dialog>
+<dialog id="restart-confirm" aria-labelledby="rs-title">
+  <div class="rs-body">
+    <b id="rs-title">はじめからやり直しますか?</b>
+    <p id="rs-text"></p>
+    <div class="rs-btns"><button class="b" id="rs-cancel">続ける</button><button class="b primary" id="rs-ok">はじめから</button></div>
+  </div>
+</dialog>
+<dialog id="records" aria-labelledby="rec-title">
+  <div class="rec-head"><b id="rec-title">自分の記録(上位20)</b><button class="b" id="rec-close">閉じる</button></div>
+  <div class="rec-rank" id="rec-rank"></div>
+  <div class="rec-body" id="rec-body"></div>
+  <div class="rec-foot"><span>この端末のブラウザの中だけに保存されます。</span><button class="b" id="rec-clear">記録を消す</button></div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="banner" id="banner"></div>
 <div class="ov hide" id="ov">
   <canvas id="fx"></canvas>
@@ -405,9 +826,21 @@ button.b.primary{background:linear-gradient(180deg,#2f7ae0,#1a5fb4);border-color
     <div class="ov-expr" id="ov-expr"></div>
     <div class="ov-yaku" id="ov-yaku"></div>
     <div class="ov-calc" id="ov-calc"></div>
+    <button class="qm wide hide" id="ov-qm" data-term="boost">ブースト?</button>
     <div class="ov-score" id="ov-score"></div>
     <div class="ov-tier" id="ov-tier"></div>
-    <button class="b primary hide" id="ov-next">つづける</button>
+    <div class="ov-review hide" id="ov-review"></div>
+    <div class="ov-extra hide" id="ov-extra">
+      <div class="ov-rank" id="ov-rank"></div>
+      <div class="ov-share">
+        <button class="b" id="sh-native">共有</button>
+        <button class="b" id="sh-x">X</button>
+        <button class="b" id="sh-copy">コピー</button>
+        <button class="b" id="sh-img">画像</button>
+        <button class="b" id="sh-rec">記録</button>
+      </div>
+    </div>
+    <button class="b primary hide" id="ov-next">次へ</button>
     <div class="ov-skip" id="ov-skipmsg">タップでスキップ</div>
   </div>
 </div>
@@ -415,7 +848,7 @@ button.b.primary{background:linear-gradient(180deg,#2f7ae0,#1a5fb4);border-color
 <script>
 // 立式カードゲーム 判定エンジン
 // kinds: '0'-'9', '+', '-', '*', '/', '!', '^', 'r'(√)
-const LIMIT = 1e15;
+const LIMIT = 1e30;
 const EPS = 1e-7;
 
 function tokenize(kinds) {
@@ -477,7 +910,10 @@ function evaluate(kinds) {
       }
     }
     if (T[j - 1].t === 'f') {
-      for (let k = j - 1; k > i && T[k].t === 'f'; k--) {
+      // !の連続は、全体で1つの多重階乗(n!!, n!!! …)としてだけ読む
+      let k = j - 1;
+      while (k > i && T[k - 1].t === 'f') k--;
+      if (k > i) {
         const g = j - k;
         for (const { v, str } of ATOM(i, k).values()) {
           const r = multifact(v, g);
@@ -493,7 +929,7 @@ function evaluate(kinds) {
     for (const [k, e] of ATOM(i, j)) out.set(k, e);
     for (let k = i + 1; k < j - 1; k++) {
       if (T[k].t !== 'o' || T[k].k !== '^') continue;
-      const L = POW(i, k), R = POW(k + 1, j);
+      const L = ATOM(i, k), R = POW(k + 1, j);   // 左は1つの数。右に続く^をまとめる=右結合
       for (const a of L.values())
         for (const b of R.values()) {
           if (a.v === 0 && b.v === 0) continue;
@@ -505,19 +941,25 @@ function evaluate(kinds) {
     return out;
   });
 
-  const TERM = cached('T', (i, j) => {
+  // 数字や!の直後の√は掛け算の省略(7√9 = 7×√9)。×÷より先に結びつく(8÷2√4 = 8÷(2√4) = 2)
+  const IMP = cached('I', (i, j) => {
     const out = new Map();
     for (const [k, e] of POW(i, j)) out.set(k, e);
-    // 数字や!の直後の√は掛け算の省略(7√9 = 7×√9)
     for (let k = i + 1; k < j - 1; k++) {
       if (T[k].t !== 's') continue;
-      const L = TERM(i, k), R = POW(k, j);
+      const L = IMP(i, k), R = POW(k, j);
       for (const a of L.values())
         for (const b of R.values()) add(out, a.v * b.v, wrap(a.str) + '×' + wrap(b.str));
     }
+    return out;
+  });
+
+  const TERM = cached('T', (i, j) => {
+    const out = new Map();
+    for (const [k, e] of IMP(i, j)) out.set(k, e);
     for (let k = i + 1; k < j - 1; k++) {
       if (T[k].t !== 'o' || (T[k].k !== '*' && T[k].k !== '/')) continue;
-      const L = TERM(i, k), R = POW(k + 1, j);
+      const L = TERM(i, k), R = IMP(k + 1, j);
       for (const a of L.values())
         for (const b of R.values()) {
           if (T[k].k === '/') {
@@ -588,7 +1030,7 @@ function* solveGen(kinds, target) {
 }
 
 // 電卓用: 「標準の読み方」で1つの値を返す。
-// ^ は右結合、√ は右隣の数(または√)だけにかかる、!の連続は多重階乗、数字や!の直後の√は掛け算の省略。
+// ^ は右結合、√ は右隣の数(または√)だけにかかる、!の連続は多重階乗、数字や!の直後の√は掛け算の省略(×÷より先)。0^0は無効。
 function standardEval(kinds) {
   const T = tokenize(kinds);
   if (!T) return { ok: false, reason: '先頭が0の数は作れません' };
@@ -624,21 +1066,26 @@ function standardEval(kinds) {
     if (isOp('^')) {
       pos++;
       const x = power();
+      if (b === 0 && x === 0) fail('0^0は計算できません');
       const r = Math.pow(b, x);
       if (Number.isNaN(r)) fail('計算できません');
       return r;
     }
     return b;
   }
-  function term() {
+  // 省略のかけ算(A√B)は、×÷より先に結びつく
+  function factor() {
     let v = power();
+    while (pos < T.length && T[pos].t === 's') v *= power();
+    return v;
+  }
+  function term() {
+    let v = factor();
     for (;;) {
       if (isOp(['*', '/'])) {
         const op = T[pos].k; pos++;
-        const r = power();
+        const r = factor();
         if (op === '/') { if (Math.abs(r) < 1e-12) fail('0で割っています'); v /= r; } else v *= r;
-      } else if (pos < T.length && T[pos].t === 's') {
-        v *= power();
       } else break;
     }
     return v;
@@ -690,7 +1137,7 @@ function drawField(){
 }
 
 function newGame(){
-  S = { round:0, total:0, scores:[] };
+  S = { round:0, total:0, scores:[], log:[] };
   nextRound();
 }
 
@@ -716,31 +1163,77 @@ function nextRound(){
   S.enterIdx = 6;
   S.dealAll = true;
   S.hintTask = 0;
+  if(S.tutorial){
+    // 練習ラウンド: 8は使えない札。捨てると次に0を引く(3×4＋5−0=17)
+    S.hand = ['5','-','4','8','*','+','3'];
+    S.deck.push('0');
+    S.target = 17; S.dora = '3'; S.newIdx = -1; S.enterIdx = -1;
+    S.tutInit = S.hand.join('');
+  }
   $('result').classList.add('hide');
   $('play').classList.remove('hide');
   setMsg('');
+  S.readyTip = Math.floor(Math.random() * TIPS.length);
+  S.waiting = !S.tutorial;      // 練習以外は「スタート」を押すまで配らない
+  if(S.waiting) render(); else beginRound();
+}
+function beginRound(){
+  S.waiting = false;
+  S.dealAll = true;
   render();
   rollTarget(S.target);
   const bn = $('banner');
-  bn.textContent = `ROUND ${S.round}`;
+  bn.textContent = S.tutorial ? '練習' : `ROUND ${S.round}`;
   bn.classList.remove('show'); void bn.offsetWidth; bn.classList.add('show');
   for(let i = 0; i < 7; i++) setTimeout(() => clack(0.16, 1500 + i * 120), 80 + i * 70);
 }
+const TIPS = [
+  '余った札は「＋0」「−0」「×1」「÷1」で消せます。',
+  '数字の札を並べると、くっついて1つの数になります(1と2で12)。',
+  '作れない手は、早めに1枚捨てて入れ替えるのがコツです。',
+  'ボーナス札(★)を手札に集めると、ブーストが増えます。',
+  '3ターン以内に完成すると「スピード」で最大ブースト+5。',
+  '√ や ! は数を作りかえる札です(4! = 24、√9 = 3)。',
+  '同じ数字を3枚そろえるとブースト+3、4枚で+4です。'
+];
+function syncReady(){
+  const w = !!S.waiting;
+  $('ready').classList.toggle('hide', !w);
+  $('play').classList.toggle('waiting', w);
+  if(w){
+    $('ready-round').textContent = `ROUND ${S.round} / ${ROUNDS}`;
+    $('ready-sub').textContent = S.round > 1 ? `ここまでの合計 ${S.total.toLocaleString()}点。準備ができたら始めましょう。` : '場の数と手札が配られます。準備ができたら始めましょう。';
+    $('ready-tip').textContent = TIPS[S.readyTip || 0];
+  }
+}
+// 7) 今やることの1行
+function updateGoal(){
+  const g = $('goal');
+  if(S.tutorial || S.waiting || S.over){ g.textContent = ''; return; }
+  const left = MAX_TURN - S.turn;
+  let t;
+  if(S.sel >= 0) t = dblDiscard ? '選んだ札を、もう一度タップで捨てられます' : '「捨てる」で捨てられます';
+  else if(S.turn === 1 && !S.redealt && redealReason()) t = '数字が少なめです。配り直しもできます';
+  else if(left <= 2) t = `ラスト${left + 1}ターン! 完成しないと、このラウンドは0点です`;
+  else t = `手札の7枚で「${S.target}」をつくろう`;
+  g.textContent = t;
+}
+$('ready-go').addEventListener('click', () => { if(!S.waiting) return; audio(); clack(0.2, 1800); beginRound(); });
 
 function setMsg(t, cls){ const m=$('msg'); m.textContent=t; m.className='msg '+(cls||''); }
 
 function render(){
-  $('round').textContent = `ラウンド ${S.round} / ${ROUNDS}`;
-  $('total').textContent = `合計 ${S.total.toLocaleString()} 点`;
-  if(!$('target').classList.contains('rolling')) $('target').textContent = S.target;
-  $('pips').innerHTML = Array.from({length:ROUNDS}, (_, i) => `<i class="${i < S.round - 1 ? 'done' : i === S.round - 1 ? 'cur' : ''}"></i>`).join('');
+  $('round').textContent = S.tutorial ? '練習ラウンド' : `ラウンド ${S.round} / ${ROUNDS}`;
+  $('total').textContent = S.tutorial ? '' : `合計 ${S.total.toLocaleString()} 点`;
+  if(!$('target').classList.contains('rolling')) $('target').textContent = S.waiting ? '--' : S.target;
+  $('pips').innerHTML = S.tutorial ? '' : Array.from({length:ROUNDS}, (_, i) => `<i class="${i < S.round - 1 ? 'done' : i === S.round - 1 ? 'cur' : ''}"></i>`).join('');
   $('turn').textContent = S.turn;
   $('maxturn').textContent = MAX_TURN;
   $('decknum').textContent = S.deck.length;
   const left = MAX_TURN - S.turn;
   $('barfill').style.width = ((left + 1) / MAX_TURN * 100) + '%';
   $('bar').classList.toggle('low', left <= 3);
-  const dt = $('dora'); dt.textContent = SYMBOL[S.dora] || S.dora; dt.className = 'tile ' + kindClass(S.dora);
+  const dt = $('dora'); dt.textContent = S.waiting ? '?' : (SYMBOL[S.dora] || S.dora); dt.className = 'tile ' + (S.waiting ? '' : kindClass(S.dora));
   const box = $('cards');
   box.innerHTML = '';
   const enter = S.enterIdx; S.enterIdx = -1;
@@ -768,15 +1261,19 @@ function render(){
   $('discard').disabled = S.sel < 0 || S.over;
   $('declare').disabled = S.over;
   $('hint').disabled = S.over;
+  $('hint').classList.toggle('used', !!S.hinted);
   updateNow();
   updateRedeal();
   updateLive();
+  tutCheck();
+  updateGoal();
+  syncReady();
 }
 
 // 電卓: 押したターンだけ、標準の読み方での値を表示(そのターンの上がりは点数半分)
 function updateLive(){
   const on = S.calcTurn === S.turn && !S.over;
-  $('calc').innerHTML = on ? '電卓<small>使用中・点数半分</small>' : '電卓<small>このターン点数半分</small>';
+  $('calc').classList.toggle('used', on);
   $('calc').disabled = S.over;
   $('live').textContent = '';
   if(!on) return;
@@ -796,9 +1293,10 @@ function redealReason(){
   return digits <= 3 ? '数字が3枚以下' : '';
 }
 function updateRedeal(){
+  if(S.tutorial){ $('redeal').classList.add('hide'); return; }
   const why = (S.turn === 1 && !S.redealt && !S.over) ? redealReason() : '';
   $('redeal').classList.toggle('hide', !why);
-  if(why) $('redeal').textContent = `配り直し(${why})`;
+  if(why) $('redeal').textContent = '配り直し';
 }
 
 // タップ=捨てる札の選択、ドラッグ=並べ替え。
@@ -973,10 +1471,10 @@ function fanfare(big){
   notes.forEach((f,i) => { tone(f, 0.35, 'triangle', 0.14, i * 0.11); tone(f * 2, 0.3, 'sine', 0.05, i * 0.11); });
   jan(big ? 9 : 6);
 }
-$('mute').textContent = muted ? '🔇' : '🔊';
+$('mute').querySelector('.lb').textContent = muted ? '音なし' : '音';
 $('mute').addEventListener('click', () => {
   muted = !muted;
-  $('mute').textContent = muted ? '🔇' : '🔊';
+  $('mute').querySelector('.lb').textContent = muted ? '音なし' : '音';
   try { localStorage.setItem('tachishiki-muted', muted ? '1' : '0'); } catch(e) {}
 });
 
@@ -1121,8 +1619,316 @@ function startCoach(){
   try { if(localStorage.getItem('tachishiki-coach') === '1') return; } catch(e) {}
   coachStep = 0; showCoach();
 }
-$('coach-next').addEventListener('click', () => { if(coachStep >= COACH.length - 1) endCoach(); else { coachStep++; showCoach(); } });
-$('coach-skip').addEventListener('click', endCoach);
+$('coach-next').addEventListener('click', () => {
+  if(S.tutorial){ setMsg('例: 3×4＋5−0 = 17(ほかの並べ方でもOK)', 'ok'); return; }
+  if(coachStep >= COACH.length - 1) endCoach(); else { coachStep++; showCoach(); }
+});
+$('coach-skip').addEventListener('click', () => { if(S.tutorial){ exitTutorial(true); showView('title'); return; } endCoach(); });
+
+// ---- 記録(この端末の中だけ)と共有 ----
+const SHARE_URL = 'https://yuto3355.github.io/math-card-game/';
+const REC_KEY = 'tachishiki-records';
+const loadRecords = () => { try { return JSON.parse(localStorage.getItem(REC_KEY) || '[]'); } catch(e) { return []; } };
+const saveRecords = a => { try { localStorage.setItem(REC_KEY, JSON.stringify(a)); } catch(e) {} };
+function addRecord(total, scores, title){
+  const rec = { t: Date.now(), total, scores: scores.slice(), title };
+  const all = loadRecords();
+  all.push(rec);
+  all.sort((a, b) => b.total - a.total || a.t - b.t);
+  const rank = all.indexOf(rec) + 1;
+  const kept = all.slice(0, 20);
+  saveRecords(kept);
+  return { rank, count: all.length, best: all[0].total, isBest: rank === 1 };
+}
+function toast(msg){
+  const t = $('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast.id); toast.id = setTimeout(() => t.classList.remove('show'), 2200);
+}
+function showRecords(){
+  const all = loadRecords();
+  $('rec-body').innerHTML = all.length
+    ? all.map((r, i) => {
+        const d = new Date(r.t);
+        return `<div class="rec-row"><span class="rec-no">${i + 1}</span><span class="rec-pt">${r.total.toLocaleString()}点</span><span class="rec-title">${r.title}</span><span class="rec-sub">${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ・ ${r.scores.map(v => v.toLocaleString()).join(' / ')}</span></div>`;
+      }).join('')
+    : '<div class="rec-empty">まだ記録がありません。最後のラウンドまで遊ぶと残ります。</div>';
+  $('rec-clear').disabled = !all.length;
+  $('rec-rank').textContent = '称号: ' + DAN.slice().reverse().map(d => `${d[1]} ${d[0].toLocaleString()}点〜`).join(' / ');
+  if(typeof $('records').showModal === 'function') $('records').showModal(); else $('records').setAttribute('open', '');
+}
+$('recbtn').addEventListener('click', showRecords);
+$('sh-rec').addEventListener('click', showRecords);
+$('rec-close').addEventListener('click', () => $('records').close());
+$('rec-clear').addEventListener('click', () => {
+  if(confirm('この端末の記録をすべて消します。よろしいですか?')){ saveRecords([]); showRecords(); toast('記録を消しました'); }
+});
+
+const shareText = () => `立式カードゲームで ${S.total.toLocaleString()}点(${S.lastDan})!\n7枚の札で場の数をつくる数式カードゲーム #立式カードゲーム`;
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); return true; }
+  catch(e) {
+    const ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand('copy'); } catch(e2) {}
+    ta.remove(); return ok;
+  }
+}
+// 結果カード画像(1200x630)をcanvasで描く
+function drawShareCard(){
+  const W = 1200, H = 630, cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const c = cv.getContext('2d');
+  const font = '"Hiragino Sans","Yu Gothic UI","Noto Sans JP",system-ui,sans-serif';
+  const g = c.createRadialGradient(W / 2, 0, 40, W / 2, 200, 900);
+  g.addColorStop(0, '#23885c'); g.addColorStop(.55, '#10563a'); g.addColorStop(1, '#0a3f2a');
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+  c.strokeStyle = 'rgba(255,255,255,.18)'; c.setLineDash([8, 8]); c.lineWidth = 2;
+  c.strokeRect(28, 28, W - 56, H - 56); c.setLineDash([]);
+  c.fillStyle = '#fff'; c.textBaseline = 'alphabetic';
+  c.font = `800 54px ${font}`; c.fillText('立式カードゲーム', 72, 120);
+  c.font = `500 28px ${font}`; c.fillStyle = 'rgba(255,255,255,.75)'; c.fillText('7枚の札で、場の数をつくる。', 72, 166);
+  c.fillStyle = '#ffd84a'; c.font = `800 190px ${font}`;
+  const pts = S.total.toLocaleString();
+  c.fillText(pts, 72, 400);
+  const w = c.measureText(pts).width;
+  c.font = `700 56px ${font}`; c.fillText('点', 72 + w + 14, 400);
+  c.fillStyle = '#fff'; c.font = `800 84px ${font}`; c.fillText(S.lastDan, 72, 510);
+  c.font = `500 28px ${font}`; c.fillStyle = 'rgba(255,255,255,.85)';
+  c.fillText(S.scores.map((v, i) => `R${i + 1} ${v.toLocaleString()}`).join('   '), 72, 568);
+  c.textAlign = 'right'; c.fillStyle = 'rgba(255,255,255,.7)'; c.font = `500 24px ${font}`;
+  c.fillText(SHARE_URL.replace('https://', ''), W - 72, 568);
+  return cv;
+}
+$('sh-x').addEventListener('click', () => {
+  const u = `https://x.com/intent/post?text=${encodeURIComponent(shareText())}&url=${encodeURIComponent(SHARE_URL)}`;
+  window.open(u, '_blank', 'noopener');
+});
+$('sh-copy').addEventListener('click', async () => { toast(await copyText(shareText() + '\n' + SHARE_URL) ? '結果をコピーしました' : 'コピーできませんでした'); });
+$('sh-native').addEventListener('click', async () => {
+  try { await navigator.share({ title: '立式カードゲーム', text: shareText(), url: SHARE_URL }); }
+  catch(e) { if(e && e.name !== 'AbortError') toast('共有できませんでした'); }
+});
+$('sh-img').addEventListener('click', () => {
+  drawShareCard().toBlob(async blob => {
+    if(!blob){ toast('画像を作れませんでした'); return; }
+    const file = new File([blob], 'tachishiki-result.png', { type: 'image/png' });
+    try {
+      if(navigator.canShare && navigator.canShare({ files: [file] })){
+        await navigator.share({ files: [file], text: shareText(), url: SHARE_URL });
+        return;
+      }
+    } catch(e) { if(e && e.name === 'AbortError') return; }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'tachishiki-result.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    toast('画像を保存しました');
+  }, 'image/png');
+});
+if(!navigator.share) $('sh-native').classList.add('hide');
+
+// ---- はじめから ----
+function restartGame(){
+  const dlg = $('restart-confirm');
+  if(dlg.open) dlg.close();
+  newGame();
+  showView('game');
+  toast('ラウンド1から始めました');
+}
+function askRestart(){
+  if(S.busy) return;
+  // まだ何も進んでいないときは確認なしで最初から
+  const untouched = S.round === 1 && S.turn === 1 && !S.scores.length && !S.hinted && S.calcTurn !== 1;
+  if(untouched){ restartGame(); return; }
+  $('rs-text').textContent = `いまは ラウンド${S.round} の ${S.turn}ターン目、合計 ${S.total.toLocaleString()}点です。やり直すと、この途中経過は消えます(保存済みの記録は残ります)。`;
+  if(typeof $('restart-confirm').showModal === 'function') $('restart-confirm').showModal(); else $('restart-confirm').setAttribute('open', '');
+}
+$('homebtn').addEventListener('click', () => { if(S.tutorial) exitTutorial(true); showView('title'); });
+$('restart2').addEventListener('click', askRestart);
+$('rs-cancel').addEventListener('click', () => $('restart-confirm').close());
+$('rs-ok').addEventListener('click', restartGame);
+
+// ---- 画面の切り替え(タイトル / 遊び方 / ゲーム) ----
+const tileEl = (k, i) => `<span class="t-tile ${kindClass(k)}" style="--i:${i}">${SYMBOL[k] || k}</span>`;
+function fillTiles(){
+  document.querySelectorAll('[data-tiles]').forEach(el => { el.innerHTML = el.dataset.tiles.split(' ').map(tileEl).join(''); });
+}
+function progressed(){
+  return !!S.round && !S.tutorial && !(S.round === 1 && S.turn === 1 && !(S.scores || []).length && !S.hinted);
+}
+let cardsSeen = false;
+try { cardsSeen = localStorage.getItem('tachishiki-cards-seen') === '1'; } catch(e) {}
+function markCardsSeen(){ cardsSeen = true; try { localStorage.setItem('tachishiki-cards-seen', '1'); } catch(e) {} }
+let practiced = false;
+try { practiced = localStorage.getItem('tachishiki-practiced') === '1'; } catch(e) {}
+function refreshTitle(){
+  const p = progressed();
+  $('t-continue').classList.toggle('hide', !p);
+  $('t-start').textContent = p ? 'はじめから' : 'はじめる';
+  $('t-practice').classList.toggle('suggest', !practiced);
+  const rec = loadRecords();
+  $('t-best').textContent = rec.length ? `自己ベスト ${rec[0].total.toLocaleString()}点(${rec[0].title})` : 'まだ記録がありません';
+  $('t-sound').textContent = muted ? '音 OFF' : '音 ON';
+  fillTiles();
+}
+function showView(name){
+  ['title', 'howto', 'cardguide', 'bonusguide', 'game'].forEach(v => $(v).classList.toggle('hide', v !== name));
+  document.body.dataset.view = name;
+  if(name !== 'game') $('banner').classList.remove('show');   // ラウンド表示が他の画面に残らないように
+  toggleSheet(false);
+  window.scrollTo(0, 0);
+  if(name === 'title') refreshTitle();
+  if(name === 'howto') fillTiles();
+  if(name === 'cardguide'){ fillTiles(); markCardsSeen(); }
+  if(name === 'bonusguide') fillTiles();
+  const f = $(name).querySelector('.logo, h2, h1');
+  if(f){ f.setAttribute('tabindex', '-1'); f.focus({ preventScroll: true }); }
+}
+function startFromTitle(){
+  if(!cardsSeen && !progressed()){ showView('cardguide'); return; }   // はじめての人は、先にカードの使い方
+  if(progressed()){ askRestart(); return; }
+  newGame(); showView('game');
+}
+$('t-start').addEventListener('click', startFromTitle);
+$('h-start').addEventListener('click', startFromTitle);
+$('t-continue').addEventListener('click', () => { render(); showView('game'); });
+$('t-practice').addEventListener('click', startTutorial);
+$('h-practice').addEventListener('click', startTutorial);
+$('t-howto').addEventListener('click', () => showView('howto'));
+$('t-cards').addEventListener('click', () => showView('cardguide'));
+$('h-cards').addEventListener('click', () => showView('cardguide'));
+$('c-back').addEventListener('click', () => showView('title'));
+$('c-practice').addEventListener('click', startTutorial);
+$('c-start').addEventListener('click', startFromTitle);
+$('t-bonus').addEventListener('click', () => showView('bonusguide'));
+$('h-bonus').addEventListener('click', () => showView('bonusguide'));
+$('c-bonus').addEventListener('click', () => showView('bonusguide'));
+$('b-back').addEventListener('click', () => showView('title'));
+$('b-cards').addEventListener('click', () => showView('cardguide'));
+$('b-start').addEventListener('click', startFromTitle);
+$('h-back').addEventListener('click', () => showView('title'));
+$('t-rec').addEventListener('click', showRecords);
+$('t-sound').addEventListener('click', () => { $('mute').click(); $('t-sound').textContent = muted ? '音 OFF' : '音 ON'; });
+
+// ---- 練習ラウンド(操作を体験する) ----
+const TUT_BAD = '8';
+const TUT_TEXT = [
+  '札を<b>ドラッグ</b>して、左右に動かしてみよう。',
+  '場の数は <b>17</b>。7枚ぜんぶ使って作れるかな? まず「<b>完成</b>」を押してみよう。',
+  '作れないときは、いらない札を<b>1枚捨てて</b>入れ替えます。<b>「8」</b>の札をタップして選び、もう一度タップ(または「捨てる」)で捨ててみよう。',
+  '山札から <b>「0」</b> が来た! 余った札は <b>＋0</b> や <b>−0</b> で消せます。たとえば <b>3×4＋5−0</b> と並べて「<b>完成</b>」を押そう。'
+];
+let savedGame = null;
+function setTut(step){
+  S.tutStep = step;
+  const c = $('coach');
+  c.classList.remove('hide'); c.classList.add('tut');
+  $('coach-t').innerHTML = `<span class="coach-n">練習 ${step + 1}/4</span>${TUT_TEXT[step]}`;
+  $('coach-skip').textContent = 'やめる';
+  $('coach-next').textContent = '答え';
+  $('coach-next').classList.toggle('hide', step !== 3);
+}
+function tutCheck(){
+  if(!S.tutorial) return;
+  if(S.tutStep === 0 && S.hand.join('') !== S.tutInit) setTut(1);
+  else if(S.tutStep === 2 && !S.hand.includes(TUT_BAD)) setTut(3);
+}
+function startTutorial(){
+  if(S.round && !S.tutorial) savedGame = S;
+  S = { round: 0, total: 0, scores: [], tutorial: true, tutStep: 0 };
+  document.body.classList.add('tutorial');
+  nextRound();
+  showView('game');
+  setTut(0);
+}
+function exitTutorial(restore){
+  document.body.classList.remove('tutorial');
+  const c = $('coach'); c.classList.add('hide'); c.classList.remove('tut');
+  $('coach-next').classList.remove('hide');
+  S = (restore && savedGame) ? savedGame : { round: 0, total: 0, scores: [] };
+  savedGame = null;
+}
+function showTutDone(){
+  practiced = true;
+  try { localStorage.setItem('tachishiki-practiced', '1'); } catch(e) {}
+  if(typeof $('tut-done').showModal === 'function') $('tut-done').showModal(); else $('tut-done').setAttribute('open', '');
+}
+$('tut-done').addEventListener('cancel', e => e.preventDefault());
+$('td-play').addEventListener('click', () => { $('tut-done').close(); exitTutorial(false); newGame(); showView('game'); });
+$('td-again').addEventListener('click', () => { $('tut-done').close(); startTutorial(); });
+$('td-title-btn').addEventListener('click', () => { $('tut-done').close(); exitTutorial(true); showView('title'); });
+
+// ---- 用語の「?」 ----
+const TERMS = {
+  target: ['場の数', '作る目標の2桁の数です。手札の7枚をぜんぶ使って、この数と同じ値になる式を作ります。'],
+  bonus:  ['ボーナス札', 'ラウンドごとに決まる札です。手札に同じ札があると(★が付きます)、1枚ごとにブースト+1になります。'],
+  deck:   ['山札', 'これから引く札の山です。札を捨てると、ここから1枚引きます。数字は残りの枚数です。'],
+  turn:   ['ターン', '札を1枚捨てて引くと、1ターン進みます。1ラウンドは25ターンまで。完成できないと、そのラウンドは0点です。'],
+  river:  ['捨て札', 'これまでに捨てた札の列です。'],
+  base:   ['基本点', '札ごとの「使いにくさ」を表す点です(札の右下の小さい数字)。完成した7枚ぶんの合計が、点数のもとになります。'],
+  boost:  ['ブースト', '条件を満たすと付くボーナスです。+1ごとに点数が2倍になります。点数 = 基本点の合計 × 2^ブースト × 場の数。']
+};
+function openTerm(key){
+  const t = TERMS[key]; if(!t) return;
+  $('term-title').textContent = t[0]; $('term-text').textContent = t[1];
+  if(typeof $('term').showModal === 'function') $('term').showModal(); else $('term').setAttribute('open', '');
+}
+document.addEventListener('click', e => {
+  const q = e.target.closest && e.target.closest('.qm');
+  if(!q) return;
+  e.preventDefault(); e.stopPropagation();
+  openTerm(q.dataset.term);
+});
+$('term-close').addEventListener('click', () => $('term').close());
+
+// ---- ボーナスの例(場の数28。1つだけ満たす式を、判定エンジンで探して選んだ) ----
+const BONUS_EX = [
+  { n:'偶数だけ', b:'+1', c:'数字カードがすべて偶数です(0も偶数)。', t:'6 2 - 4 0 + 6', e:'62−40＋6 = 22＋6 = 28', want:['偶数だけ'] },
+  { n:'奇数だけ', b:'+2', c:'数字カードがすべて奇数です。', t:'9 * 3 + 5 / 5', e:'9×3＋5÷5 = 27＋1 = 28', want:['奇数だけ'] },
+  { n:'小さい数だけ', b:'+1', c:'数字カードがすべて 0〜5 です。', t:'2 1 + 1 2 - 5', e:'21＋12−5 = 33−5 = 28', want:['小さい数だけ'] },
+  { n:'大きい数だけ', b:'+1', c:'数字カードがすべて 6〜9 です。', t:'6 + 9 8 - 7 6', e:'6＋98−76 = 104−76 = 28', want:['大きい数だけ'] },
+  { n:'中間の数字', b:'+1', c:'数字カードがすべて 2〜8 です(0・1・9 がない)。', t:'3 4 - 8 + r 4', e:'34−8＋√4 = 26＋2 = 28', want:['中間の数字'] },
+  { n:'3桁の数', b:'+2', c:'式の中に、3桁の数があります。', t:'7 + 1 8 9 / 9', e:'7＋189÷9 = 7＋21 = 28', want:['3桁の数'] },
+  { n:'4桁の数', b:'+3', c:'式の中に、4桁の数があります。', t:'1 9 6 0 / 7 0', e:'1960÷70 = 28', want:['4桁の数'] },
+  { n:'同じ数字3枚', b:'+3', c:'同じ数字のカードが3枚あります。', t:'9 6 - 6 2 - 6', e:'96−62−6 = 34−6 = 28', n2:'6 が3枚', want:['同じ数字3枚'] },
+  { n:'同じ数字4枚', b:'+4', c:'同じ数字のカードが4枚あります。', t:'1 + 1 6 + 1 1', e:'1＋16＋11 = 28', n2:'1 が4枚', want:['同じ数字4枚'] },
+  { n:'同じ数字3枚×2', b:'+5', c:'3枚ずつそろった数字が、2種類あります。', t:'1 1 8 8 / 1 8', e:'1188÷18 = 66', target:66, n2:'1 が3枚、8 が3枚。数字6枚+記号1枚の式なので、場の数は 66 の例です(4桁の数も付きます)。', want:['同じ数字3枚×2','4桁の数'] },
+  { n:'素数だけ', b:'+3', c:'式の中の数が、すべて素数です。', t:'9 7 - 7 1 + 2', e:'97−71＋2 = 26＋2 = 28', n2:'97・71・2 はどれも素数', want:['素数だけ'] },
+  { n:'記号づかい', b:'+1', c:'√ ! ^ を、合わせて2枚以上使っています(3種類はそろっていない)。', t:'9 + 4 + 5 ! !', e:'9＋4＋5!! = 9＋4＋15 = 28', n2:'5!! = 5×3×1 = 15', want:['記号づかい'] },
+  { n:'記号そろい', b:'+3', c:'√ ! ^ を、1枚ずつ使っています。', t:'r 9 + 5 ^ 2 !', e:'√9＋5^2! = 3＋5^2 = 3＋25 = 28', n2:'2! は 2', want:['記号そろい'] },
+  { n:'左右対称', b:'+3', c:'7枚の並びが、左右対称です。', t:'5 1 - 8 - 1 5', e:'51−8−15 = 43−15 = 28', n2:'5 1 − 8 − 1 5 と、まん中の 8 をはさんで同じ札が並ぶ', want:['左右対称'] },
+  { n:'ボーナス札', b:'+1(1枚ごと)', c:'ボーナス札(★)と同じ札が、手札にあります。', t:'3 3 + 7 - 1 2', e:'33＋7−12 = 40−12 = 28', n2:'ボーナス札が 7 のとき、7 が1枚で +1', dora:'7', want:['ボーナス札'] },
+  { n:'素数の場', b:'+1', c:'場の数が素数です。', t:'6 9 - 9 - 3 1', e:'69−9−31 = 60−31 = 29', target:29, n2:'場の数は 29(素数)の例です。', want:['素数の場'] },
+  { n:'スピード', b:'+5 / +4 / +3', c:'1・2・3ターン目に完成すると付きます(4ターン目以降はなし)。', t:'7 + 4 * 3 + 9', e:'7＋4×3＋9 = 7＋12＋9 = 28', n2:'どんな式でもOK。この式は、ほかのボーナスが付かない例です。', want:[] }
+];
+function buildBonusGuide(){
+  $('bonus-list').innerHTML = BONUS_EX.map(x => `
+    <div class="cg-item bg-item">
+      <div class="cg-head"><h4>${x.n}</h4><span class="bchip">ブースト${x.b}</span></div>
+      <p>${x.c}</p>
+      <div class="t-row" data-tiles="${x.t}"></div>
+      <div class="bg-eq">${x.e}</div>
+      ${x.n2 ? `<p class="bnote">${x.n2}</p>` : ''}
+    </div>`).join('');
+}
+// 例が本当に「そのボーナスだけ」になっているかを、判定エンジンで確かめる(開発用)
+function verifyBonusExamples(){
+  const saveDora = S.dora, saveHinted = S.hinted, saveCalc = S.calcTurn;
+  const out = BONUS_EX.map(x => {
+    const hand = x.t.split(' ');
+    S.dora = x.dora || ''; S.hinted = false; S.calcTurn = 0;
+    const jd = judge(hand, x.target || 28, 99);
+    const names = jd.yaku.map(y => y.name.replace(/^ボーナス札.*/, 'ボーナス札'));
+    const std = standardEval(hand);
+    const okVal = std.ok && Math.abs(std.v - (x.target || 28)) < 1e-9;
+    const okSet = names.length === x.want.length && x.want.every(w => names.includes(w));
+    return { n: x.n, cards: hand.length, okVal, okSet, names: names.join('・') };
+  });
+  S.dora = saveDora; S.hinted = saveHinted; S.calcTurn = saveCalc;
+  return out;
+}
+buildBonusGuide();
 
 // ---- 紙吹雪 ----
 let fxRun = 0;
@@ -1165,10 +1971,11 @@ async function reveal(hand, str, target, jd){
   $('ov-expr').textContent = `${str} = ${target}`;
   $('ov-expr').classList.remove('in');
   $('ov-yaku').innerHTML = ''; $('ov-calc').textContent = '';
+  $('ov-qm').classList.add('hide'); $('ov-review').classList.add('hide');
   $('ov-score').textContent = ''; $('ov-tier').textContent = ''; $('ov-tier').className = 'ov-tier';
   $('ov-next').classList.add('hide'); $('ov-skipmsg').classList.remove('hide');
   const t = $('ov-title'); t.textContent = '完成！'; t.classList.remove('dim'); t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop');
-  $('ov-next').textContent = S.round >= ROUNDS ? '結果を見る' : '次のラウンドへ';
+  $('ov-next').textContent = S.tutorial ? '次へ' : (S.round >= ROUNDS ? '結果' : '次へ');
   jan(0);
   await sleep(700);
 
@@ -1187,6 +1994,7 @@ async function reveal(hand, str, target, jd){
     await sleep(750);
   }
   $('ov-calc').textContent = `基本点 ${jd.fu} × 2^${jd.han}(${Math.pow(2, jd.han).toLocaleString()}) × 場の数 ${target}` + (S.hinted ? ' ÷ 2(ヒント)' : '') + (jd.calcUsed ? ' ÷ 2(電卓)' : '');
+  $('ov-qm').classList.remove('hide');
   tick(0.5);
   await sleep(700);
 
@@ -1216,6 +2024,7 @@ async function reveal(hand, str, target, jd){
 }
 // ---- ラウンド後の流れ(地味な結果パネルは出さず、演出からそのまま次へ) ----
 function afterRound(){
+  if(S.tutorial){ showTutDone(); return; }
   if(S.round >= ROUNDS) finalScreen(); else nextRound();
 }
 function resetOverlay(title, dim){
@@ -1227,13 +2036,16 @@ function resetOverlay(title, dim){
   t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop');
   $('ov-expr').classList.remove('in'); $('ov-expr').textContent = '';
   $('ov-yaku').innerHTML = ''; $('ov-calc').textContent = '';
+  $('ov-qm').classList.add('hide'); $('ov-review').classList.add('hide');
   $('ov-score').textContent = ''; $('ov-tier').textContent = ''; $('ov-tier').className = 'ov-tier';
   $('ov-skipmsg').classList.add('hide');
   $('ov-next').classList.add('hide');
+  $('ov-extra').classList.add('hide');
   return ov;
 }
 async function timeUp(){
   S.scores.push(0);
+  (S.log = S.log || []).push({ win: false, turn: MAX_TURN, points: 0 });
   const ov = resetOverlay('時間切れ', true);
   $('ov-hand').innerHTML = S.hand.map(tileHtml).join('');
   [...$('ov-hand').children].forEach(tl => tl.classList.add('in'));
@@ -1241,11 +2053,31 @@ async function timeUp(){
   $('ov-expr').classList.add('in');
   $('ov-score').innerHTML = '0<small>点</small>';
   buzz();
-  $('ov-next').textContent = S.round >= ROUNDS ? '結果を見る' : '次のラウンドへ';
+  $('ov-next').textContent = S.tutorial ? '次へ' : (S.round >= ROUNDS ? '結果' : '次へ');
   $('ov-next').classList.remove('hide');
   await new Promise(res => { $('ov-next').onclick = res; });
   ov.classList.add('hide');
   afterRound();
+}
+function buildReview(){
+  const L = S.log || [];
+  const rows = S.scores.map((v, i) => {
+    const l = L[i];
+    if(!l) return `<div class="rv-row"><b>R${i + 1}</b><span>-</span><i>${v.toLocaleString()}点</i></div>`;
+    if(!l.win) return `<div class="rv-row"><b>R${i + 1}</b><span>完成できず(${l.turn}ターン)</span><i>0点</i><small>作れない手は、早めに捨てて入れ替えよう</small></div>`;
+    const flags = [l.hinted ? 'ヒント' : '', l.calc ? '電卓' : ''].filter(Boolean).join('・');
+    const names = l.yaku.slice(0, 4).join('・') + (l.yaku.length > 4 ? ' ほか' : '');
+    return `<div class="rv-row"><b>R${i + 1}</b><span>${l.turn}ターンで完成 ・ ブースト+${l.han}</span><i>${l.points.toLocaleString()}点</i><small>${names || 'ボーナスなし'}${flags ? ' ・ ' + flags + 'で半分' : ''}</small></div>`;
+  }).join('');
+  const wins = L.filter(l => l.win);
+  const bi = S.scores.indexOf(Math.max(...S.scores));
+  let tip;
+  if(L.some(l => !l.win)) tip = '完成できなかったラウンドは0点。余った札は「＋0」「×1」で消せます。';
+  else if(L.some(l => l.hinted || l.calc)) tip = 'ヒントや電卓を使うと得点は半分。使わずに完成できると、大きく伸びます。';
+  else if(wins.every(l => l.turn > 3)) tip = '3ターン以内に完成すると「スピード」で最大ブースト+5。さらに伸ばせます。';
+  else tip = 'いい調子! 同じ数字をそろえる(3枚で+3、4枚で+4)も狙ってみよう。';
+  $('ov-review').innerHTML = rows + `<div class="rv-best">最高の1回: <b>R${bi + 1} ${S.scores[bi].toLocaleString()}点</b></div><div class="rv-tip">${tip}</div>`;
+  $('ov-review').classList.remove('hide');
 }
 const DAN = [[25000,'数神'],[10000,'名人'],[4000,'達人'],[1500,'一人前'],[0,'見習い']];
 async function finalScreen(){
@@ -1265,19 +2097,28 @@ async function finalScreen(){
   $('ov-score').innerHTML = S.total.toLocaleString() + '<small>点</small>';
   skip = false;
   const dan = DAN.find(x => S.total >= x[0])[1];
+  S.lastDan = dan;
+  const rk = addRecord(S.total, S.scores, dan);
+  const di = DAN.findIndex(x => S.total >= x[0]), nx = di > 0 ? DAN[di - 1] : null;
+  $('ov-rank').innerHTML = (rk.isBest ? '<b>自己ベスト更新!</b>' : `自己ベスト <b>${rk.best.toLocaleString()}点</b>`) + `(今回 ${rk.rank}位 / ${rk.count}件)`
+    + '<br>' + (nx ? `次の称号「${nx[1]}」まであと <b>${(nx[0] - S.total).toLocaleString()}点</b>` : '最高の称号です!');
+  buildReview();
+  $('ov-extra').classList.remove('hide');
   const big = S.total >= 10000;
   fanfare(big);
   burst(big ? 220 : 120, big ? 1.4 : 1);
   const tr = $('ov-tier'); tr.textContent = dan; tr.classList.add('pop');
   $('ov-in').classList.remove('shake'); void $('ov-in').offsetWidth; $('ov-in').classList.add('shake');
-  $('ov-next').textContent = 'もう一度遊ぶ';
+  $('ov-next').textContent = 'もう一度';
   $('ov-next').classList.remove('hide');
   await new Promise(res => { $('ov-next').onclick = res; });
   ov.classList.add('hide');
+  $('ov-extra').classList.add('hide');
+  $('ov-review').classList.add('hide');
   fxRun++;
   newGame();
 }
-$('ov').addEventListener('click', e => { if(e.target.id !== 'ov-next') skip = true; });
+$('ov').addEventListener('click', e => { if(e.target.closest('button')) return; skip = true; });
 
 $('declare').addEventListener('click', async () => {
   if(S.over || S.busy) return;
@@ -1286,6 +2127,7 @@ $('declare').addEventListener('click', async () => {
   if(!r.found){
     setMsg(r.reason || 'その並びでは場の数になりません。並べ替えるか、1枚捨てましょう。', 'ng');
     buzz(); vib([30, 40, 30]);
+    if(S.tutorial && S.tutStep <= 1) setTut(2);
     const cb = $('cards'); cb.classList.remove('shake'); void cb.offsetWidth; cb.classList.add('shake');
     return;
   }
@@ -1294,6 +2136,7 @@ $('declare').addEventListener('click', async () => {
   const jd = judge(S.hand, S.target, S.turn);
   S.total += jd.points;
   S.scores.push(jd.points);
+  (S.log = S.log || []).push({ win: true, turn: S.turn, points: jd.points, han: jd.han, yaku: jd.yaku.map(y => y.name), hinted: S.hinted, calc: jd.calcUsed });
   vib([20, 40, 80]);
   render();
   await reveal(S.hand.slice(), r.str, S.target, jd);
@@ -1302,6 +2145,10 @@ $('declare').addEventListener('click', async () => {
 
 $('discard').addEventListener('click', async () => {
   if(S.over || S.busy || S.sel < 0) return;
+  if(S.tutorial){
+    if(S.tutStep !== 2){ setMsg(S.tutStep < 2 ? '捨てる練習は、このあとのステップです' : '今は並べ替えて「完成！」を押そう', 'ng'); S.sel = -1; render(); return; }
+    if(S.hand[S.sel] !== TUT_BAD){ setMsg('練習では「8」の札を選んで捨ててみよう', 'ng'); return; }
+  }
   S.hintTask++;
   S.busy = true;
   const idx = S.sel;
@@ -1353,11 +2200,12 @@ $('hint').addEventListener('click', () => {
     const t0 = performance.now();
     while(performance.now() - t0 < 30){
       const { value, done } = gen.next();
-      if(done){ $('hint').disabled = false; setMsg('この7枚ではどう並べても作れません。1枚捨てましょう。(ヒントで点数は減りません)'); return; }
+      if(done){ $('hint').disabled = false; setMsg('この7枚ではどう並べても作れません。1枚捨てましょう。(「作れません」のときは得点は減りません)'); return; }
       if(value){
         S.hinted = true;
         $('hint').disabled = false;
-        setMsg('例: ' + value.str + ' = ' + S.target + '  (答えを見たのでこのラウンドの得点は半分)', 'ok');
+        render();
+        setMsg('例: ' + value.str + ' = ' + S.target + '  (ヒントで式が出たので、このラウンドの得点は半分)', 'ok');
         return;
       }
     }
@@ -1388,6 +2236,8 @@ function showResult(win, str, sc){
 }
 
 // ルール欄
+$('ranklist').innerHTML = DAN.slice().reverse().map(d => `<tr><th>${d[1]}</th><td>${d[0].toLocaleString()}点〜</td></tr>`).join('');
+$('tierlist').innerHTML = TIERS.slice().reverse().map(t => `<tr><th>${t[1]}</th><td>1回で ${t[0].toLocaleString()}点〜</td></tr>`).join('');
 $('yakulist').innerHTML = YAKU_LIST.map(y => `<tr><th>${y[0]}</th><td>+${y[2]}</td><td>${y[1]}</td></tr>`).join('');
 $('legend').innerHTML = '<tr>' + KINDS.map(k => `<th style="text-align:center;padding:2px 6px">${SYMBOL[k]||k}</th>`).join('') + '</tr><tr>' + KINDS.map(k => `<td style="text-align:center;padding:2px 6px">${PTS[k]}</td>`).join('') + '</tr>';
 // ---- 早見表 ----
@@ -1423,6 +2273,7 @@ function factorText(n){
   return n + ' = ' + parts.map(([p, e]) => e > 1 ? `${p}^${e}` : p).join(' × ');
 }
 function updateNow(){
+  if(S.waiting){ $('cheatNow').innerHTML = '<div><span class="k">場の数</span><b>スタート後に表示</b></div>'; return; }
   const n = S.target;
   $('cheatNow').innerHTML = `<div><span class="k">場の数</span><b>${n}</b></div>` +
     `<div><span class="k">素因数分解</span>${factorText(n)}</div>` +
@@ -1439,8 +2290,7 @@ const toggleSheet = open => {
 $('cheatbtn').addEventListener('click', () => toggleSheet());
 $('sheetclose').addEventListener('click', () => toggleSheet(false));
 document.addEventListener('keydown', e => { if(e.key === 'Escape') toggleSheet(false); });
-newGame();
-startCoach();
+showView('title');
 </script>
 </body>
 </html>
