@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>立式カードゲーム(一人用)</title>
+<title>MATHMATH(一人用)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yomogi&text=7%E6%9E%9A%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%A7%E6%95%B0%E5%BC%8F%E3%82%92%E3%81%A4%E3%81%8F%E3%82%8B%E3%82%B2%E3%83%BC%E3%83%A0&display=swap">
 <style>
 :root{
   --bg:#f6f4ef; --panel:#fff; --ink:#1d1d1f; --sub:#6b6b70; --line:#dcd8cf;
@@ -377,8 +380,8 @@ dialog#restart-confirm::backdrop{background:rgba(0,0,0,.55)}
   box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -40px 60px rgba(0,0,0,.22),0 2px 0 #072a1b,0 18px 34px -12px rgba(8,41,28,.55)}
 .hero::before{content:'';position:absolute;inset:8px;border-radius:15px;border:1px dashed rgba(255,255,255,.14);pointer-events:none}
 .hero .logo{font-size:30px;font-weight:800;letter-spacing:.14em;line-height:1.25;text-shadow:0 2px 0 rgba(0,0,0,.3)}
-.hero .logo b{font-size:68px;letter-spacing:.08em}
-.hero .tag{margin:10px 0 0;font-size:15px;opacity:.9;letter-spacing:.08em}
+.hero .logo b{font-size:clamp(40px,11.5vw,64px);letter-spacing:.04em}
+.hero .tag{margin:10px 0 0;font-family:"Yomogi",system-ui,sans-serif;font-size:17px;font-weight:400;opacity:.95;letter-spacing:.08em}
 .hero-tiles{display:flex;gap:6px;justify-content:center;margin:26px 0 12px}
 .t-tile{width:min(11.5vw,46px);aspect-ratio:3/4;border-radius:7px;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(180deg,#fffef8,#f3ecd8);border:1px solid #cfc5a8;border-bottom:7px solid var(--edge);
@@ -428,7 +431,7 @@ dialog#tut-done::backdrop{background:rgba(0,0,0,.55)}
 .rs-btns.col{flex-direction:column}
 @media (max-width:480px){
   .screen{padding:14px 12px 40px}
-  .hero .logo b{font-size:60px}
+  .hero .logo b{font-size:clamp(40px,11.5vw,56px)}
 }
 
 /* ---- v4: ラベル付きボタン・「?」・今やること・準備画面・振り返り ---- */
@@ -513,8 +516,8 @@ body.tutorial .rule-cap{display:none}
 <body>
 <section class="screen" id="title" aria-label="タイトル">
   <div class="hero">
-    <div class="logo"><b>立式</b><br>カードゲーム</div>
-    <p class="tag">7枚のカードで、場の数を作る。</p>
+    <div class="logo"><b>MATHMATH</b></div>
+    <p class="tag">7枚のカードで数式をつくるゲーム</p>
     <div class="hero-tiles" id="clock-tiles" aria-hidden="true"></div>
     <div class="hero-eq" id="clock-eq" aria-hidden="true"></div>
   </div>
@@ -527,7 +530,7 @@ body.tutorial .rule-cap{display:none}
     <div class="menu-row"><button class="b" id="t-cards">カードの使い方</button><button class="b" id="t-bonus">ボーナスの例</button></div>
     <div class="menu-row"><button class="b" id="t-rec">記録</button><button class="b" id="t-sound">音 ON</button></div>
   </div>
-  <div class="title-foot"><span class="title-best" id="t-best"></span><br>一人用 試作 ・ 2026-11-08 版</div>
+  <div class="title-foot"><span class="title-best" id="t-best"></span><br>一人用 試作 ・ 2026-11-12 版</div>
 </section>
 
 <section class="screen hide" id="cardguide" aria-label="カードの使い方">
@@ -722,7 +725,7 @@ body.tutorial .rule-cap{display:none}
 </section>
 
 <main id="game" class="hide">
-  <h1><b>立式</b>カードゲーム<small>一人用 試作</small></h1>
+  <h1><b>MATHMATH</b><small>一人用 試作</small></h1>
   <div class="top"><div class="rd"><div class="rd1"><span id="round"></span><span class="pips" id="pips" aria-hidden="true"></span></div><div class="rd2" id="total"></div></div><span class="tools"><button class="b" id="homebtn" aria-label="タイトルへ"><span class="lb">タイトル</span></button><button class="b" id="recbtn" aria-label="記録を見る"><span class="lb">記録</span></button><button class="b" id="mute" aria-label="音のオン・オフ"><span class="lb">音</span></button></span></div>
 
   <section class="panel" id="board">
@@ -861,7 +864,7 @@ body.tutorial .rule-cap{display:none}
 </div>
 
 <script>
-// 立式カードゲーム 判定エンジン
+// MATHMATH(旧称 立式カードゲーム) 判定エンジン
 // kinds: '0'-'9', '+', '-', '*', '/', '!', '^', 'r'(√)
 const LIMIT = 1e30;
 const EPS = 1e-7;
@@ -1697,8 +1700,8 @@ $('rec-clear').addEventListener('click', () => {
 });
 
 const shareText = () => S.daily
-  ? `立式カードゲーム 今日の一戦 ${S.daily.md} で ${S.total.toLocaleString()}点(${S.lastDan})!\n同じ盤面で遊べます。 #立式カードゲーム`
-  : `立式カードゲームで ${S.total.toLocaleString()}点(${S.lastDan})!\n7枚のカードで場の数を作る数式カードゲーム #立式カードゲーム`;
+  ? `MATHMATH 今日の一戦 ${S.daily.md} で ${S.total.toLocaleString()}点(${S.lastDan})!\n同じ盤面で遊べます。 #MATHMATH`
+  : `MATHMATH で ${S.total.toLocaleString()}点(${S.lastDan})!\n7枚のカードで数式をつくるゲーム #MATHMATH`;
 async function copyText(text){
   try { await navigator.clipboard.writeText(text); return true; }
   catch(e) {
@@ -1720,8 +1723,8 @@ function drawShareCard(){
   c.strokeStyle = 'rgba(255,255,255,.18)'; c.setLineDash([8, 8]); c.lineWidth = 2;
   c.strokeRect(28, 28, W - 56, H - 56); c.setLineDash([]);
   c.fillStyle = '#fff'; c.textBaseline = 'alphabetic';
-  c.font = `800 54px ${font}`; c.fillText('立式カードゲーム', 72, 120);
-  c.font = `500 28px ${font}`; c.fillStyle = 'rgba(255,255,255,.75)'; c.fillText('7枚のカードで、場の数を作る。', 72, 166);
+  c.font = `800 54px ${font}`; c.fillText('MATHMATH', 72, 120);
+  c.font = `28px "Yomogi",${font}`; c.fillStyle = 'rgba(255,255,255,.75)'; c.fillText('7枚のカードで数式をつくるゲーム', 72, 166);
   c.fillStyle = '#ffd84a'; c.font = `800 190px ${font}`;
   const pts = S.total.toLocaleString();
   c.fillText(pts, 72, 400);
@@ -1740,13 +1743,13 @@ $('sh-x').addEventListener('click', () => {
 });
 $('sh-copy').addEventListener('click', async () => { toast(await copyText(shareText() + '\n' + SHARE_URL) ? '結果をコピーしました' : 'コピーできませんでした'); });
 $('sh-native').addEventListener('click', async () => {
-  try { await navigator.share({ title: '立式カードゲーム', text: shareText(), url: SHARE_URL }); }
+  try { await navigator.share({ title: 'MATHMATH', text: shareText(), url: SHARE_URL }); }
   catch(e) { if(e && e.name !== 'AbortError') toast('共有できませんでした'); }
 });
 $('sh-img').addEventListener('click', () => {
   drawShareCard().toBlob(async blob => {
     if(!blob){ toast('画像を作れませんでした'); return; }
-    const file = new File([blob], 'tachishiki-result.png', { type: 'image/png' });
+    const file = new File([blob], 'mathmath-result.png', { type: 'image/png' });
     try {
       if(navigator.canShare && navigator.canShare({ files: [file] })){
         await navigator.share({ files: [file], text: shareText(), url: SHARE_URL });
@@ -1754,7 +1757,7 @@ $('sh-img').addEventListener('click', () => {
       }
     } catch(e) { if(e && e.name === 'AbortError') return; }
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob); a.download = 'tachishiki-result.png';
+    a.href = URL.createObjectURL(blob); a.download = 'mathmath-result.png';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 4000);
     toast('画像を保存しました');
