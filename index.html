@@ -6,7 +6,7 @@
 <title>MATHMATH(一人用)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yomogi&text=7%E6%9E%9A%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%A7%E6%95%B0%E5%BC%8F%E3%82%92%E3%81%A4%E3%81%8F%E3%82%8B%E3%82%B2%E3%83%BC%E3%83%A0&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yomogi&text=7%E6%9E%9A%E3%81%AE%E3%82%AB%E3%83%BC%E3%83%89%E3%81%A7%E6%95%B0%E5%BC%8F%E3%82%92%E3%81%A4%E3%81%8F%E3%82%8B%E3%82%B2%E3%83%BC%E3%83%A0Make%20an%20equation%20with%207%20cards&display=swap">
 <style>
 :root{
   --bg:#f6f4ef; --panel:#fff; --ink:#1d1d1f; --sub:#6b6b70; --line:#dcd8cf;
@@ -511,6 +511,79 @@ body.tutorial .rule-cap{display:none}
 .hero-tiles .t-tile{flex:0 1 auto;min-width:0}
 .bpre{margin:2px 0 6px;font-size:14px;font-weight:800;color:#c0392b}
 .cg-warn{color:#c0392b;font-weight:800}
+.cpu-top{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+.cpu-title{font-size:22px;letter-spacing:.1em}
+#cpu-sub{font-size:13px;color:var(--sub)}
+#cpu-guide{margin-left:auto}
+.cpu-board{border-radius:18px;padding:14px;color:#fff;
+  background:radial-gradient(120% 90% at 50% 0%,var(--felt-1) 0%,var(--felt-2) 55%,var(--felt-3) 100%);box-shadow:0 12px 24px -12px rgba(8,41,28,.6)}
+.cpu-field{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px}
+.cpu-lbl{display:block;font-size:12px;opacity:.8;letter-spacing:.1em}
+#cpu-target{font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.cpu-deck{text-align:right} .cpu-deck b{font-size:22px}
+.opp{padding:8px 10px;margin:6px 0;border-radius:12px;background:rgba(0,0,0,.18);border:2px solid transparent;transition:border-color .2s}
+.opp.turn{border-color:var(--gold)}
+.opp.won{background:rgba(255,216,74,.22)}
+.opp-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;margin-bottom:6px}
+.cpu-pips{color:var(--gold);letter-spacing:.1em}
+.opp-st{margin-left:auto;font-size:13px;opacity:.9}
+.opp-hand,.opp-river{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.opp-hand .t-tile{width:30px;font-size:17px;border-bottom-width:4px;border-radius:5px;box-shadow:0 2px 3px rgba(0,0,0,.35)}
+.opp-hand .t-tile.new{outline:3px solid var(--gold)}
+.opp-river{font-size:12px;opacity:.95;margin-top:5px}
+.opp-river .t-tile{width:20px;font-size:12px;border-bottom-width:3px;border-radius:4px;box-shadow:none;opacity:.8}
+.opp-river .t-tile.last{opacity:1;outline:2px solid var(--gold)}
+.cpu-msg{min-height:44px;margin:10px 2px 6px;font-size:15px;line-height:1.5}
+.cpu-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.15);overflow:hidden}
+.cpu-bar i{display:block;height:100%;width:0;background:var(--gold)}
+.cpu-panel{margin-top:12px;padding:14px;border-radius:14px;background:rgba(0,0,0,.28);font-size:15px;line-height:1.7}
+.cpu-panel p{margin:0 0 8px}
+.cpu-panel.hide{display:none}
+.cpu-panel .b.primary{width:100%;margin-top:10px}
+.cpu-lv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.cpu-lv .b.on{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+.cpu-panel .t-row .t-tile{width:min(11vw,40px)}
+.cpu-big{font-size:22px;font-weight:800;margin:0 0 4px}
+.cpu-me{margin-top:14px;padding:12px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+.cpu-me .opp-river .t-tile{opacity:1}
+.cpu-row{display:flex;gap:5px;justify-content:center;margin:8px 0 12px;min-height:64px}
+.cpu-row .t-tile{width:min(12vw,50px);padding:0;font-family:inherit;cursor:pointer;transition:transform .15s}
+.cpu-row .t-tile.cand{outline:3px solid var(--gold);outline-offset:1px}
+.cpu-row .t-tile.sel{transform:translateY(-10px);box-shadow:0 0 0 3px #1a5fb4,0 10px 14px rgba(0,0,0,.35)}
+.cpu-btns{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+.cpu-btns .b{min-height:50px;font-size:17px}
+.cpu-note{min-height:22px;margin:10px 0 0;font-size:14px;color:#b3261e;font-weight:700}
+.cpu-help{margin:6px 0 0;font-size:13px;color:var(--sub);line-height:1.6}
+.menu-row.three{grid-template-columns:repeat(3,1fr)}
+.intro-top{display:flex;align-items:center;gap:8px;margin:0 0 10px}
+.intro-sec{color:var(--hl);letter-spacing:.12em;font-size:15px}
+.intro-count{font-weight:800;color:var(--sub);font-variant-numeric:tabular-nums;font-size:15px}
+#intro-lang{margin-left:auto}
+.intro-top .b{padding:8px 12px;font-size:14px}
+.intro-barwrap{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:0 0 14px}
+#intro-bar{display:block;height:100%;width:0;background:var(--edge);transition:width .3s var(--ease)}
+.intro-card{min-height:min(56vh,460px);border-radius:20px;padding:30px 18px;color:#fff;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:24px;
+  background:radial-gradient(120% 90% at 50% 0%,var(--felt-1) 0%,var(--felt-2) 55%,var(--felt-3) 100%);box-shadow:0 12px 24px -12px rgba(8,41,28,.6)}
+.intro-card.flip{animation:introIn .35s var(--ease)}
+@keyframes introIn{from{opacity:0;transform:translateX(18px)}}
+.intro-msg{margin:0;font-size:clamp(19px,5vw,24px);font-weight:700;line-height:1.65}
+.intro-vis .t-row{flex-wrap:wrap;margin:0}
+.intro-vis .t-tile{position:relative}
+.intro-vis .t-tile i{position:absolute;right:4px;bottom:1px;font-size:11px;font-style:normal;color:#6b6b70;text-shadow:none}
+.intro-vis .t-tile.intro-new{outline:3px solid var(--gold);outline-offset:2px}
+.intro-big{font-size:96px;font-weight:800;line-height:1}
+.intro-eq{font-size:26px;font-weight:700;margin-top:12px}
+.intro-note{margin:14px 0 0;font-size:14px;opacity:.92;line-height:1.6}
+.intro-btns{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:14px}
+.intro-btns .b{min-height:56px;font-size:18px}
+#guide-menu{border:none;border-radius:16px;padding:18px;width:min(92vw,360px);background:var(--panel);color:var(--ink)}
+#guide-menu::backdrop{background:rgba(0,0,0,.45)}
+#guide-menu h3{margin:0 0 4px;font-size:18px}
+.gm-sub{margin:0 0 12px;font-size:13px;color:var(--sub);line-height:1.6}
+.gm-list{display:grid;gap:8px;margin-bottom:12px}
+.gm-list .b{min-height:52px;font-size:17px}
+#gm-close{width:100%}
+body[data-from="play"] #c-practice,body[data-from="play"] #c-start,body[data-from="play"] #b-start,body[data-from="play"] #h-practice,body[data-from="play"] #h-start{display:none}
 </style>
 </head>
 <body>
@@ -525,12 +598,20 @@ body.tutorial .rule-cap{display:none}
     <button class="b primary" id="t-start">はじめる</button>
     <button class="b hide" id="t-continue">つづきから</button>
     <button class="b" id="t-daily">今日の一戦<small id="t-daily-sub"></small></button>
+    <button class="b" id="t-cpu">CPU戦</button>
     <button class="b" id="t-practice">練習</button>
     <button class="b" id="t-howto">遊び方</button>
     <div class="menu-row"><button class="b" id="t-cards">カードの使い方</button><button class="b" id="t-bonus">ボーナスの例</button></div>
-    <div class="menu-row"><button class="b" id="t-rec">記録</button><button class="b" id="t-sound">音 ON</button></div>
+    <div class="menu-row three"><button class="b" id="t-rec">記録</button><button class="b" id="t-sound">音 ON</button><button class="b" id="t-lang" lang="en">English</button></div>
   </div>
-  <div class="title-foot"><span class="title-best" id="t-best"></span><br>一人用 試作 ・ 2026-11-12 版</div>
+  <div class="title-foot"><span class="title-best" id="t-best"></span><br>一人用 試作 ・ 2026-11-14 版</div>
+</section>
+
+<section class="screen hide" id="intro" aria-label="説明">
+  <div class="intro-top"><b class="intro-sec" id="intro-sec"></b><span class="intro-count" id="intro-count"></span><button class="b" id="intro-lang"></button><button class="b" id="intro-skip">スキップ</button></div>
+  <div class="intro-barwrap"><i id="intro-bar"></i></div>
+  <div class="intro-card" id="intro-card" aria-live="polite"><p class="intro-msg" id="intro-msg"></p><div class="intro-vis" id="intro-vis"></div></div>
+  <div class="intro-btns"><button class="b" id="intro-prev">戻る</button><button class="b primary" id="intro-next">次へ</button></div>
 </section>
 
 <section class="screen hide" id="cardguide" aria-label="カードの使い方">
@@ -661,6 +742,41 @@ body.tutorial .rule-cap{display:none}
   </div>
 </section>
 
+<section class="screen hide" id="cpu" aria-label="CPU戦">
+  <div class="cpu-top"><b class="cpu-title">CPU戦</b><span id="cpu-sub"></span><button class="b" id="cpu-guide">説明</button><button class="b" id="cpu-back">タイトル</button></div>
+  <div class="cpu-board">
+    <div class="cpu-field">
+      <div><span class="cpu-lbl">場の数</span><b id="cpu-target">--</b></div>
+      <div class="cpu-deck"><span class="cpu-lbl">山札</span><b id="cpu-deck">--</b></div>
+    </div>
+    <div id="cpu-opps"></div>
+    <p class="cpu-msg" id="cpu-msg" aria-live="polite"></p>
+    <div class="cpu-bar"><i id="cpu-bar"></i></div>
+    <div class="cpu-panel" id="cpu-setup">
+      <p>3人のCPUと対戦します。全員の手札は公開されています。</p>
+      <p>自分の番には山札から1枚引き、手札7枚で場の数を作れたら完成です。作れなければ、1枚捨てます。</p>
+      <p>ほかの人が捨てたカードでも、次の人が山札から引く前なら、そのカードを使って完成できます。CPUも同じように、あなたやほかのCPUの捨てたカードを狙ってきます。</p>
+      <p>先に2回完成した人の勝ちです。</p>
+      <div class="cpu-lv" id="cpu-lv">
+        <button class="b" data-lv="easy">やさしい</button><button class="b on" data-lv="normal">ふつう</button><button class="b" data-lv="hard">つよい</button>
+      </div>
+      <button class="b primary" id="cpu-go">はじめる</button>
+    </div>
+    <div class="cpu-panel hide" id="cpu-result"></div>
+  </div>
+  <div class="cpu-me">
+    <div class="opp-h"><b>あなた</b><span class="cpu-pips" id="cpu-mypips"></span><span class="opp-river" id="cpu-myriver"></span></div>
+    <div class="cpu-row" id="cpu-row"></div>
+    <div class="cpu-btns">
+      <button class="b primary" id="cpu-win">完成</button>
+      <button class="b" id="cpu-draw">引く</button>
+      <button class="b" id="cpu-dis">捨てる</button>
+    </div>
+    <p class="cpu-note" id="cpu-note"></p>
+    <p class="cpu-help">カードをタップすると選択されます。選択中に別のカードをタップすると、その位置へ移動します。捨てるときは、カードを選択してから「捨てる」を押してください。光っているカードは、引いたカードか、ほかの人の捨てたカードです。</p>
+  </div>
+</section>
+
 <section class="screen hide" id="howto" aria-label="遊び方">
   <div class="howto-h"><h2>遊び方</h2></div>
 
@@ -726,7 +842,7 @@ body.tutorial .rule-cap{display:none}
 
 <main id="game" class="hide">
   <h1><b>MATHMATH</b><small>一人用 試作</small></h1>
-  <div class="top"><div class="rd"><div class="rd1"><span id="round"></span><span class="pips" id="pips" aria-hidden="true"></span></div><div class="rd2" id="total"></div></div><span class="tools"><button class="b" id="homebtn" aria-label="タイトルへ"><span class="lb">タイトル</span></button><button class="b" id="recbtn" aria-label="記録を見る"><span class="lb">記録</span></button><button class="b" id="mute" aria-label="音のオン・オフ"><span class="lb">音</span></button></span></div>
+  <div class="top"><div class="rd"><div class="rd1"><span id="round"></span><span class="pips" id="pips" aria-hidden="true"></span></div><div class="rd2" id="total"></div></div><span class="tools"><button class="b" id="homebtn" aria-label="タイトルへ"><span class="lb">タイトル</span></button><button class="b" id="guidebtn" aria-label="説明を見る"><span class="lb">説明</span></button><button class="b" id="recbtn" aria-label="記録を見る"><span class="lb">記録</span></button><button class="b" id="mute" aria-label="音のオン・オフ"><span class="lb">音</span></button></span></div>
 
   <section class="panel" id="board">
     <div class="field">
@@ -807,6 +923,16 @@ body.tutorial .rule-cap{display:none}
   <div class="sheet-head"><b>早見表</b><span class="sheet-note">500以下に限る</span><button class="b" id="sheetclose">閉じる</button></div>
   <div class="sheet-body cheat"><div class="now" id="cheatNow"></div><div id="cheat"></div></div>
 </aside>
+<dialog id="guide-menu" aria-labelledby="gm-title">
+  <h3 id="gm-title">説明を見る</h3>
+  <p class="gm-sub">見終わったら「戻る」で、いまのゲームに戻ります。</p>
+  <div class="gm-list">
+    <button class="b" data-guide="howto">遊び方</button>
+    <button class="b" data-guide="cardguide">カードの使い方</button>
+    <button class="b" data-guide="bonusguide">ボーナスの例</button>
+  </div>
+  <button class="b" id="gm-close">閉じる</button>
+</dialog>
 <dialog id="term" aria-labelledby="term-title">
   <div class="rs-body">
     <b id="term-title"></b>
@@ -864,6 +990,35 @@ body.tutorial .rule-cap{display:none}
 </div>
 
 <script>
+// ---- 言語(日本語 / English) ----
+var LANG = (function(){ try { const v = localStorage.getItem('tachishiki-lang'); if(v === 'ja' || v === 'en') return v; } catch(e) {} return /^ja/i.test(navigator.language || '') ? 'ja' : 'en'; })();
+const JE = (ja, en) => LANG === 'en' ? en : ja;
+const EN_TEXT = {"タイトル": "Title", "説明": "Guide", "7枚のカードで数式をつくるゲーム": "Make an equation with 7 cards", "はじめる": "Start", "つづきから": "Continue", "今日の一戦": "Daily game", "CPU戦": "vs CPU", "練習": "Practice", "遊び方": "How to play", "カードの使い方": "Cards", "ボーナスの例": "Bonuses", "記録": "Records", "一人用 試作 ・ 2026-11-14 版": "Solo prototype ・ 2026-11-14", "戻る": "Back", "場の数": "Target", "山札": "Deck", "3人のCPUと対戦します。全員の手札は公開されています。": "Play against 3 CPUs. Everyone's hand is open.", "自分の番には山札から1枚引き、手札7枚で場の数を作れたら完成です。作れなければ、1枚捨てます。": "On your turn, draw one card. If your 7 cards make the target, you complete. If not, discard one card.", "ほかの人が捨てたカードでも、次の人が山札から引く前なら、そのカードを使って完成できます。CPUも同じように、あなたやほかのCPUの捨てたカードを狙ってきます。": "You can also complete with a card someone else discarded, until the next player draws. The CPUs will grab your discards and each other's in the same way.", "先に2回完成した人の勝ちです。": "The first to complete twice wins.", "やさしい": "Easy", "ふつう": "Normal", "つよい": "Hard", "あなた": "You", "完成": "Complete", "引く": "Draw", "捨てる": "Discard", "カードをタップすると選択されます。選択中に別のカードをタップすると、その位置へ移動します。捨てるときは、カードを選択してから「捨てる」を押してください。光っているカードは、引いたカードか、ほかの人の捨てたカードです。": "Tap a card to select it. While a card is selected, tap another card to move it there. To discard, select a card and press 'Discard'. The glowing card is the one you drew or someone else's discard.", "一人用 試作": "Solo prototype", "タイトルへ": "To title", "記録を見る": "View records", "音のオン・オフ": "Sound on/off", "音": "Sound", "場の数とは": "What is the target?", "ボーナス札": "Bonus card", "ボーナス札とは": "What is the bonus card?", "山札とは": "What is the deck?", "ターン": "Turn", "ターンとは": "What is a turn?", "7枚すべてを使って場の数を作ります": "Use all 7 cards to make the target", "遊び方のガイド": "Guide", "スキップ": "Skip", "次へ": "Next", "手札(ドラッグで並べ替え、矢印キーで移動)": "Hand (drag to reorder, arrow keys to move)", "カードの右下の数字は": "The small number on each card is its ", "基本点": "base points", "基本点とは": "What are base points?", "・ ★は": " ・ ★ marks the ", "です": "", "捨て札": "Discards", "捨て札とは": "What are discards?", "配り直し": "Redeal", "ヒント": "Hint", "早見表": "Cheat sheet", "電卓": "Calculator", "ヒントで式を表示したラウンドと、電卓を使ったターンの得点は半分になります。": "A hint halves that round's score, and the calculator halves the score of the turn you use it.", "スタート": "Start", "くわしいルール・設定": "Detailed rules & settings", "選んだカードをもう一度タップすると捨てます": "Tap a selected card again to discard it", "はじめから": "Restart", "ラウンド1からやり直します(途中の点数は消えます)": "Start over from round 1 (current points are lost)", "手札6枚と引いた1枚の、合計": "Your 6-card hand plus the card you drew make ", "7枚をすべて使って": "7 cards; use all of them", "、場の数と同じ値になる式を作ると完成です。": " to make an equation equal to the target, and you complete the round.", "カードは": "You can ", "ドラッグして好きな位置に移動": "drag cards anywhere", "できます。タップすると捨てるカードとして選択され、もう一度タップすると捨てられます(この欄の「2回タップで捨てる」で切り替えられます)。キーボードでは、←→で移動、Shift+←→で並べ替え、Enter で選択、Delete で捨てる操作ができます。": ". Tap a card to select it for discarding, and tap it again to discard it (switch this with 'Double-tap to discard' in this panel). Keyboard: ←→ move, Shift+←→ reorder, Enter select, Delete discard.", "完成できない場合は、カードを1枚捨てて山札から1枚引き、次のターンに進みます。": "If you cannot complete, discard one card, draw one from the deck, and go to the next turn.", ": 最初の手札の数字カードが3枚以下の場合は、1ラウンドに1回だけ、ターンを消費せずに手札を引き直せます。": ": If your first hand has 3 or fewer digit cards, you may redeal once per round without using a turn.", "数字カードを続けて並べると、1つの数として扱われます(1と2で12)。先頭が0の数は作れません。": "Digits placed side by side form one number (1 and 2 make 12). A number cannot start with 0.", "掛け算・割り算を、足し算・引き算より先に計算します。カッコのカードはありません。計算の途中や結果が小数になってもかまいません。": "× and ÷ are calculated before + and −. There are no bracket cards. Decimals along the way or in the result are fine.", "√ のかかる範囲": "Reach of √", ": カッコのカードがないため、": ": Since there are no brackets, ", "は √(4＋1) とも読めます。いずれかの読み方で場の数になれば完成です。^ は × ÷ より先に、続くときは右から計算します。! が続くときは多重階乗として扱います。省略した掛け算(A√B)は × ÷ より先に計算します。": " can also be read as √(4＋1). If any reading equals the target, you complete. ^ comes before × and ÷, and repeated ^ is calculated from the right. Repeated ! is a multifactorial. Implied multiplication (A√B) comes before × and ÷.", "式の先頭の − は、マイナスの数として使えます(−3＋13)。": "A − at the very start can be used as a negative sign (−3＋13).", "数字や ! の直後の √ は、掛け算の省略として扱います(7√9 = 7×√9)。": "A √ right after a digit or ! means multiplication (7√9 = 7×√9).", "最後のラウンドまで遊ぶと、結果がお使いの端末のブラウザに保存されます。「記録」から一覧を確認でき、終了画面から結果を共有できます。": "When you finish the last round, your result is saved in this browser. See them in 'Records' and share from the end screen.", ": 押したターンに限り、現在の並びの値を「標準の読み方」で表示します。そのターンに完成すると、点数は半分になります(ヒントと重なると4分の1)。標準の読み方では、√ は右隣の数だけにかかります。完成の判定では、√ のかかる範囲を自由に読みます。": ": For the turn you press it, shows the value of the current order in the 'standard reading'. Completing in that turn halves the score (a quarter with a hint too). In the standard reading, √ applies only to the number right after it; when judging completion, its reach is free.", "基本点(カードの使いにくさ。カードの右下の小さい数字):": "Base points (how hard a card is to use; the small number on each card):", "点数 = 7枚の基本点の合計 × 2^ブースト × 100": "Score = base points of the 7 cards × 2^boost × 100", "(ヒントで式を表示すると、そのラウンドの得点は半分になります。「作れません」と表示された場合は減りません)。": " (Showing an equation with a hint halves that round's score. It is not reduced if the hint says no equation exists.)", "ボーナス(ブースト):": "Bonuses (boost):", "称号(3ラウンドの合計点):": "Titles (total of 3 rounds):", "1回の完成ごとの評価(完成の演出で出る言葉):": "Rating per completion (shown in the celebration):", "※ボーナス札は、ラウンドごとに表示されるカードです。手札の同じカード(★)1枚につき、ブーストが1増えます。「記号そろい」が成立した場合、「記号づかい」は数えません。「スピード」と「ギリギリ」は一人用のみのボーナスです。": "* The bonus card is shown each round. Each matching card (★) in your hand adds 1 boost. If 'Symbol set' applies, 'Symbol user' does not count. 'Speed' and 'Last minute' are solo-only bonuses.", "500以下に限る": "Up to 500", "閉じる": "Close", "練習は以上です": "Practice complete", "カードを動かす、捨てる、完成させる、という流れは以上です。本番は3ラウンドで、合計点によって称号が決まります。": "That is the whole flow: move, discard, complete. The real game has 3 rounds, and your total decides your title.", "本番": "Play", "もう一度": "Again", "はじめからやり直しますか?": "Start over?", "続ける": "Continue", "自分の記録(上位20)": "Your records (top 20)", "お使いの端末のブラウザにのみ保存されます。": "Saved only in this browser on this device.", "記録を消す": "Delete records", "完成！": "Complete!", "ブースト?": "Boost?", "共有": "Share", "コピー": "Copy", "画像": "Image", "タップでスキップ": "Tap to skip", "説明": "Guide", "説明を見る": "Guide", "見終わったら「戻る」で、いまのゲームに戻ります。": "Press 'Back' when you are done to return to your game."};
+const NAME_EN = {"ボーナス札": "Bonus card", "素数の場": "Prime target", "スピード": "Speed", "ギリギリ": "Last minute", "小さい数だけ": "Low digits", "大きい数だけ": "High digits", "中間の数字": "Middle digits", "偶数だけ": "Evens only", "奇数だけ": "Odds only", "3桁の数": "3-digit number", "4桁の数": "4-digit number", "同じ数字3枚": "Three of a kind", "同じ数字3枚×2": "Two triples", "同じ数字4枚": "Four of a kind", "記号づかい": "Symbol user", "素数だけ": "Primes only", "記号そろい": "Symbol set", "左右対称": "Palindrome", "数神": "Math God", "名人": "Master", "達人": "Expert", "一人前": "Skilled", "見習い": "Apprentice", "レジェンド": "LEGEND", "ワンダフル": "WONDERFUL", "エクセレント": "EXCELLENT", "グレート": "GREAT", "ナイス": "NICE"};
+function NM(s){
+  if(LANG !== 'en') return s;
+  if(NAME_EN[s]) return NAME_EN[s];
+  const m = /^ボーナス札「(.+)」(\d+)枚$/.exec(s);
+  return m ? `Bonus card "${m[1]}" ×${m[2]}` : s;
+}
+const JP_RE = /[ぁ-んァ-ヶ一-龥]/;
+const ORIG_TEXT = new WeakMap();
+function applyStaticLang(){
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: n => /^(SCRIPT|STYLE)$/.test(n.parentNode.nodeName) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  for(let n = w.nextNode(); n; n = w.nextNode()){
+    let ja = ORIG_TEXT.get(n);
+    if(ja === undefined){ if(!JP_RE.test(n.nodeValue)) continue; ja = n.nodeValue; ORIG_TEXT.set(n, ja); }
+    const key = ja.trim();
+    n.nodeValue = LANG === 'en' && EN_TEXT[key] != null ? ja.replace(key, EN_TEXT[key]) : ja;
+  }
+  document.querySelectorAll('[aria-label],[title]').forEach(el => ['aria-label', 'title'].forEach(a => {
+    const v = el.getAttribute(a); if(v == null) return;
+    const ds = 'ja' + a.replace('-', '');
+    if(el.dataset[ds] === undefined){ if(!JP_RE.test(v)) return; el.dataset[ds] = v; }
+    const ja = el.dataset[ds];
+    el.setAttribute(a, LANG === 'en' && EN_TEXT[ja] != null ? EN_TEXT[ja] : ja);
+  }));
+}
 // MATHMATH(旧称 立式カードゲーム) 判定エンジン
 // kinds: '0'-'9', '+', '-', '*', '/', '!', '^', 'r'(√)
 const LIMIT = 1e30;
@@ -902,7 +1057,7 @@ const SYM = { '+': '＋', '-': '−', '*': '×', '/': '÷', '^': '^' };
 
 function evaluate(kinds) {
   const T = tokenize(kinds);
-  if (!T) return { ok: false, reason: '先頭が0の数は作れません', results: new Map() };
+  if (!T) return { ok: false, reason: JE('先頭が0の数は作れません', 'A number cannot start with 0'), results: new Map() };
   const m = T.length;
   const memo = {};
   const key = v => (Math.round(v * 1e9) / 1e9).toString();
@@ -1051,22 +1206,22 @@ function* solveGen(kinds, target) {
 // ^ は右結合、√ は右隣の数(または√)だけにかかる、!の連続は多重階乗、数字や!の直後の√は掛け算の省略(×÷より先)。0^0は無効。
 function standardEval(kinds) {
   const T = tokenize(kinds);
-  if (!T) return { ok: false, reason: '先頭が0の数は作れません' };
-  if (!T.length) return { ok: false, reason: '式になっていません' };
+  if (!T) return { ok: false, reason: JE('先頭が0の数は作れません', 'A number cannot start with 0') };
+  if (!T.length) return { ok: false, reason: JE('式になっていません', 'Not a valid equation') };
   let pos = 0;
   const fail = msg => { throw new Error(msg); };
   const isOp = (k) => pos < T.length && T[pos].t === 'o' && (Array.isArray(k) ? k.includes(T[pos].k) : T[pos].k === k);
   function primary() {
-    if (pos >= T.length) fail('式になっていません');
+    if (pos >= T.length) fail(JE('式になっていません', 'Not a valid equation'));
     const t = T[pos];
     if (t.t === 's') {
       pos++;
       const v = primary();
-      if (v < 0) fail('マイナスの√は計算できません');
+      if (v < 0) fail(JE('マイナスの√は計算できません', 'Cannot take √ of a negative number'));
       return Math.sqrt(v);
     }
     if (t.t === 'n') { pos++; return t.v; }
-    return fail('式になっていません');
+    return fail(JE('式になっていません', 'Not a valid equation'));
   }
   function atom() {
     let v = primary();
@@ -1074,7 +1229,7 @@ function standardEval(kinds) {
     while (pos < T.length && T[pos].t === 'f') { run++; pos++; }
     if (run) {
       const r = multifact(v, run);
-      if (r === null) fail('階乗が計算できません');
+      if (r === null) fail(JE('階乗が計算できません', 'Cannot compute this factorial'));
       v = r;
     }
     return v;
@@ -1084,9 +1239,9 @@ function standardEval(kinds) {
     if (isOp('^')) {
       pos++;
       const x = power();
-      if (b === 0 && x === 0) fail('0^0は計算できません');
+      if (b === 0 && x === 0) fail(JE('0^0は計算できません', '0^0 is undefined'));
       const r = Math.pow(b, x);
-      if (Number.isNaN(r)) fail('計算できません');
+      if (Number.isNaN(r)) fail(JE('計算できません', 'Cannot compute'));
       return r;
     }
     return b;
@@ -1103,7 +1258,7 @@ function standardEval(kinds) {
       if (isOp(['*', '/'])) {
         const op = T[pos].k; pos++;
         const r = factor();
-        if (op === '/') { if (Math.abs(r) < 1e-12) fail('0で割っています'); v /= r; } else v *= r;
+        if (op === '/') { if (Math.abs(r) < 1e-12) fail(JE('0で割っています', 'Division by 0')); v /= r; } else v *= r;
       } else break;
     }
     return v;
@@ -1122,8 +1277,8 @@ function standardEval(kinds) {
   }
   try {
     const v = expr();
-    if (pos < T.length) fail('式になっていません');
-    if (!isFinite(v) || Math.abs(v) > LIMIT) fail('大きすぎて計算できません');
+    if (pos < T.length) fail(JE('式になっていません', 'Not a valid equation'));
+    if (!isFinite(v) || Math.abs(v) > LIMIT) fail(JE('大きすぎて計算できません', 'Too large to compute'));
     return { ok: true, v };
   } catch (err) {
     return { ok: false, reason: err.message };
@@ -1214,18 +1369,18 @@ function beginRound(){
   render();
   rollTarget(S.target);
   const bn = $('banner');
-  bn.textContent = S.tutorial ? '練習' : `ROUND ${S.round}`;
+  bn.textContent = S.tutorial ? JE('練習', 'PRACTICE') : `ROUND ${S.round}`;
   bn.classList.remove('show'); void bn.offsetWidth; bn.classList.add('show');
   for(let i = 0; i < 7; i++) setTimeout(() => clack(0.16, 1500 + i * 120), 80 + i * 70);
 }
 const TIPS = [
-  '余ったカードは、「＋0」や「×1」のように値を変えない形で使えます。',
-  '数字カードを続けて並べると、大きな数を作れます(1と2で12)。',
-  '完成できそうにない手札は、早めに入れ替えましょう。',
-  'ボーナス札(★)を手札に集めると、ブーストが増えます。',
-  '3ターン以内に完成すると、「スピード」で最大ブースト+5を得られます。',
-  '√ や ! を使うと、数を大きく変えられます(4! = 24、√9 = 3)。',
-  '同じ数字を3枚そろえるとブースト+3、4枚そろえると+4です。'
+  ['余ったカードは、「＋0」や「×1」のように値を変えない形で使えます。', "Leftover cards can be used without changing the value, like \"+0\" or \"\u00d71\"."],
+  ['数字カードを続けて並べると、大きな数を作れます(1と2で12)。', "Put digits side by side to make big numbers (1 and 2 make 12)."],
+  ['完成できそうにない手札は、早めに入れ替えましょう。', "If your hand looks hopeless, swap cards early."],
+  ['ボーナス札(★)を手札に集めると、ブーストが増えます。', "Collect bonus cards (\u2605) in your hand to raise your boost."],
+  ['3ターン以内に完成すると、「スピード」で最大ブースト+5を得られます。', "Complete within 3 turns for \"Speed\", up to boost +5."],
+  ['√ や ! を使うと、数を大きく変えられます(4! = 24、√9 = 3)。', "\u221a and ! change numbers a lot (4! = 24, \u221a9 = 3)."],
+  ['同じ数字を3枚そろえるとブースト+3、4枚そろえると+4です。', "Three of the same digit gives boost +3; four gives +4."]
 ];
 function syncReady(){
   const w = !!S.waiting;
@@ -1233,8 +1388,8 @@ function syncReady(){
   $('play').classList.toggle('waiting', w);
   if(w){
     $('ready-round').textContent = `ROUND ${S.round} / ${ROUNDS}`;
-    $('ready-sub').textContent = (S.daily ? `今日の一戦 ${S.daily.md} です。全員が同じ盤面で遊びます。` : '') + (S.round > 1 ? `現在の合計は ${S.total.toLocaleString()}点です。準備ができたら「スタート」を押してください。` : '準備ができたら「スタート」を押してください。場の数と手札が配られます。');
-    $('ready-tip').textContent = 'コツ: ' + TIPS[S.readyTip || 0];
+    $('ready-sub').textContent = (S.daily ? JE(`今日の一戦 ${S.daily.md} です。全員が同じ盤面で遊びます。`, `Daily game ${S.daily.md}. Everyone plays the same deal. `) : '') + (S.round > 1 ? JE(`現在の合計は ${S.total.toLocaleString()}点です。準備ができたら「スタート」を押してください。`, `Your total is ${S.total.toLocaleString()} pts. Press "Start" when ready.`) : JE('準備ができたら「スタート」を押してください。場の数と手札が配られます。', 'Press "Start" when ready. The target and your hand will be dealt.'));
+    $('ready-tip').textContent = JE('コツ: ', 'Tip: ') + JE(...TIPS[S.readyTip || 0]);
   }
 }
 // 7) 今やることの1行
@@ -1243,10 +1398,10 @@ function updateGoal(){
   if(S.tutorial || S.waiting || S.over){ g.textContent = ''; return; }
   const left = MAX_TURN - S.turn;
   let t;
-  if(S.sel >= 0) t = dblDiscard ? '選んだカードをもう一度タップすると捨てられます' : '「捨てる」を押すと捨てられます';
-  else if(S.turn === 1 && !S.redealt && redealReason()) t = '数字カードが少ないため、配り直しができます';
-  else if(left <= 2) t = `残り${left + 1}ターンです。完成できないと、このラウンドは0点になります`;
-  else t = `手札の7枚で「${S.target}」を作りましょう`;
+  if(S.sel >= 0) t = dblDiscard ? JE('選んだカードをもう一度タップすると捨てられます', 'Tap the selected card again to discard it') : JE('「捨てる」を押すと捨てられます', 'Press "Discard" to discard it');
+  else if(S.turn === 1 && !S.redealt && redealReason()) t = JE('数字カードが少ないため、配り直しができます', 'You have few digit cards, so you can redeal');
+  else if(left <= 2) t = JE(`残り${left + 1}ターンです。完成できないと、このラウンドは0点になります`, `${left + 1} turns left. If you cannot complete, this round scores 0`);
+  else t = JE(`手札の7枚で「${S.target}」を作りましょう`, `Make ${S.target} with your 7 cards`);
   g.textContent = t;
 }
 $('ready-go').addEventListener('click', () => { if(!S.waiting) return; audio(); clack(0.2, 1800); beginRound(); });
@@ -1254,8 +1409,8 @@ $('ready-go').addEventListener('click', () => { if(!S.waiting) return; audio(); 
 function setMsg(t, cls){ const m=$('msg'); m.textContent=t; m.className='msg '+(cls||''); }
 
 function render(){
-  $('round').textContent = S.tutorial ? '練習ラウンド' : S.daily ? `今日の一戦 ${S.round} / ${ROUNDS}` : `ラウンド ${S.round} / ${ROUNDS}`;
-  $('total').textContent = S.tutorial ? '' : `合計 ${S.total.toLocaleString()} 点`;
+  $('round').textContent = S.tutorial ? JE('練習ラウンド', 'Practice round') : S.daily ? JE(`今日の一戦 ${S.round} / ${ROUNDS}`, `Daily ${S.round} / ${ROUNDS}`) : JE(`ラウンド ${S.round} / ${ROUNDS}`, `Round ${S.round} / ${ROUNDS}`);
+  $('total').textContent = S.tutorial ? '' : JE(`合計 ${S.total.toLocaleString()} 点`, `Total ${S.total.toLocaleString()} pts`);
   if(!$('target').classList.contains('rolling')) $('target').textContent = S.waiting ? '--' : S.target;
   $('pips').innerHTML = S.tutorial ? '' : Array.from({length:ROUNDS}, (_, i) => `<i class="${i < S.round - 1 ? 'done' : i === S.round - 1 ? 'cur' : ''}"></i>`).join('');
   $('turn').textContent = S.turn;
@@ -1272,7 +1427,7 @@ function render(){
   S.hand.forEach((k,i) => {
     const b = document.createElement('button');
     b.className = 'card ' + kindClass(k) + (i===S.sel ? ' sel' : '') + (k===S.dora ? ' dora' : '');
-    b.setAttribute('aria-label', `${SPOKEN[k] || k}、基本点${PTS[k]}${k===S.dora ? '、ボーナス札' : ''}${i===S.sel ? '、選択中' : ''}`);
+    b.setAttribute('aria-label', JE(`${spk(k)}、基本点${PTS[k]}${k===S.dora ? '、ボーナス札' : ''}${i===S.sel ? '、選択中' : ''}`, `${spk(k)}, ${PTS[k]} base points${k===S.dora ? ', bonus card' : ''}${i===S.sel ? ', selected' : ''}`));
     b.innerHTML = SYMBOL[k] || k;
     if(i===S.newIdx) b.insertAdjacentHTML('beforeend','<span class="new">NEW</span>');
     b.insertAdjacentHTML('beforeend',`<span class="pt">${PTS[k]}</span>`);
@@ -1309,7 +1464,7 @@ function updateLive(){
   $('live').textContent = '';
   if(!on) return;
   const r = standardEval(S.hand);
-  $('live').textContent = r.ok ? `現在の並び = ${Math.round(r.v * 1e6) / 1e6}` : r.reason;
+  $('live').textContent = r.ok ? JE('現在の並び = ', 'Current order = ') + Math.round(r.v * 1e6) / 1e6 : r.reason;
 }
 $('calc').addEventListener('click', () => {
   if(S.over || S.busy) return;
@@ -1321,13 +1476,13 @@ $('calc').addEventListener('click', () => {
 // 九種九牌風: 最初の手の数字が3枚以下なら1回だけ無料で配り直せる
 function redealReason(){
   const digits = S.hand.filter(k => k >= '0' && k <= '9').length;
-  return digits <= 3 ? '数字が3枚以下' : '';
+  return digits <= 3 ? JE('数字が3枚以下', '3 or fewer digits') : '';
 }
 function updateRedeal(){
   if(S.tutorial){ $('redeal').classList.add('hide'); return; }
   const why = (S.turn === 1 && !S.redealt && !S.over) ? redealReason() : '';
   $('redeal').classList.toggle('hide', !why);
-  if(why) $('redeal').textContent = '配り直し';
+  if(why) $('redeal').textContent = JE('配り直し', 'Redeal');
 }
 
 // タップ=捨てる札の選択、ドラッグ=並べ替え。
@@ -1396,33 +1551,33 @@ function onDown(e, i){
 // ---- 役と点数 ----
 const isPrime = n => { if(!Number.isInteger(n) || n < 2) return false; for(let i=2;i*i<=n;i++) if(n%i===0) return false; return true; };
 const YAKU_LIST = [
-  ['ボーナス札','手札にボーナス札と同じカードがある(1枚ごと)',1],
-  ['素数の場','場の数が素数',1],
-  ['スピード','1、2、3ターン目に完成する(+5、+4、+3)','5/4/3'],
-  ['ギリギリ','23、24、25ターン目に完成する(+3、+4、+5)','3/4/5'],
-  ['小さい数だけ','数字カードが0〜5のみ',1],
-  ['大きい数だけ','数字カードが6〜9のみ',1],
-  ['中間の数字','数字カードが2〜8のみ',1],
-  ['偶数だけ','数字カードが偶数のみ',1],
-  ['奇数だけ','数字カードが奇数のみ',2],
-  ['3桁の数','式の中に3桁の数がある',2],
-  ['4桁の数','式の中に4桁の数がある',3],
-  ['同じ数字3枚','同じ数字カードが3枚',3],
-  ['同じ数字3枚×2','同じ数字3枚の組が2種類ある',5],
-  ['同じ数字4枚','同じ数字カードが4枚',4],
-  ['記号づかい','√ ! ^ を計2枚以上',1],
-  ['素数だけ','式内の数がすべて素数',3],
-  ['記号そろい','√ ! ^ を1つずつ',3],
-  ['左右対称','カードの並びが左右対称',3],
+  ['ボーナス札','手札にボーナス札と同じカードがある(1枚ごと)',1,'Cards matching the bonus card (each)'],
+  ['素数の場','場の数が素数',1,'Target is prime'],
+  ['スピード','1、2、3ターン目に完成する(+5、+4、+3)','5/4/3','Complete on turn 1, 2, 3 (+5, +4, +3)'],
+  ['ギリギリ','23、24、25ターン目に完成する(+3、+4、+5)','3/4/5','Complete on turn 23, 24, 25 (+3, +4, +5)'],
+  ['小さい数だけ','数字カードが0〜5のみ',1,'All digits 0–5'],
+  ['大きい数だけ','数字カードが6〜9のみ',1,'All digits 6–9'],
+  ['中間の数字','数字カードが2〜8のみ',1,'All digits 2–8'],
+  ['偶数だけ','数字カードが偶数のみ',1,'All digits even'],
+  ['奇数だけ','数字カードが奇数のみ',2,'All digits odd'],
+  ['3桁の数','式の中に3桁の数がある',2,'A 3-digit number in the equation'],
+  ['4桁の数','式の中に4桁の数がある',3,'A 4-digit number in the equation'],
+  ['同じ数字3枚','同じ数字カードが3枚',3,'Three cards of the same digit'],
+  ['同じ数字3枚×2','同じ数字3枚の組が2種類ある',5,'Two sets of three'],
+  ['同じ数字4枚','同じ数字カードが4枚',4,'Four cards of the same digit'],
+  ['記号づかい','√ ! ^ を計2枚以上',1,'2 or more of √ ! ^ in total'],
+  ['素数だけ','式内の数がすべて素数',3,'Every number is prime'],
+  ['記号そろい','√ ! ^ を1つずつ',3,'One each of √, !, ^'],
+  ['左右対称','カードの並びが左右対称',3,'The row reads the same both ways'],
 ];
 function judge(hand, target, turn){
   const yaku = [];
   const add = (name, han, note) => yaku.push({ name, han, note: note || '' });
   const dora = hand.filter(k => k === S.dora).length;
   if(dora) add(`ボーナス札「${SYMBOL[S.dora] || S.dora}」${dora}枚`, dora);
-  if(isPrime(target)) add('素数の場', 1, target + ' は素数');
-  if(turn <= 3) add('スピード', 6 - turn, turn + 'ターン目');
-  if(turn >= MAX_TURN - 2 && turn <= MAX_TURN) add('ギリギリ', turn - MAX_TURN + 5, turn + 'ターン目');
+  if(isPrime(target)) add('素数の場', 1, JE(target + ' は素数', target + ' is prime'));
+  if(turn <= 3) add('スピード', 6 - turn, JE(turn + 'ターン目', 'turn ' + turn));
+  if(turn >= MAX_TURN - 2 && turn <= MAX_TURN) add('ギリギリ', turn - MAX_TURN + 5, JE(turn + 'ターン目', 'turn ' + turn));
   const digits = hand.filter(k => k >= '0' && k <= '9').map(Number);
   if(digits.length && digits.every(d => d <= 5)) add('小さい数だけ', 1, '0〜5');
   else if(digits.length && digits.every(d => d >= 6)) add('大きい数だけ', 1, '6〜9');
@@ -1505,17 +1660,17 @@ function fanfare(big){
   notes.forEach((f,i) => { tone(f, 0.35, 'triangle', 0.14, i * 0.11); tone(f * 2, 0.3, 'sine', 0.05, i * 0.11); });
   jan(big ? 9 : 6);
 }
-$('mute').querySelector('.lb').textContent = muted ? '音なし' : '音';
+$('mute').querySelector('.lb').textContent = muted ? JE('音なし', 'Muted') : JE('音', 'Sound');
 $('mute').addEventListener('click', () => {
   muted = !muted;
-  $('mute').querySelector('.lb').textContent = muted ? '音なし' : '音';
+  $('mute').querySelector('.lb').textContent = muted ? JE('音なし', 'Muted') : JE('音', 'Sound');
   try { localStorage.setItem('tachishiki-muted', muted ? '1' : '0'); } catch(e) {}
 });
 
 // 選んだ札をもう一度タップで切る(捨てる)。初期ON
 let dblDiscard = true;
 try { dblDiscard = localStorage.getItem('tachishiki-dbl') !== '0'; } catch(e) {}
-const showDbl = () => { $('dbl').textContent = '2回タップで捨てる: ' + (dblDiscard ? 'ON' : 'OFF'); };
+const showDbl = () => { $('dbl').textContent = JE('2回タップで捨てる: ', 'Double-tap to discard: ') + (dblDiscard ? 'ON' : 'OFF'); };
 showDbl();
 $('dbl').addEventListener('click', () => {
   dblDiscard = !dblDiscard;
@@ -1525,6 +1680,8 @@ $('dbl').addEventListener('click', () => {
 
 // ---- v2: 動き・触感・キーボード・ガイド ----
 const SPOKEN = { '+':'プラス','-':'マイナス','*':'かける','/':'わる','!':'階乗','^':'べき乗','r':'ルート' };
+const SPOKEN_EN = { '+':'plus','-':'minus','*':'times','/':'divided by','!':'factorial','^':'power','r':'root' };
+const spk = k => (LANG === 'en' ? SPOKEN_EN : SPOKEN)[k] || k;
 const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 function vib(p){ try { if(navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate(p); } catch(e) {} }
 
@@ -1635,15 +1792,15 @@ $('cards').addEventListener('keydown', e => {
 
 // 初回ガイド(3ステップ。一度見たら出ない)
 const COACH = [
-  'カードを<b>ドラッグ</b>して、好きな位置に移動できます。',
-  'カードを<b>タップして選び</b>、もう一度タップすると捨てられます。',
-  '7枚すべてを使って<b>場の数</b>を作れたら、「完成」を押します。'
+  ['カードを<b>ドラッグ</b>して、好きな位置に移動できます。', "<b>Drag</b> cards to move them anywhere."],
+  ['カードを<b>タップして選び</b>、もう一度タップすると捨てられます。', "<b>Tap a card</b> to select it, and tap again to discard it."],
+  ['7枚すべてを使って<b>場の数</b>を作れたら、「完成」を押します。', "When all 7 cards make the <b>target</b>, press \"Complete\"."]
 ];
 let coachStep = 0;
 function showCoach(){
   $('coach').classList.remove('hide');
-  $('coach-t').innerHTML = `<span class="coach-n">${coachStep + 1}/${COACH.length}</span>${COACH[coachStep]}`;
-  $('coach-next').textContent = coachStep === COACH.length - 1 ? 'はじめる' : '次へ';
+  $('coach-t').innerHTML = `<span class="coach-n">${coachStep + 1}/${COACH.length}</span>${JE(...COACH[coachStep])}`;
+  $('coach-next').textContent = coachStep === COACH.length - 1 ? JE('はじめる', 'Start') : JE('次へ', 'Next');
 }
 function endCoach(){
   $('coach').classList.add('hide');
@@ -1654,7 +1811,7 @@ function startCoach(){
   coachStep = 0; showCoach();
 }
 $('coach-next').addEventListener('click', () => {
-  if(S.tutorial){ setMsg('例: 3×4＋5−0 = 17(他の並べ方でもかまいません)', 'ok'); return; }
+  if(S.tutorial){ setMsg(JE('例: 3×4＋5−0 = 17(他の並べ方でもかまいません)', 'Example: 3×4＋5−0 = 17 (other orders are fine too)'), 'ok'); return; }
   if(coachStep >= COACH.length - 1) endCoach(); else { coachStep++; showCoach(); }
 });
 $('coach-skip').addEventListener('click', () => { if(S.tutorial){ exitTutorial(true); showView('title'); return; } endCoach(); });
@@ -1685,23 +1842,23 @@ function showRecords(){
   $('rec-body').innerHTML = all.length
     ? all.map((r, i) => {
         const d = new Date(r.t);
-        return `<div class="rec-row"><span class="rec-no">${i + 1}</span><span class="rec-pt">${r.total.toLocaleString()}点</span><span class="rec-title">${r.title}</span><span class="rec-sub">${r.daily ? '今日の一戦 ' + r.daily + ' ・ ' : ''}${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ・ ${r.scores.map(v => v.toLocaleString()).join(' / ')}</span></div>`;
+        return `<div class="rec-row"><span class="rec-no">${i + 1}</span><span class="rec-pt">${r.total.toLocaleString()}${JE('点', ' pts')}</span><span class="rec-title">${NM(r.title)}</span><span class="rec-sub">${r.daily ? JE('今日の一戦 ', 'Daily ') + r.daily + ' ・ ' : ''}${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ・ ${r.scores.map(v => v.toLocaleString()).join(' / ')}</span></div>`;
       }).join('')
-    : '<div class="rec-empty">まだ記録がありません。最後のラウンドまで遊ぶと記録されます。</div>';
+    : '<div class="rec-empty">' + JE('まだ記録がありません。最後のラウンドまで遊ぶと記録されます。', 'No records yet. A record is saved when you finish the last round.') + '</div>';
   $('rec-clear').disabled = !all.length;
-  $('rec-rank').textContent = '称号: ' + DAN.slice().reverse().map(d => `${d[1]} ${d[0].toLocaleString()}点〜`).join(' / ');
+  $('rec-rank').textContent = JE('称号: ', 'Titles: ') + DAN.slice().reverse().map(d => `${NM(d[1])} ${d[0].toLocaleString()}${JE('点〜', '+')}`).join(' / ');
   if(typeof $('records').showModal === 'function') $('records').showModal(); else $('records').setAttribute('open', '');
 }
 $('recbtn').addEventListener('click', showRecords);
 $('sh-rec').addEventListener('click', showRecords);
 $('rec-close').addEventListener('click', () => $('records').close());
 $('rec-clear').addEventListener('click', () => {
-  if(confirm('この端末の記録をすべて消します。よろしいですか?')){ saveRecords([]); showRecords(); toast('記録を消しました'); }
+  if(confirm(JE('この端末の記録をすべて消します。よろしいですか?', 'Delete all records on this device?'))){ saveRecords([]); showRecords(); toast(JE('記録を消しました', 'Records deleted')); }
 });
 
 const shareText = () => S.daily
-  ? `MATHMATH 今日の一戦 ${S.daily.md} で ${S.total.toLocaleString()}点(${S.lastDan})!\n同じ盤面で遊べます。 #MATHMATH`
-  : `MATHMATH で ${S.total.toLocaleString()}点(${S.lastDan})!\n7枚のカードで数式をつくるゲーム #MATHMATH`;
+  ? JE(`MATHMATH 今日の一戦 ${S.daily.md} で ${S.total.toLocaleString()}点(${S.lastDan})!\n同じ盤面で遊べます。 #MATHMATH`, `I scored ${S.total.toLocaleString()} pts (${NM(S.lastDan)}) in the MATHMATH daily game ${S.daily.md}!\nPlay the same deal. #MATHMATH`)
+  : JE(`MATHMATH で ${S.total.toLocaleString()}点(${S.lastDan})!\n7枚のカードで数式をつくるゲーム #MATHMATH`, `I scored ${S.total.toLocaleString()} pts (${NM(S.lastDan)}) in MATHMATH!\nMake an equation with 7 cards. #MATHMATH`);
 async function copyText(text){
   try { await navigator.clipboard.writeText(text); return true; }
   catch(e) {
@@ -1724,13 +1881,13 @@ function drawShareCard(){
   c.strokeRect(28, 28, W - 56, H - 56); c.setLineDash([]);
   c.fillStyle = '#fff'; c.textBaseline = 'alphabetic';
   c.font = `800 54px ${font}`; c.fillText('MATHMATH', 72, 120);
-  c.font = `28px "Yomogi",${font}`; c.fillStyle = 'rgba(255,255,255,.75)'; c.fillText('7枚のカードで数式をつくるゲーム', 72, 166);
+  c.font = `28px "Yomogi",${font}`; c.fillStyle = 'rgba(255,255,255,.75)'; c.fillText(JE('7枚のカードで数式をつくるゲーム', 'Make an equation with 7 cards'), 72, 166);
   c.fillStyle = '#ffd84a'; c.font = `800 190px ${font}`;
   const pts = S.total.toLocaleString();
   c.fillText(pts, 72, 400);
   const w = c.measureText(pts).width;
-  c.font = `700 56px ${font}`; c.fillText('点', 72 + w + 14, 400);
-  c.fillStyle = '#fff'; c.font = `800 84px ${font}`; c.fillText(S.lastDan, 72, 510);
+  c.font = `700 56px ${font}`; c.fillText(JE('点', 'pts'), 72 + w + 14, 400);
+  c.fillStyle = '#fff'; c.font = `800 84px ${font}`; c.fillText(NM(S.lastDan), 72, 510);
   c.font = `500 28px ${font}`; c.fillStyle = 'rgba(255,255,255,.85)';
   c.fillText(S.scores.map((v, i) => `R${i + 1} ${v.toLocaleString()}`).join('   '), 72, 568);
   c.textAlign = 'right'; c.fillStyle = 'rgba(255,255,255,.7)'; c.font = `500 24px ${font}`;
@@ -1741,14 +1898,14 @@ $('sh-x').addEventListener('click', () => {
   const u = `https://x.com/intent/post?text=${encodeURIComponent(shareText())}&url=${encodeURIComponent(SHARE_URL)}`;
   window.open(u, '_blank', 'noopener');
 });
-$('sh-copy').addEventListener('click', async () => { toast(await copyText(shareText() + '\n' + SHARE_URL) ? '結果をコピーしました' : 'コピーできませんでした'); });
+$('sh-copy').addEventListener('click', async () => { toast(await copyText(shareText() + '\n' + SHARE_URL) ? JE('結果をコピーしました', 'Result copied') : JE('コピーできませんでした', 'Could not copy')); });
 $('sh-native').addEventListener('click', async () => {
   try { await navigator.share({ title: 'MATHMATH', text: shareText(), url: SHARE_URL }); }
-  catch(e) { if(e && e.name !== 'AbortError') toast('共有できませんでした'); }
+  catch(e) { if(e && e.name !== 'AbortError') toast(JE('共有できませんでした', 'Could not share')); }
 });
 $('sh-img').addEventListener('click', () => {
   drawShareCard().toBlob(async blob => {
-    if(!blob){ toast('画像を作れませんでした'); return; }
+    if(!blob){ toast(JE('画像を作れませんでした', 'Could not create the image')); return; }
     const file = new File([blob], 'mathmath-result.png', { type: 'image/png' });
     try {
       if(navigator.canShare && navigator.canShare({ files: [file] })){
@@ -1760,7 +1917,7 @@ $('sh-img').addEventListener('click', () => {
     a.href = URL.createObjectURL(blob); a.download = 'mathmath-result.png';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    toast('画像を保存しました');
+    toast(JE('画像を保存しました', 'Image saved'));
   }, 'image/png');
 });
 if(!navigator.share) $('sh-native').classList.add('hide');
@@ -1772,7 +1929,7 @@ function restartGame(){
   if(dlg.open) dlg.close();
   if(restartMode === 'daily') newDaily(); else newGame();
   showView('game');
-  toast('ラウンド1から始めました');
+  toast(JE('ラウンド1から始めました', 'Started from round 1'));
 }
 function askRestart(mode){
   if(S.busy) return;
@@ -1780,10 +1937,32 @@ function askRestart(mode){
   // まだ何も進んでいないときは確認なしで最初から
   const untouched = S.round === 1 && S.turn === 1 && !S.scores.length && !S.hinted && S.calcTurn !== 1;
   if(untouched){ restartGame(); return; }
-  $('rs-text').textContent = `現在はラウンド${S.round}の${S.turn}ターン目、合計${S.total.toLocaleString()}点です。やり直すと、途中経過は消えます(保存済みの記録は残ります)。`;
+  $('rs-text').textContent = JE(`現在はラウンド${S.round}の${S.turn}ターン目、合計${S.total.toLocaleString()}点です。やり直すと、途中経過は消えます(保存済みの記録は残ります)。`, `You are on turn ${S.turn} of round ${S.round}, with ${S.total.toLocaleString()} pts. Starting over clears this progress (saved records remain).`);
   if(typeof $('restart-confirm').showModal === 'function') $('restart-confirm').showModal(); else $('restart-confirm').setAttribute('open', '');
 }
 $('homebtn').addEventListener('click', () => { if(S.tutorial) exitTutorial(true); showView('title'); });
+// ---- プレイ中に説明を見る(見終わったら、いまのゲームに戻る) ----
+var guideReturn = null;
+function openGuideMenu(from){ guideFrom = from; $('guide-menu').showModal(); }
+var guideFrom = 'game';
+function openGuide(name){
+  $('guide-menu').close();
+  guideReturn = guideFrom;
+  document.body.dataset.from = 'play';
+  if(guideReturn === 'cpu'){ cpuPaused = true; cpuBarPause(true); }
+  if(name === 'howto') openIntro(0); else showView(name);
+}
+function backToPlay(){
+  const v = guideReturn;
+  guideReturn = null; delete document.body.dataset.from;
+  showView(v);
+  if(v === 'cpu'){ cpuPaused = false; cpuBarPause(false); }
+}
+const guideBack = fallback => () => { if(guideReturn) backToPlay(); else fallback(); };
+$('guidebtn').addEventListener('click', () => openGuideMenu('game'));
+$('cpu-guide').addEventListener('click', () => openGuideMenu('cpu'));
+$('gm-close').addEventListener('click', () => $('guide-menu').close());
+$('guide-menu').querySelectorAll('[data-guide]').forEach(b => b.addEventListener('click', () => openGuide(b.dataset.guide)));
 $('restart2').addEventListener('click', () => askRestart());
 $('rs-cancel').addEventListener('click', () => $('restart-confirm').close());
 $('rs-ok').addEventListener('click', restartGame);
@@ -1804,17 +1983,19 @@ try { practiced = localStorage.getItem('tachishiki-practiced') === '1'; } catch(
 function refreshTitle(){
   const p = progressed();
   $('t-continue').classList.toggle('hide', !p);
-  $('t-start').textContent = p ? 'はじめから' : 'はじめる';
+  $('t-start').textContent = p ? JE('はじめから', 'Restart') : JE('はじめる', 'Start');
   const di = dailyInfo(), db = dailyBest(di.key);
-  $('t-daily-sub').textContent = di.md + (db ? ` ・ 今日の最高 ${db.toLocaleString()}点` : '');
+  $('t-daily-sub').textContent = di.md + (db ? JE(` ・ 今日の最高 ${db.toLocaleString()}点`, ` ・ Best today ${db.toLocaleString()} pts`) : '');
   $('t-practice').classList.toggle('suggest', !practiced);
   const rec = loadRecords();
-  $('t-best').textContent = rec.length ? `自己ベスト ${rec[0].total.toLocaleString()}点(${rec[0].title})` : 'まだ記録がありません';
-  $('t-sound').textContent = muted ? '音 OFF' : '音 ON';
+  $('t-best').textContent = rec.length ? JE(`自己ベスト ${rec[0].total.toLocaleString()}点(${rec[0].title})`, `Best ${rec[0].total.toLocaleString()} pts (${NM(rec[0].title)})`) : JE('まだ記録がありません', 'No records yet');
+  $('t-sound').textContent = muted ? JE('音 OFF', 'Sound OFF') : JE('音 ON', 'Sound ON');
   fillTiles();
 }
 function showView(name){
-  ['title', 'howto', 'cardguide', 'bonusguide', 'game'].forEach(v => $(v).classList.toggle('hide', v !== name));
+  if(LANG === 'en' && name in INTRO_AT){ openIntro(INTRO_AT[name]); return; }   // 英語では、説明のページの代わりにスライドを開く
+  ['title', 'howto', 'cardguide', 'bonusguide', 'game', 'cpu', 'intro'].forEach(v => $(v).classList.toggle('hide', v !== name));
+  if(name !== 'cpu' && C && !guideReturn) C.token++;   // CPU戦を離れたら進行を止める(説明を見ている間は止めるだけ)
   document.body.dataset.view = name;
   if(name !== 'game') $('banner').classList.remove('show');   // ラウンド表示が他の画面に残らないように
   toggleSheet(false);
@@ -1841,38 +2022,38 @@ function startDaily(){
 $('t-daily').addEventListener('click', startDaily);
 $('t-practice').addEventListener('click', startTutorial);
 $('h-practice').addEventListener('click', startTutorial);
-$('t-howto').addEventListener('click', () => showView('howto'));
+$('t-howto').addEventListener('click', () => openIntro(0));
 $('t-cards').addEventListener('click', () => showView('cardguide'));
 $('h-cards').addEventListener('click', () => showView('cardguide'));
-$('c-back').addEventListener('click', () => showView('title'));
+$('c-back').addEventListener('click', guideBack(() => showView('title')));
 $('c-practice').addEventListener('click', startTutorial);
 $('c-start').addEventListener('click', startFromTitle);
 $('t-bonus').addEventListener('click', () => showView('bonusguide'));
 $('h-bonus').addEventListener('click', () => showView('bonusguide'));
 $('c-bonus').addEventListener('click', () => showView('bonusguide'));
-$('b-back').addEventListener('click', () => showView('title'));
+$('b-back').addEventListener('click', guideBack(() => showView('title')));
 $('b-cards').addEventListener('click', () => showView('cardguide'));
 $('b-start').addEventListener('click', startFromTitle);
-$('h-back').addEventListener('click', () => showView('title'));
+$('h-back').addEventListener('click', guideBack(() => showView('title')));
 $('t-rec').addEventListener('click', showRecords);
-$('t-sound').addEventListener('click', () => { $('mute').click(); $('t-sound').textContent = muted ? '音 OFF' : '音 ON'; });
+$('t-sound').addEventListener('click', () => { $('mute').click(); $('t-sound').textContent = muted ? JE('音 OFF', 'Sound OFF') : JE('音 ON', 'Sound ON'); });
 
 // ---- 練習ラウンド(操作を体験する) ----
 const TUT_BAD = '8';
 const TUT_TEXT = [
-  'カードを<b>ドラッグ</b>して、左右に動かしてみましょう。',
-  '場の数は <b>17</b> です。この7枚で作れるかどうか、「<b>完成</b>」を押して確かめてみましょう。',
-  '作れないときは、カードを<b>1枚捨てて</b>入れ替えます。<b>「8」</b>のカードをタップして選び、もう一度タップ(または「捨てる」を押す)して捨ててみましょう。',
-  '山札から <b>「0」</b> を引きました。「0」は <b>−0</b> のように、値を変えない形で使えます。たとえば <b>3×4＋5−0</b> と並べて、「<b>完成</b>」を押してみましょう。'
+  ['カードを<b>ドラッグ</b>して、左右に動かしてみましょう。', "<b>Drag</b> a card left or right."],
+  ['場の数は <b>17</b> です。この7枚で作れるかどうか、「<b>完成</b>」を押して確かめてみましょう。', "The target is <b>17</b>. Press \"<b>Complete</b>\" to check whether these 7 cards make it."],
+  ['作れないときは、カードを<b>1枚捨てて</b>入れ替えます。<b>「8」</b>のカードをタップして選び、もう一度タップ(または「捨てる」を押す)して捨ててみましょう。', "If not, <b>discard one card</b> to swap it. Tap the <b>\"8\"</b> to select it, then tap it again (or press \"Discard\")."],
+  ['山札から <b>「0」</b> を引きました。「0」は <b>−0</b> のように、値を変えない形で使えます。たとえば <b>3×4＋5−0</b> と並べて、「<b>完成</b>」を押してみましょう。', "You drew a <b>\"0\"</b>. A 0 can be used without changing the value, like <b>\u22120</b>. Arrange <b>3\u00d74\uff0b5\u22120</b> and press \"<b>Complete</b>\"."]
 ];
 let savedGame = null;
 function setTut(step){
   S.tutStep = step;
   const c = $('coach');
   c.classList.remove('hide'); c.classList.add('tut');
-  $('coach-t').innerHTML = `<span class="coach-n">練習 ${step + 1}/4</span>${TUT_TEXT[step]}`;
-  $('coach-skip').textContent = 'やめる';
-  $('coach-next').textContent = '答え';
+  $('coach-t').innerHTML = `<span class="coach-n">${JE('練習', 'Practice')} ${step + 1}/4</span>${JE(...TUT_TEXT[step])}`;
+  $('coach-skip').textContent = JE('やめる', 'Quit');
+  $('coach-next').textContent = JE('答え', 'Answer');
   $('coach-next').classList.toggle('hide', step !== 3);
 }
 function tutCheck(){
@@ -1907,17 +2088,17 @@ $('td-title-btn').addEventListener('click', () => { $('tut-done').close(); exitT
 
 // ---- 用語の「?」 ----
 const TERMS = {
-  target: ['場の数', '式で作る目標の数です。手札の7枚をすべて使って、この数と同じ値になる式を作ります。'],
-  bonus:  ['ボーナス札', 'ラウンドごとに決まるカードです。手札の同じカード(★)1枚につき、ブーストが1増えます。'],
-  deck:   ['山札', 'これから引くカードの山です。カードを捨てると、ここから1枚引きます。数字は残りの枚数を表します。'],
-  turn:   ['ターン', 'カードを1枚捨てて山札から引くと、1ターン進みます。1ラウンドは25ターンまでで、完成できなかったラウンドは0点になります。'],
-  river:  ['捨て札', 'これまでに捨てたカードの列です。'],
-  base:   ['基本点', 'カードごとの使いにくさを表す点数です(カードの右下の小さい数字)。完成した7枚の合計が、点数の基礎になります。'],
-  boost:  ['ブースト', 'ボーナスの条件を満たすと増える値です。1増えるごとに点数が2倍になります。点数は、基本点の合計 × 2^ブースト × 100 で計算します。']
+  target: ['場の数', '式で作る目標の数です。手札の7枚をすべて使って、この数と同じ値になる式を作ります。', 'Target', 'The number your equation must equal. Use all 7 cards to make an equation with this value.'],
+  bonus:  ['ボーナス札', 'ラウンドごとに決まるカードです。手札の同じカード(★)1枚につき、ブーストが1増えます。', 'Bonus card', 'A card chosen each round. Each matching card (★) in your hand adds 1 boost.'],
+  deck:   ['山札', 'これから引くカードの山です。カードを捨てると、ここから1枚引きます。数字は残りの枚数を表します。', 'Deck', 'The pile you draw from. After discarding, you draw one card from here. The number shows how many are left.'],
+  turn:   ['ターン', 'カードを1枚捨てて山札から引くと、1ターン進みます。1ラウンドは25ターンまでで、完成できなかったラウンドは0点になります。', 'Turn', 'Discarding a card and drawing one moves one turn forward. A round lasts up to 25 turns; a round you cannot complete scores 0.'],
+  river:  ['捨て札', 'これまでに捨てたカードの列です。', 'Discards', 'The cards you have discarded so far.'],
+  base:   ['基本点', 'カードごとの使いにくさを表す点数です(カードの右下の小さい数字)。完成した7枚の合計が、点数の基礎になります。', 'Base points', 'How hard each card is to use (the small number on each card). The total of your 7 cards is the basis of your score.'],
+  boost:  ['ブースト', 'ボーナスの条件を満たすと増える値です。1増えるごとに点数が2倍になります。点数は、基本点の合計 × 2^ブースト × 100 で計算します。', 'Boost', 'Rises when you meet bonus conditions. Each +1 doubles your score. Score = base points total × 2^boost × 100.']
 };
 function openTerm(key){
   const t = TERMS[key]; if(!t) return;
-  $('term-title').textContent = t[0]; $('term-text').textContent = t[1];
+  $('term-title').textContent = JE(t[0], t[2]); $('term-text').textContent = JE(t[1], t[3]);
   if(typeof $('term').showModal === 'function') $('term').showModal(); else $('term').setAttribute('open', '');
 }
 document.addEventListener('click', e => {
@@ -2053,8 +2234,8 @@ async function reveal(hand, str, target, jd){
   $('ov-qm').classList.add('hide'); $('ov-review').classList.add('hide');
   $('ov-score').textContent = ''; $('ov-tier').textContent = ''; $('ov-tier').className = 'ov-tier';
   $('ov-next').classList.add('hide'); $('ov-skipmsg').classList.remove('hide');
-  const t = $('ov-title'); t.textContent = '完成！'; t.classList.remove('dim'); t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop');
-  $('ov-next').textContent = S.tutorial ? '次へ' : (S.round >= ROUNDS ? '結果' : '次へ');
+  const t = $('ov-title'); t.textContent = JE('完成！', 'Complete!'); t.classList.remove('dim'); t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop');
+  $('ov-next').textContent = S.tutorial ? JE('次へ', 'Next') : (S.round >= ROUNDS ? JE('結果', 'Results') : JE('次へ', 'Next'));
   jan(0);
   await sleep(700);
 
@@ -2063,16 +2244,16 @@ async function reveal(hand, str, target, jd){
   await sleep(600);
 
   if(!jd.yaku.length){
-    $('ov-yaku').innerHTML = '<div class="yk none"><span>ボーナスなし</span><b>ブースト+0</b></div>';
+    $('ov-yaku').innerHTML = `<div class="yk none"><span>${JE('ボーナスなし', 'No bonus')}</span><b>${JE('ブースト', 'Boost ')}+0</b></div>`;
     await sleep(500);
   }
   for(let i = 0; i < jd.yaku.length; i++){
     const y = jd.yaku[i];
-    $('ov-yaku').insertAdjacentHTML('beforeend', `<div class="yk"><span>${y.name}<small>${y.note}</small></span><b>ブースト+${y.han}</b></div>`);
+    $('ov-yaku').insertAdjacentHTML('beforeend', `<div class="yk"><span>${NM(y.name)}<small>${y.note}</small></span><b>${JE('ブースト', 'Boost ')}+${y.han}</b></div>`);
     jan(i + 1);
     await sleep(750);
   }
-  $('ov-calc').textContent = `基本点 ${jd.fu} × 2^${jd.han}(${Math.pow(2, jd.han).toLocaleString()}) × 100` + (S.hinted ? ' ÷ 2(ヒント)' : '') + (jd.calcUsed ? ' ÷ 2(電卓)' : '');
+  $('ov-calc').textContent = JE('基本点 ', 'Base ') + `${jd.fu} × 2^${jd.han}(${Math.pow(2, jd.han).toLocaleString()}) × 100` + (S.hinted ? JE(' ÷ 2(ヒント)', ' ÷ 2 (hint)') : '') + (jd.calcUsed ? JE(' ÷ 2(電卓)', ' ÷ 2 (calculator)') : '');
   $('ov-qm').classList.remove('hide');
   tick(0.5);
   await sleep(700);
@@ -2081,18 +2262,18 @@ async function reveal(hand, str, target, jd){
   const steps = 40;
   for(let i = 1; i < steps && !skip; i++){
     const e = 1 - Math.pow(1 - i / steps, 3);
-    $('ov-score').innerHTML = Math.floor(jd.points * e).toLocaleString() + '<small>点</small>';
+    $('ov-score').innerHTML = Math.floor(jd.points * e).toLocaleString() + JE('<small>点</small>', '<small> pts</small>');
     tick(i / steps);
     await sleep(45);
   }
-  $('ov-score').innerHTML = jd.points.toLocaleString() + '<small>点</small>';
+  $('ov-score').innerHTML = jd.points.toLocaleString() + JE('<small>点</small>', '<small> pts</small>');
   skip = false;
   const tier = tierOf(jd.points);
   const big = jd.points >= 20000;
   fanfare(big);
   burst(tier ? (big ? 220 : 120) : 50, big ? 1.4 : 1);
   if(tier){
-    const tr = $('ov-tier'); tr.textContent = tier; tr.classList.add('pop');
+    const tr = $('ov-tier'); tr.textContent = NM(tier); tr.classList.add('pop');
     $('ov-in').classList.remove('shake'); void $('ov-in').offsetWidth; $('ov-in').classList.add('shake');
   }
   $('ov-skipmsg').classList.add('hide');
@@ -2125,14 +2306,14 @@ function resetOverlay(title, dim){
 async function timeUp(){
   S.scores.push(0);
   (S.log = S.log || []).push({ win: false, turn: MAX_TURN, points: 0 });
-  const ov = resetOverlay('時間切れ', true);
+  const ov = resetOverlay(JE('時間切れ', 'Time up'), true);
   $('ov-hand').innerHTML = S.hand.map(tileHtml).join('');
   [...$('ov-hand').children].forEach(tl => tl.classList.add('in'));
-  $('ov-expr').textContent = `${MAX_TURN}ターンで完成できませんでした`;
+  $('ov-expr').textContent = JE(`${MAX_TURN}ターンで完成できませんでした`, `Could not complete in ${MAX_TURN} turns`);
   $('ov-expr').classList.add('in');
-  $('ov-score').innerHTML = '0<small>点</small>';
+  $('ov-score').innerHTML = JE('0<small>点</small>', '0<small> pts</small>');
   buzz();
-  $('ov-next').textContent = S.tutorial ? '次へ' : (S.round >= ROUNDS ? '結果' : '次へ');
+  $('ov-next').textContent = S.tutorial ? JE('次へ', 'Next') : (S.round >= ROUNDS ? JE('結果', 'Results') : JE('次へ', 'Next'));
   $('ov-next').classList.remove('hide');
   await new Promise(res => { $('ov-next').onclick = res; });
   ov.classList.add('hide');
@@ -2142,20 +2323,20 @@ function buildReview(){
   const L = S.log || [];
   const rows = S.scores.map((v, i) => {
     const l = L[i];
-    if(!l) return `<div class="rv-row"><b>R${i + 1}</b><span>-</span><i>${v.toLocaleString()}点</i></div>`;
-    if(!l.win) return `<div class="rv-row"><b>R${i + 1}</b><span>未完成(${l.turn}ターン)</span><i>0点</i><small>完成できない手札は、早めに入れ替えましょう</small></div>`;
-    const flags = [l.hinted ? 'ヒント' : '', l.calc ? '電卓' : ''].filter(Boolean).join('・');
-    const names = l.yaku.slice(0, 4).join('・') + (l.yaku.length > 4 ? ' ほか' : '');
-    return `<div class="rv-row"><b>R${i + 1}</b><span>${l.turn}ターンで完成 ・ ブースト+${l.han}</span><i>${l.points.toLocaleString()}点</i><small>${names || 'ボーナスなし'}${flags ? ' ・ ' + flags + 'で半分' : ''}</small></div>`;
+    if(!l) return `<div class="rv-row"><b>R${i + 1}</b><span>-</span><i>${v.toLocaleString()}${JE('点', ' pts')}</i></div>`;
+    if(!l.win) return `<div class="rv-row"><b>R${i + 1}</b><span>${JE(`未完成(${l.turn}ターン)`, `Not completed (${l.turn} turns)`)}</span><i>${JE('0点', '0 pts')}</i><small>${JE('完成できない手札は、早めに入れ替えましょう', 'Swap hopeless hands early')}</small></div>`;
+    const flags = [l.hinted ? JE('ヒント', 'hint') : '', l.calc ? JE('電卓', 'calculator') : ''].filter(Boolean).join('・');
+    const names = l.yaku.slice(0, 4).map(NM).join('・') + (l.yaku.length > 4 ? JE(' ほか', ' etc.') : '');
+    return `<div class="rv-row"><b>R${i + 1}</b><span>${JE(`${l.turn}ターンで完成 ・ ブースト+${l.han}`, `Completed in ${l.turn} turns ・ boost +${l.han}`)}</span><i>${l.points.toLocaleString()}${JE('点', ' pts')}</i><small>${names || JE('ボーナスなし', 'No bonus')}${flags ? ' ・ ' + flags + JE('で半分', ': halved') : ''}</small></div>`;
   }).join('');
   const wins = L.filter(l => l.win);
   const bi = S.scores.indexOf(Math.max(...S.scores));
   let tip;
-  if(L.some(l => !l.win)) tip = '完成できなかったラウンドは0点です。余ったカードは、「＋0」や「×1」のように値を変えない形で使えます。';
-  else if(L.some(l => l.hinted || l.calc)) tip = 'ヒントや電卓を使うと、得点は半分になります。使わずに完成できれば、点数は大きく伸びます。';
-  else if(wins.every(l => l.turn > 3)) tip = '3ターン以内に完成すると、「スピード」で最大ブースト+5を得られます。';
-  else tip = '次は、同じ数字を3枚(+3)や4枚(+4)そろえることも狙ってみましょう。';
-  $('ov-review').innerHTML = rows + `<div class="rv-best">最高の1回: <b>R${bi + 1} ${S.scores[bi].toLocaleString()}点</b></div><div class="rv-tip">${tip}</div>`;
+  if(L.some(l => !l.win)) tip = JE('完成できなかったラウンドは0点です。余ったカードは、「＋0」や「×1」のように値を変えない形で使えます。', "Rounds you could not complete score 0. Leftover cards can be used without changing the value, like \"+0\" or \"\u00d71\".");
+  else if(L.some(l => l.hinted || l.calc)) tip = JE('ヒントや電卓を使うと、得点は半分になります。使わずに完成できれば、点数は大きく伸びます。', "Hints and the calculator halve your score. Completing without them raises it a lot.");
+  else if(wins.every(l => l.turn > 3)) tip = JE('3ターン以内に完成すると、「スピード」で最大ブースト+5を得られます。', 'Complete within 3 turns for "Speed", up to boost +5.');
+  else tip = JE('次は、同じ数字を3枚(+3)や4枚(+4)そろえることも狙ってみましょう。', "Next time, aim for three (+3) or four (+4) of the same digit.");
+  $('ov-review').innerHTML = rows + `<div class="rv-best">${JE('最高の1回: ', 'Best: ')}<b>R${bi + 1} ${S.scores[bi].toLocaleString()}${JE('点', ' pts')}</b></div><div class="rv-tip">${tip}</div>`;
   $('ov-review').classList.remove('hide');
 }
 const DAN = [[55000,'数神'],[22000,'名人'],[9000,'達人'],[3500,'一人前'],[0,'見習い']];
@@ -2163,36 +2344,36 @@ async function finalScreen(){
   const ov = resetOverlay('RESULT', false);
   $('ov-hand').innerHTML = '<div class="rchips">' + S.scores.map((v,i) => `<span class="rchip">R${i+1} <b>${v.toLocaleString()}</b></span>`).join('') + '</div>';
   $('ov-hand').querySelectorAll('.tile').forEach(x => x.classList.add('in'));
-  $('ov-expr').textContent = '合計点'; $('ov-expr').classList.add('in');
+  $('ov-expr').textContent = JE('合計点', 'Total'); $('ov-expr').classList.add('in');
   jan(0);
   await sleep(700);
   const steps = 40;
   for(let i = 1; i < steps && !skip; i++){
     const e = 1 - Math.pow(1 - i / steps, 3);
-    $('ov-score').innerHTML = Math.floor(S.total * e).toLocaleString() + '<small>点</small>';
+    $('ov-score').innerHTML = Math.floor(S.total * e).toLocaleString() + JE('<small>点</small>', '<small> pts</small>');
     tick(i / steps);
     await sleep(45);
   }
-  $('ov-score').innerHTML = S.total.toLocaleString() + '<small>点</small>';
+  $('ov-score').innerHTML = S.total.toLocaleString() + JE('<small>点</small>', '<small> pts</small>');
   skip = false;
   const dan = DAN.find(x => S.total >= x[0])[1];
   S.lastDan = dan;
   const rk = addRecord(S.total, S.scores, dan, S.daily ? S.daily.md : null);
   const di = DAN.findIndex(x => S.total >= x[0]), nx = di > 0 ? DAN[di - 1] : null;
-  $('ov-rank').innerHTML = (rk.isBest ? '<b>自己ベスト更新!</b>' : `自己ベスト <b>${rk.best.toLocaleString()}点</b>`) + `(今回 ${rk.rank}位 / ${rk.count}件)`
-    + '<br>' + (nx ? `次の称号「${nx[1]}」まであと <b>${(nx[0] - S.total).toLocaleString()}点</b>` : '最高の称号です。');
+  $('ov-rank').innerHTML = (rk.isBest ? JE('<b>自己ベスト更新!</b>', '<b>New personal best!</b>') : JE(`自己ベスト <b>${rk.best.toLocaleString()}点</b>`, `Best <b>${rk.best.toLocaleString()} pts</b>`)) + JE(`(今回 ${rk.rank}位 / ${rk.count}件)`, ` (this run: #${rk.rank} of ${rk.count})`)
+    + '<br>' + (nx ? JE(`次の称号「${nx[1]}」まであと <b>${(nx[0] - S.total).toLocaleString()}点</b>`, `<b>${(nx[0] - S.total).toLocaleString()} pts</b> to the next title "${NM(nx[1])}"`) : JE('最高の称号です。', 'This is the highest title.'));
   if(S.daily){
     const db = updateDailyBest(S.daily.key, S.total);
-    $('ov-rank').innerHTML = `今日の一戦 ${S.daily.md} ・ ` + (db.isBest ? '<b>今日の最高を更新!</b>' : `今日の最高 <b>${db.best.toLocaleString()}点</b>`) + '<br>' + $('ov-rank').innerHTML;
+    $('ov-rank').innerHTML = JE(`今日の一戦 ${S.daily.md} ・ `, `Daily ${S.daily.md} ・ `) + (db.isBest ? JE('<b>今日の最高を更新!</b>', '<b>New best today!</b>') : JE(`今日の最高 <b>${db.best.toLocaleString()}点</b>`, `Best today <b>${db.best.toLocaleString()} pts</b>`)) + '<br>' + $('ov-rank').innerHTML;
   }
   buildReview();
   $('ov-extra').classList.remove('hide');
   const big = S.total >= 22000;
   fanfare(big);
   burst(big ? 220 : 120, big ? 1.4 : 1);
-  const tr = $('ov-tier'); tr.textContent = dan; tr.classList.add('pop');
+  const tr = $('ov-tier'); tr.textContent = NM(dan); tr.classList.add('pop');
   $('ov-in').classList.remove('shake'); void $('ov-in').offsetWidth; $('ov-in').classList.add('shake');
-  $('ov-next').textContent = 'もう一度';
+  $('ov-next').textContent = JE('もう一度', 'Play again');
   $('ov-next').classList.remove('hide');
   await new Promise(res => { $('ov-next').onclick = res; });
   ov.classList.add('hide');
@@ -2208,7 +2389,7 @@ $('declare').addEventListener('click', async () => {
   audio(); // ユーザー操作のタイミングで音を有効化
   const r = findReading(S.hand, S.target);
   if(!r.found){
-    setMsg(r.reason || 'この並びでは場の数になりません。並べ替えるか、カードを1枚捨ててください。', 'ng');
+    setMsg(r.reason || JE('この並びでは場の数になりません。並べ替えるか、カードを1枚捨ててください。', 'This order does not make the target. Rearrange, or discard a card.'), 'ng');
     buzz(); vib([30, 40, 30]);
     if(S.tutorial && S.tutStep <= 1) setTut(2);
     const cb = $('cards'); cb.classList.remove('shake'); void cb.offsetWidth; cb.classList.add('shake');
@@ -2229,8 +2410,8 @@ $('declare').addEventListener('click', async () => {
 $('discard').addEventListener('click', async () => {
   if(S.over || S.busy || S.sel < 0) return;
   if(S.tutorial){
-    if(S.tutStep !== 2){ setMsg(S.tutStep < 2 ? 'カードを捨てる練習は、このあとの手順で行います' : 'カードを並べ替えて、「完成」を押してください', 'ng'); S.sel = -1; render(); return; }
-    if(S.hand[S.sel] !== TUT_BAD){ setMsg('練習では、「8」のカードを選んで捨ててください', 'ng'); return; }
+    if(S.tutStep !== 2){ setMsg(S.tutStep < 2 ? JE('カードを捨てる練習は、このあとの手順で行います', 'You will practice discarding in a later step') : JE('カードを並べ替えて、「完成」を押してください', 'Rearrange the cards and press "Complete"'), 'ng'); S.sel = -1; render(); return; }
+    if(S.hand[S.sel] !== TUT_BAD){ setMsg(JE('練習では、「8」のカードを選んで捨ててください', 'In this practice, select and discard the "8"'), 'ng'); return; }
   }
   S.hintTask++;
   S.busy = true;
@@ -2267,7 +2448,7 @@ $('redeal').addEventListener('click', () => {
   S.hand.push(deck.pop());
   S.newIdx = 6; S.enterIdx = 6; S.dealAll = true; S.sel = -1;
   S.hintTask++;
-  setMsg('手札を配り直しました(1ラウンドに1回のみ)。', 'ok');
+  setMsg(JE('手札を配り直しました(1ラウンドに1回のみ)。', 'Hand redealt (once per round).'), 'ok');
   render();
   for(let i = 0; i < 7; i++) setTimeout(() => clack(0.16, 1500 + i * 120), 60 + i * 70);
 });
@@ -2276,19 +2457,19 @@ $('hint').addEventListener('click', () => {
   if(S.over) return;
   const task = ++S.hintTask;
   const gen = solveGen(S.hand, S.target);
-  setMsg('式を探しています…');
+  setMsg(JE('式を探しています…', 'Searching for an equation…'));
   $('hint').disabled = true;
   const step = () => {
     if(task !== S.hintTask) return;
     const t0 = performance.now();
     while(performance.now() - t0 < 30){
       const { value, done } = gen.next();
-      if(done){ $('hint').disabled = false; setMsg('この7枚では、どう並べても場の数を作れません。カードを1枚捨ててください(この場合、得点は減りません)。'); return; }
+      if(done){ $('hint').disabled = false; setMsg(JE('この7枚では、どう並べても場の数を作れません。カードを1枚捨ててください(この場合、得点は減りません)。', 'These 7 cards cannot make the target in any order. Discard a card (your score is not reduced).')); return; }
       if(value){
         S.hinted = true;
         $('hint').disabled = false;
         render();
-        setMsg('例: ' + value.str + ' = ' + S.target + '(ヒントで式を表示したため、このラウンドの得点は半分になります)', 'ok');
+        setMsg(JE('例: ', 'Example: ') + value.str + ' = ' + S.target + JE('(ヒントで式を表示したため、このラウンドの得点は半分になります)', ' (a hint was shown, so the score for this round is halved)'), 'ok');
         return;
       }
     }
@@ -2304,24 +2485,27 @@ function showResult(win, str, sc){
   r.classList.remove('hide');
   let html = '';
   if(win){
-    html += `<h2 style="color:var(--ok)">完成!</h2>`;
+    html += `<h2 style="color:var(--ok)">${JE('完成!', 'Complete!')}</h2>`;
     html += `<p>${str} = ${S.target}</p>`;
-    html += `<p class="help">${sc.yaku.length ? sc.yaku.map(y => y.name + ' +' + y.han).join(' / ') : 'ボーナスなし'}<br>基本点 ${sc.fu} × 2^${sc.han} × 場${S.target}${S.hinted?' ÷ 2(ヒント)':''}</p>`;
-    html += `<div class="score">+${sc.points.toLocaleString()} 点</div>`;
+    html += `<p class="help">${sc.yaku.length ? sc.yaku.map(y => y.name + ' +' + y.han).join(' / ') : JE('ボーナスなし', 'No bonus')}<br>${JE('基本点', 'Base')} ${sc.fu} × 2^${sc.han} × 場${S.target}${S.hinted?' ÷ 2(ヒント)':''}</p>`;
+    html += `<div class="score">+${sc.points.toLocaleString()} ${JE('点', 'pts')}</div>`;
   } else {
-    html += `<h2 style="color:var(--ng)">時間切れ</h2><p>${MAX_TURN}ターンで完成できませんでした(+0点)。</p>`;
+    html += `<h2 style="color:var(--ng)">${JE('時間切れ', 'Time up')}</h2><p>${JE(`${MAX_TURN}ターンで完成できませんでした(+0点)。`, `Could not complete in ${MAX_TURN} turns (+0).`)}</p>`;
   }
-  html += `<p>合計 ${S.total.toLocaleString()} 点</p>`;
-  html += last ? `<button class="b primary" id="again">もう一度遊ぶ</button>` : `<button class="b primary" id="next">次のラウンドへ</button>`;
+  html += `<p>${JE('合計', 'Total')} ${S.total.toLocaleString()} ${JE('点', 'pts')}</p>`;
+  html += last ? `<button class="b primary" id="again">${JE('もう一度遊ぶ', 'Play again')}</button>` : `<button class="b primary" id="next">${JE('次のラウンドへ', 'Next round')}</button>`;
   r.innerHTML = html;
   const n = $('next'); if(n) n.addEventListener('click', nextRound);
   const a = $('again'); if(a) a.addEventListener('click', newGame);
 }
 
 // ルール欄
-$('ranklist').innerHTML = DAN.slice().reverse().map(d => `<tr><th>${d[1]}</th><td>${d[0].toLocaleString()}点〜</td></tr>`).join('');
-$('tierlist').innerHTML = TIERS.slice().reverse().map(t => `<tr><th>${t[1]}</th><td>1回で ${t[0].toLocaleString()}点〜</td></tr>`).join('');
-$('yakulist').innerHTML = YAKU_LIST.map(y => `<tr><th>${y[0]}</th><td>+${y[2]}</td><td>${y[1]}</td></tr>`).join('');
+function renderLists(){
+$('ranklist').innerHTML = DAN.slice().reverse().map(d => `<tr><th>${NM(d[1])}</th><td>${d[0].toLocaleString()}${JE('点〜', '+ pts')}</td></tr>`).join('');
+$('tierlist').innerHTML = TIERS.slice().reverse().map(t => `<tr><th>${NM(t[1])}</th><td>${JE(`1回で ${t[0].toLocaleString()}点〜`, `${t[0].toLocaleString()}+ pts at once`)}</td></tr>`).join('');
+$('yakulist').innerHTML = YAKU_LIST.map(y => `<tr><th>${NM(y[0])}</th><td>+${y[2]}</td><td>${JE(y[1], y[3])}</td></tr>`).join('');
+}
+renderLists();
 $('legend').innerHTML = '<tr>' + KINDS.map(k => `<th style="text-align:center;padding:2px 6px">${SYMBOL[k]||k}</th>`).join('') + '</tr><tr>' + KINDS.map(k => `<td style="text-align:center;padding:2px 6px">${PTS[k]}</td>`).join('') + '</tr>';
 // ---- 早見表 ----
 function buildCheat(){
@@ -2330,7 +2514,7 @@ function buildCheat(){
   for(let e = 2; e <= 9; e++){
     const items = [];
     for(let b = 2; Math.pow(b, e) <= 500; b++) items.push(chip(`${b}^${e}=${Math.pow(b, e)}`, Math.pow(b, e)));
-    if(items.length) sup.push(`<h3>${e}乗</h3><div class="chips">${items.join('')}</div>`);
+    if(items.length) sup.push(`<h3>${JE(e + '乗', 'Power ' + e)}</h3><div class="chips">${items.join('')}</div>`);
   }
   const fact = [], dfact = [];
   let f = 1;
@@ -2339,10 +2523,10 @@ function buildCheat(){
   const primes = [];
   for(let n = 2; n <= 100; n++){ if(isPrime(n)) primes.push(chip(n, n)); }
   $('cheat').innerHTML =
-    '<h3>累乗 ※平方数は逆に読むと √ にもなる(144=12^2 なら √144=12)</h3>' + sup.join('') +
-    `<h3>階乗 !</h3><div class="chips">${fact.join('')}</div>` +
-    `<h3>二重階乗 !!(1つおきに掛ける)</h3><div class="chips">${dfact.join('')}</div>` +
-    `<h3>素数</h3><div class="chips">${primes.join('')}</div>`;
+    '<h3>' + JE('累乗 ※平方数は逆に読むと √ にもなる(144=12^2 なら √144=12)', 'Powers * a square read backwards gives √ (144=12^2 means √144=12)') + '</h3>' + sup.join('') +
+    `<h3>${JE('階乗 !', 'Factorial !')}</h3><div class="chips">${fact.join('')}</div>` +
+    `<h3>${JE('二重階乗 !!(1つおきに掛ける)', 'Double factorial !! (every other number)')}</h3><div class="chips">${dfact.join('')}</div>` +
+    `<h3>${JE('素数', 'Primes')}</h3><div class="chips">${primes.join('')}</div>`;
 }
 function factorText(n){
   const parts = [];
@@ -2352,15 +2536,15 @@ function factorText(n){
     while(m % p === 0){ m /= p; e++; }
     if(e) parts.push([p, e]);
   }
-  if(parts.length === 1 && parts[0][1] === 1) return n + ' は素数';
+  if(parts.length === 1 && parts[0][1] === 1) return n + JE(' は素数', ' is prime');
   return n + ' = ' + parts.map(([p, e]) => e > 1 ? `${p}^${e}` : p).join(' × ');
 }
 function updateNow(){
-  if(S.waiting){ $('cheatNow').innerHTML = '<div><span class="k">場の数</span><b>スタート後に表示</b></div>'; return; }
+  if(S.waiting){ $('cheatNow').innerHTML = `<div><span class="k">${JE('場の数', 'Target')}</span><b>${JE('スタート後に表示', 'Shown after start')}</b></div>`; return; }
   const n = S.target;
-  $('cheatNow').innerHTML = `<div><span class="k">場の数</span><b>${n}</b></div>` +
-    `<div><span class="k">素因数分解</span>${factorText(n)}</div>` +
-    `<div><span class="k">平方</span>${n}^2 = ${n * n}</div>`;
+  $('cheatNow').innerHTML = `<div><span class="k">${JE('場の数', 'Target')}</span><b>${n}</b></div>` +
+    `<div><span class="k">${JE('素因数分解', 'Factors')}</span>${factorText(n)}</div>` +
+    `<div><span class="k">${JE('平方', 'Square')}</span>${n}^2 = ${n * n}</div>`;
 }
 buildCheat();
 const toggleSheet = open => {
@@ -2368,7 +2552,7 @@ const toggleSheet = open => {
   const on = open === undefined ? sh.classList.contains('hide') : open;
   sh.classList.toggle('hide', !on);
   document.body.classList.toggle('cheat-open', on);
-  $('cheatbtn').textContent = on ? '早見表を閉じる' : '早見表';
+  $('cheatbtn').textContent = on ? JE('早見表を閉じる', 'Close cheat sheet') : JE('早見表', 'Cheat sheet');
 };
 $('cheatbtn').addEventListener('click', () => toggleSheet());
 $('sheetclose').addEventListener('click', () => toggleSheet(false));
@@ -2406,7 +2590,362 @@ function updateClock(){
 }
 updateClock();
 setInterval(updateClock, 1000);
-showView('title');
+// ---- CPU戦(複数人用の遊び方を、3人のCPU相手に試す) ----
+// 手札は全員に公開。自分の番は山札から1枚引き、7枚で場の数を作れたら完成。作れなければ1枚捨てる。
+// 捨て札は、次の人が山札から引くまでなら、だれでも使って完成できる。先に2回完成した人の勝ち。
+const CPU_NAMES = new Proxy([], { get: (t, i) => (i === 'length' ? 4 : (LANG === 'en' ? ['You', 'CPU 1', 'CPU 2', 'CPU 3'] : ['あなた', 'CPU 1', 'CPU 2', 'CPU 3'])[i]) });
+const CPU_LV = {   // own: 自分で引いたときに完成に気づく確率 / other: 捨て札で気づく確率 / d: 捨て札で完成を宣言するまでの時間(ミリ秒)
+  easy:   { name: 'やさしい', en: 'Easy', own: 0.35, other: 0.15, d: [2200, 3600] },
+  normal: { name: 'ふつう', en: 'Normal',   own: 0.65, other: 0.4,  d: [1500, 3000] },
+  hard:   { name: 'つよい', en: 'Hard',   own: 0.95, other: 0.75, d: [900, 2000] }
+};
+const CPU_WINDOW = 4000;   // 次がCPUのとき、捨て札で完成できる時間
+const CPU_GOAL = 2;
+var C = null, cpuLevel = 'normal';
+var cpuPaused = false;
+// 待ち時間。説明を読んでいる間(cpuPaused)は時間を進めない
+const cpuSleep = ms => new Promise(res => {
+  let left = ms;
+  const step = () => { if(left <= 0) return res(); const d = Math.min(100, left); setTimeout(() => { if(!cpuPaused) left -= d; step(); }, d); };
+  step();
+});
+const cpuRand = (a, b) => a + Math.random() * (b - a);
+const isDig = k => k >= '0' && k <= '9';
+const BINS = new Set(['+', '-', '*', '/', '^']);
+function cpuShuffle(a){ for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+// 7枚の並べ方を、明らかに式にならない並びを除いて順に出す
+function* cpuOrders(kinds){
+  const counts = {}; kinds.forEach(k => counts[k] = (counts[k] || 0) + 1);
+  const keys = Object.keys(counts), n = kinds.length, cur = [];
+  function* rec(){
+    if(cur.length === n){ const l = cur[n - 1]; if(BINS.has(l) || l === 'r') return; yield cur; return; }
+    const prev = cur[cur.length - 1];
+    for(const k of keys){
+      if(!counts[k]) continue;
+      if(!cur.length){ if((k !== '-' && BINS.has(k)) || k === '!') continue; }
+      else {
+        if(BINS.has(prev) && (BINS.has(k) || k === '!')) continue;
+        if(prev === 'r' && (BINS.has(k) || k === '!')) continue;
+        if(prev === '0' && isDig(k) && (cur.length < 2 || !isDig(cur[cur.length - 2]))) continue;
+      }
+      counts[k]--; cur.push(k); yield* rec(); cur.pop(); counts[k]++;
+    }
+  }
+  yield* rec();
+}
+// 完成できる並びを探す。画面が固まらないよう、少しずつ区切って探す
+const cpuCache = new Map();
+async function cpuSolve(kinds, target, tk){
+  const key = kinds.slice().sort().join('') + '|' + target;
+  if(cpuCache.has(key)) return cpuCache.get(key);
+  let t0 = performance.now(), found = null;
+  for(const o of cpuOrders(kinds)){
+    const r = findReading(o, target);
+    if(r.found){ found = { order: o.slice(), str: r.str }; break; }
+    if(performance.now() - t0 > 12){
+      await new Promise(r => setTimeout(r, 0));
+      if(!C || tk !== C.token) return null;
+      t0 = performance.now();
+    }
+  }
+  cpuCache.set(key, found);
+  return found;
+}
+function cpuDiscardChoice(hand){
+  // 残りの手札の、数字と記号の釣り合いを見て捨てる
+  const dI = [], oI = [];
+  hand.forEach((k, i) => (isDig(k) ? dI : oI).push(i));
+  let pool = dI.length >= 5 ? dI : dI.length <= 3 ? oI : hand.map((_, i) => i);
+  if(!pool.length) pool = hand.map((_, i) => i);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+const cpuMine = () => C.row.filter(x => !x.cand).map(x => x.k);
+const cpuTiles = (arr, cls) => arr.map((k, i) => `<span class="t-tile ${kindClass(k)} ${typeof cls === 'function' ? cls(i) : (cls || '')}">${SYMBOL[k] || k}</span>`).join('');
+const cpuPips = w => '●'.repeat(w) + '○'.repeat(Math.max(0, CPU_GOAL - w));
+
+function cpuRender(){
+  if(!C) return;
+  $('cpu-sub').textContent = C.round ? JE(`第${C.round}局 ・ ${CPU_LV[C.level].name}`, `Hand ${C.round} ・ ${CPU_LV[C.level].en}`) : '';
+  $('cpu-target').textContent = C.target || '--';
+  $('cpu-deck').textContent = C.deck ? C.deck.length : '--';
+  const disc = C.disc;
+  $('cpu-opps').innerHTML = [1, 2, 3].map(p => {
+    const hand = C.hands[p].slice(), extra = C.drawn[p] != null ? [C.drawn[p]] : [];
+    const show = C.reveal && C.reveal.p === p ? C.reveal.order : hand.concat(extra);
+    const river = C.rivers[p];
+    return `<div class="opp ${C.cur === p && C.phase !== 'end' ? 'turn' : ''} ${C.reveal && C.reveal.p === p ? 'won' : ''}">
+      <div class="opp-h"><b>${CPU_NAMES[p]}</b><span class="cpu-pips">${cpuPips(C.wins[p])}</span><span class="opp-st">${C.status[p] || ''}</span></div>
+      <div class="opp-hand">${cpuTiles(show, i => (!C.reveal || C.reveal.p !== p) && extra.length && i === show.length - 1 ? 'new' : '')}</div>
+      <div class="opp-river">${JE('捨て札', 'Discards')} ${cpuTiles(river, i => disc && disc.from === p && i === river.length - 1 ? 'last' : '')}</div>
+    </div>`;
+  }).join('');
+  $('cpu-msg').textContent = C.msg || '';
+  $('cpu-mypips').textContent = cpuPips(C.wins[0]);
+  $('cpu-myriver').innerHTML = JE('捨て札 ', 'Discards ') + cpuTiles(C.rivers[0], i => disc && disc.from === 0 && i === C.rivers[0].length - 1 ? 'last' : '');
+  $('cpu-row').innerHTML = C.row.map((x, i) => `<button class="t-tile ${kindClass(x.k)} ${x.cand ? 'cand' : ''} ${C.sel === i ? 'sel' : ''}" data-i="${i}" aria-label="${spk(x.k)}${x.cand ? JE('(引いたカードか捨て札)', ' (drawn or discarded card)') : ''}">${SYMBOL[x.k] || x.k}</button>`).join('');
+  const acc = C.waiter ? C.waiter.accept : [];
+  $('cpu-win').disabled = !acc.includes('win');
+  $('cpu-draw').disabled = !acc.includes('draw');
+  $('cpu-dis').disabled = !acc.includes('discard') || C.sel < 0;
+}
+function cpuBarPause(on){
+  const b = $('cpu-bar');
+  if(on){ const w = b.getBoundingClientRect().width, full = b.parentNode.getBoundingClientRect().width || 1; b.dataset.rest = Math.round(CPU_WINDOW * w / full); b.style.transition = 'none'; b.style.width = (100 * w / full) + '%'; }
+  else if(+b.dataset.rest > 0){ void b.offsetWidth; b.style.transition = `width ${b.dataset.rest}ms linear`; b.style.width = '0'; b.dataset.rest = 0; }
+}
+function cpuBar(ms){
+  const b = $('cpu-bar');
+  b.style.transition = 'none'; b.style.width = ms ? '100%' : '0';
+  if(ms){ void b.offsetWidth; b.style.transition = `width ${ms}ms linear`; b.style.width = '0'; }
+}
+function cpuWait(accept){ return new Promise(res => { C.waiter = { accept, res }; cpuRender(); }); }
+function cpuAct(type){
+  if(!C || !C.waiter || !C.waiter.accept.includes(type)) return;
+  if(type === 'win'){
+    const order = C.row.map(x => x.k);
+    const r = order.length === 7 ? findReading(order, C.target) : { found: false };
+    if(!r.found){ $('cpu-note').textContent = JE(`この並びでは ${C.target} になりません。並べ替えて、もう一度押してください。`, `This order does not make ${C.target}. Rearrange and press again.`); buzz(); return; }
+    C.waiter.res({ type: 'win', p: 0, order, str: r.str });
+  } else if(type === 'discard'){
+    if(C.sel < 0) return;
+    C.waiter.res({ type: 'discard', idx: C.sel });
+  } else C.waiter.res({ type });
+  C.waiter = null;
+}
+$('cpu-row').addEventListener('click', e => {
+  const t = e.target.closest('[data-i]'); if(!t || !C) return;
+  const i = +t.dataset.i;
+  if(C.sel < 0) C.sel = i;
+  else if(C.sel === i) C.sel = -1;
+  else { const it = C.row.splice(C.sel, 1)[0]; C.row.splice(i, 0, it); C.sel = -1; clack(0.5); }
+  cpuRender();
+});
+$('cpu-win').addEventListener('click', () => cpuAct('win'));
+$('cpu-draw').addEventListener('click', () => cpuAct('draw'));
+$('cpu-dis').addEventListener('click', () => cpuAct('discard'));
+$('cpu-back').addEventListener('click', () => showView('title'));
+$('cpu-lv').addEventListener('click', e => {
+  const b = e.target.closest('[data-lv]'); if(!b) return;
+  cpuLevel = b.dataset.lv;
+  $('cpu-lv').querySelectorAll('.b').forEach(x => x.classList.toggle('on', x === b));
+});
+function cpuOpen(){
+  if(C) C.token++;
+  C = { token: 1, level: cpuLevel, wins: [0, 0, 0, 0], round: 0, hands: [[], [], [], []], rivers: [[], [], [], []], drawn: [], status: [], row: [], sel: -1, msg: JE('強さを選んで「はじめる」を押してください。', 'Choose a level and press "Start".') };
+  $('cpu-setup').classList.remove('hide'); $('cpu-result').classList.add('hide'); $('cpu-note').textContent = '';
+  showView('cpu'); cpuRender();
+}
+$('t-cpu').addEventListener('click', cpuOpen);
+$('cpu-go').addEventListener('click', () => {
+  C.level = cpuLevel; C.parent = Math.floor(Math.random() * 4);
+  $('cpu-setup').classList.add('hide');
+  cpuRound();
+});
+
+async function cpuRound(){
+  const tk = ++C.token, lv = CPU_LV[C.level];
+  const alive = () => C && tk === C.token;
+  // 配る。場の数は山札からめくり、数字が出たら十の位→一の位(記号と、十の位の0は山に戻す)
+  const deck = []; KINDS.forEach(k => { for(let i = 0; i < 4; i++) deck.push(k); }); cpuShuffle(deck);
+  const field = [], back = [];
+  while(field.length < 2){ const k = deck.pop(); if(!isDig(k) || (!field.length && k === '0')) back.push(k); else field.push(k); }
+  back.forEach(k => deck.splice(Math.floor(Math.random() * (deck.length + 1)), 0, k));
+  Object.assign(C, { round: C.round + 1, deck, target: +field.join(''), hands: [0, 1, 2, 3].map(() => deck.splice(-6)), rivers: [[], [], [], []],
+    drawn: [], status: ['', '', '', ''], sel: -1, disc: null, reveal: null, phase: 'play', waiter: null });
+  C.row = C.hands[0].map(k => ({ k, cand: false }));
+  $('cpu-result').classList.add('hide'); $('cpu-note').textContent = '';
+  clack(0.6);
+  let cur = C.parent;
+  C.status[cur] = JE('親', 'Dealer');
+  for(;;){
+    C.cur = cur;
+    const r = await cpuWindow(cur, tk, lv);
+    if(!alive()) return;
+    if(r.type === 'win') return cpuEnd(r);
+    if(!C.deck.length) return cpuEnd({ type: 'exhaust' });
+    const k = C.deck.pop();
+    if(cur === 0){
+      C.row.push({ k, cand: true }); C.sel = -1; clack(0.7);
+      C.msg = JE(`「${SYMBOL[k] || k}」を引きました。完成できるなら「完成」、できなければ1枚選んで「捨てる」を押してください。`, `You drew "${SYMBOL[k] || k}". Press "Complete" if you can; otherwise select a card and press "Discard".`);
+      const a = await cpuWait(['win', 'discard']);
+      if(!alive()) return;
+      if(a.type === 'win') return cpuEnd({ ...a, own: true });
+      const seven = C.row.map(x => x.k);
+      const d = C.row.splice(a.idx, 1)[0].k;
+      C.row.forEach(x => x.cand = false); C.sel = -1;
+      C.rivers[0].push(d); C.disc = { k: d, from: 0 }; clack(0.8);
+      cpuMissed(seven, JE('引いたカード', 'the card you drew'), tk);
+    } else {
+      C.drawn[cur] = k; C.status[cur] = JE('考えています', 'Thinking'); C.msg = JE(`${CPU_NAMES[cur]} の番です。`, `${CPU_NAMES[cur]}'s turn.`); cpuRender(); clack(0.5);
+      const seven = C.hands[cur].concat(k), t0 = performance.now();
+      const res = Math.random() < lv.own ? await cpuSolve(seven, C.target, tk) : null;
+      if(!alive()) return;
+      await cpuSleep(Math.max(300, cpuRand(900, 1700) - (performance.now() - t0)));
+      if(!alive()) return;
+      C.drawn[cur] = null;
+      if(res) return cpuEnd({ type: 'win', p: cur, order: res.order, str: res.str, own: true });
+      const di = cpuDiscardChoice(seven), d = seven.splice(di, 1)[0];
+      C.hands[cur] = seven; C.rivers[cur].push(d); C.disc = { k: d, from: cur };
+      C.status[cur] = JE(`「${SYMBOL[d] || d}」を捨てました`, `Discarded "${SYMBOL[d] || d}"`); clack(0.8);
+    }
+    cur = (cur + 1) % 4;
+  }
+}
+// 捨て札で完成できる時間(次の人が引くまで)。次があなたなら、「引く」を押すまで続く
+async function cpuWindow(cur, tk, lv){
+  const disc = C.disc, wid = C.wid = (C.wid || 0) + 1;
+  const forMe = disc && disc.from !== 0;
+  if(forMe){ C.row.push({ k: disc.k, cand: true }); C.sel = -1; }
+  const accept = [];
+  if(forMe) accept.push('win');
+  if(cur === 0) accept.push('draw');
+  const nm = disc ? JE(`${CPU_NAMES[disc.from]}が「${SYMBOL[disc.k] || disc.k}」を捨てました。`, `${CPU_NAMES[disc.from]} discarded "${SYMBOL[disc.k] || disc.k}". `) : '';
+  if(cur === 0) C.msg = nm + (forMe ? JE('このカードで完成できるなら「完成」、できなければ「引く」を押してください。', 'Press "Complete" if this card completes you; otherwise press "Draw".') : JE('「引く」を押して、山札から1枚引いてください。', 'Press "Draw" to take a card from the deck.'));
+  else C.msg = nm + (disc ? JE(`${CPU_NAMES[cur]}が引く前なら、このカードで完成できます。`, `You can use this card until ${CPU_NAMES[cur]} draws.`) : JE(`${CPU_NAMES[cur]} の番です。`, `${CPU_NAMES[cur]}'s turn.`));
+  const waits = [];
+  if(accept.length) waits.push(cpuWait(accept));
+  if(cur !== 0){ waits.push(cpuSleep(disc ? CPU_WINDOW : 600).then(() => ({ type: 'timeout' }))); if(disc) cpuBar(CPU_WINDOW); }
+  const never = new Promise(() => {});
+  if(disc) for(let p = 1; p < 4; p++){
+    if(p === disc.from) continue;
+    waits.push((async () => {
+      if(Math.random() >= lv.other) return never;
+      const t0 = performance.now();
+      const r = await cpuSolve(C.hands[p].concat(disc.k), C.target, tk);
+      if(!r || !C || tk !== C.token || wid !== C.wid) return never;
+      await cpuSleep(Math.max(200, cpuRand(...lv.d) - (performance.now() - t0)));
+      return { type: 'win', p, order: r.order, str: r.str };
+    })());
+  }
+  cpuRender();
+  const r = await Promise.race(waits);
+  if(!C || tk !== C.token) return r;
+  C.wid++; C.waiter = null; cpuBar(0);
+  if(forMe && !(r.type === 'win' && r.p === 0)){
+    const mine = cpuMine();
+    C.row = C.row.filter(x => !x.cand); C.sel = -1;
+    cpuMissed(mine.concat(disc.k), JE(`${CPU_NAMES[disc.from]}の捨てた「${SYMBOL[disc.k] || disc.k}」`, `the "${SYMBOL[disc.k] || disc.k}" discarded by ${CPU_NAMES[disc.from]}`), tk);
+  }
+  return r;
+}
+// 完成できたのに見逃したときに知らせる
+async function cpuMissed(seven, how, tk){
+  const r = await cpuSolve(seven, C.target, tk);
+  if(r && C && tk === C.token && C.phase !== 'end') $('cpu-note').textContent = JE(`見逃し: ${how}で完成できました(${r.str} = ${C.target})。`, `Missed: you could have completed with ${how} (${r.str} = ${C.target}).`);
+}
+function cpuEnd(r){
+  C.phase = 'end'; C.waiter = null; C.cur = -1; cpuBar(0);
+  const box = $('cpu-result');
+  let html;
+  if(r.type === 'exhaust'){
+    C.msg = JE('山札がなくなりました。この局は引き分けです。', 'The deck ran out. This hand is a draw.');
+    html = `<p class="cpu-big">${JE('流局', 'Draw')}</p><p>${JE('だれも完成できないまま、山札がなくなりました。', 'The deck ran out before anyone completed.')}</p>`;
+  } else {
+    C.wins[r.p]++;
+    if(r.p) C.reveal = { p: r.p, order: r.order };
+    const how = r.own ? JE('山札から引いたカードで完成しました。', 'Completed with a card from the deck.') : JE(`${CPU_NAMES[C.disc.from]}の捨てた「${SYMBOL[C.disc.k] || C.disc.k}」で完成しました。`, `Completed with the "${SYMBOL[C.disc.k] || C.disc.k}" discarded by ${CPU_NAMES[C.disc.from]}.`);
+    C.msg = JE(`${CPU_NAMES[r.p]}の完成です。`, `${CPU_NAMES[r.p]} completed.`);
+    html = `<p class="cpu-big">${r.p ? JE(CPU_NAMES[r.p] + 'の完成', CPU_NAMES[r.p] + ' completed') : JE('あなたの完成!', 'You completed!')}</p><p>${how}</p>
+      <div class="t-row">${r.order.map(tileEl).join('')}</div><p>${r.str} = ${C.target}</p>`;
+    if(r.p === 0){ fanfare(false); vib([30, 40, 60]); } else buzz();
+  }
+  const champ = C.wins.findIndex(w => w >= CPU_GOAL);
+  if(champ >= 0){
+    html += `<p class="cpu-big">${champ ? JE(CPU_NAMES[champ] + 'の勝ちです。', CPU_NAMES[champ] + ' wins.') : JE('あなたの勝ちです!', 'You win!')}</p>
+      <p>${JE('完成した回数: ', 'Completions: ')}${C.wins.map((w, i) => `${CPU_NAMES[i]} ${w}${JE('回', '')}`).join(JE('、', ', '))}</p>
+      <button class="b primary" id="cpu-again">${JE('もう一度', 'Play again')}</button>`;
+  } else html += `<button class="b primary" id="cpu-next">${JE('次の局へ', 'Next hand')}</button>`;
+  box.innerHTML = html; box.classList.remove('hide');
+  cpuRender();
+  const nx = $('cpu-next'), ag = $('cpu-again');
+  if(nx) nx.addEventListener('click', () => { C.parent = (C.parent + 1) % 4; cpuRound(); });
+  if(ag) ag.addEventListener('click', cpuOpen);
+}
+
+// ---- はじめの説明(1スライド1メッセージ) ----
+const INTRO_SECS = [['ルール', 'Rules'], ['カード', 'Cards'], ['ボーナス', 'Bonuses']];
+const INTRO = [
+  { s: 0, ja: 'MATHMATH は、7枚のカードで数式を作るゲームです。', en: 'MATHMATH is a game where you make an equation with 7 cards.', tiles: '2 ^ 5 - r 1 6', eq: '= 28' },
+  { s: 0, ja: '毎ラウンド、目標になる2桁の数「場の数」が出ます。', en: 'Each round, a two-digit target number is dealt.', big: '28' },
+  { s: 0, ja: '手札は6枚です。毎ターン、山札から1枚引いて7枚にします。', en: 'You hold 6 cards. Each turn, you draw one from the deck to make 7.', tiles: '4 ! + 2 0 / 5', draw: true, note: ['光っているのが、引いた1枚です。', 'The highlighted card is the one you drew.'] },
+  { s: 0, ja: '7枚すべてを使って、場の数と同じ値の式が作れたら「完成」です。', en: 'If all 7 cards make an equation equal to the target, press "Complete".', tiles: '4 ! + 2 0 / 5', eq: '= 28' },
+  { s: 0, ja: '作れないときは、1枚捨てて次のターンへ進みます。25ターン以内に完成させましょう。', en: 'If you cannot, discard one card and go to the next turn. Complete within 25 turns.', tiles: '7 3 6 * / * 2', note: ['この7枚で作れなければ、1枚捨てて1枚引きます。', 'If these 7 cannot make it, discard one and draw one.'] },
+  { s: 1, ja: '数字カードを続けて並べると、1つの数になります。', en: 'Digit cards placed side by side form one number.', tiles: '1 2', eq: '= 12' },
+  { s: 1, ja: '× ÷ は、＋ − より先に計算します。カッコのカードはありません。', en: '× and ÷ come before + and −. There are no bracket cards.', tiles: '2 + 3 * 4', eq: '= 14' },
+  { s: 1, ja: '計算の途中が小数になってもかまいません。', en: 'Decimals along the way are fine.', tiles: '7 / 2 * 4', eq: '= 14', note: ['7÷2 = 3.5、3.5×4 = 14', '7÷2 = 3.5, 3.5×4 = 14'] },
+  { s: 1, ja: '√(ルート)は、2回かけてその数になる正の数を表します。', en: '√ (square root) means the positive number that gives that number when multiplied by itself.', tiles: 'r 9', eq: '= 3', note: ['3×3 = 9 なので、√9 = 3 です。', '3×3 = 9, so √9 = 3.'] },
+  { s: 1, ja: '√ がどこまでにかかるかは、自由に読めます。', en: 'You may choose how far a √ reaches.', tiles: 'r 9 + 7', note: ['√9＋7 = 10 とも、√(9＋7) = 4 とも読めます。', 'It reads as √9＋7 = 10, or as √(9＋7) = 4.'] },
+  { s: 1, ja: '!(階乗)は、その数から1までの整数をすべてかけ合わせた数を表します。', en: '! (factorial) means multiplying every whole number from that number down to 1.', tiles: '4 !', eq: '= 24', note: ['4! = 4×3×2×1 = 24', '4! = 4×3×2×1 = 24'] },
+  { s: 1, ja: '^(べき乗)は、左の数を、右の数の回数だけかけ合わせた数を表します。', en: '^ (power) means multiplying the left number by itself as many times as the right number.', tiles: '2 ^ 3', eq: '= 8', note: ['2^3 = 2×2×2 = 8', '2^3 = 2×2×2 = 8'] },
+  { s: 1, ja: '^ は、× ÷ より先に計算します。', en: '^ is calculated before × and ÷.', tiles: '1 + 2 ^ 3 * 4', eq: '= 33', note: ['2^3 = 8、8×4 = 32、1＋32 = 33', '2^3 = 8, 8×4 = 32, 1＋32 = 33'] },
+  { s: 2, ja: 'カードの右下の小さい数字が「基本点」です。使いにくいカードほど高くなります。', en: 'The small number on each card is its base points. Harder cards are worth more.', tiles: '1 7 + r ^', pts: true },
+  { s: 2, ja: '条件を満たすと「ブースト」が増えます。ブーストが1増えるごとに、点数は2倍です。', en: 'Meeting a bonus condition raises your boost. Each +1 boost doubles your score.', tiles: '4 4 + 4 9 - 4', eq: '= 89', note: ['同じ数字4枚: ブースト+4(点数は16倍)', 'Four of a kind: boost +4 (score ×16)'] },
+  { s: 2, ja: '点数は「基本点の合計 × 2^ブースト × 100」です。それでは、はじめましょう。', en: 'Score = base points total × 2^boost × 100. Let\'s play!', eqText: ['基本点の合計 × 2^ブースト × 100', 'base total × 2^boost × 100'] }
+];
+const INTRO_AT = { howto: 0, cardguide: 5, bonusguide: 13 };
+let introI = 0, introSeen = false;
+try { introSeen = localStorage.getItem('tachishiki-intro') === '1'; } catch(e) {}
+function introRender(anim){
+  const x = INTRO[introI], n = INTRO.length;
+  $('intro-sec').textContent = JE(...INTRO_SECS[x.s]);
+  $('intro-count').textContent = `${introI + 1}/${n}`;
+  $('intro-bar').style.width = ((introI + 1) / n * 100) + '%';
+  $('intro-msg').textContent = JE(x.ja, x.en);
+  let v = '';
+  if(x.big) v += `<div class="intro-big">${x.big}</div>`;
+  if(x.tiles){
+    const ks = x.tiles.split(' ');
+    v += `<div class="t-row">${ks.map((k, i) => `<span class="t-tile ${kindClass(k)} ${x.draw && i === ks.length - 1 ? 'intro-new' : ''}">${SYMBOL[k] || k}${x.pts ? `<i>${PTS[k]}</i>` : ''}</span>`).join('')}</div>`;
+  }
+  if(x.eq) v += `<div class="intro-eq">${x.eq}</div>`;
+  if(x.eqText) v += `<div class="intro-eq">${JE(...x.eqText)}</div>`;
+  if(x.note) v += `<p class="intro-note">${JE(...x.note)}</p>`;
+  $('intro-vis').innerHTML = v;
+  $('intro-prev').disabled = introI === 0;
+  $('intro-next').textContent = introI === n - 1 ? (guideReturn ? JE('ゲームに戻る', 'Back to game') : JE('はじめる', 'Start')) : JE('次へ', 'Next');
+  $('intro-skip').textContent = guideReturn ? JE('ゲームに戻る', 'Back to game') : JE('スキップ', 'Skip');
+  $('intro-lang').textContent = LANG === 'en' ? '日本語' : 'English';
+  if(anim){ const c = $('intro-card'); c.classList.remove('flip'); void c.offsetWidth; c.classList.add('flip'); }
+}
+function openIntro(i){ introI = i || 0; showView('intro'); introRender(true); }
+function closeIntro(){
+  introSeen = true; try { localStorage.setItem('tachishiki-intro', '1'); } catch(e) {}
+  markCardsSeen();
+}
+$('intro-next').addEventListener('click', () => {
+  if(introI < INTRO.length - 1){ introI++; introRender(true); clack(0.4); return; }
+  closeIntro(); if(guideReturn){ backToPlay(); return; } showView('title'); startFromTitle();
+});
+$('intro-prev').addEventListener('click', () => { if(introI > 0){ introI--; introRender(true); } });
+$('intro-skip').addEventListener('click', () => { closeIntro(); if(guideReturn){ backToPlay(); return; } showView('title'); });
+document.addEventListener('keydown', e => {
+  if(document.body.dataset.view !== 'intro') return;
+  if(e.key === 'ArrowRight') $('intro-next').click();
+  if(e.key === 'ArrowLeft') $('intro-prev').click();
+});
+
+// ---- 言語の切り替え ----
+function applyLang(){
+  document.documentElement.lang = LANG;
+  document.title = JE('MATHMATH(一人用)', 'MATHMATH');
+  applyStaticLang();
+  $('t-lang').textContent = LANG === 'en' ? '日本語' : 'English';
+  $('t-lang').lang = LANG === 'en' ? 'ja' : 'en';
+  $('mute').querySelector('.lb').textContent = muted ? JE('音なし', 'Muted') : JE('音', 'Sound');
+  renderLists(); buildCheat(); showDbl();
+  const view = document.body.dataset.view;
+  if(view === 'title') refreshTitle();
+  if(view === 'intro') introRender();
+  if(S && S.hand) try { render(); } catch(e) {}
+  if(C) cpuRender();
+}
+function setLang(l){ LANG = l; try { localStorage.setItem('tachishiki-lang', l); } catch(e) {} applyLang(); }
+$('t-lang').addEventListener('click', () => setLang(LANG === 'en' ? 'ja' : 'en'));
+$('intro-lang').addEventListener('click', () => setLang(LANG === 'en' ? 'ja' : 'en'));
+
+applyLang();
+if(introSeen) showView('title'); else openIntro(0);   // はじめてのアクセスでは、説明のスライドから
 </script>
 </body>
 </html>
