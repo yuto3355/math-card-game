@@ -562,12 +562,13 @@ body.tutorial .rule-cap{display:none}
 .intro-top .b{padding:8px 12px;font-size:14px}
 .intro-barwrap{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:0 0 14px}
 #intro-bar{display:block;height:100%;width:0;background:var(--edge);transition:width .3s var(--ease)}
-.intro-card{min-height:min(56vh,460px);border-radius:20px;padding:30px 18px;color:#fff;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:24px;
+.intro-card{min-height:min(56vh,460px);border-radius:20px;padding:30px clamp(10px,3vw,18px);color:#fff;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:24px;
   background:radial-gradient(120% 90% at 50% 0%,var(--felt-1) 0%,var(--felt-2) 55%,var(--felt-3) 100%);box-shadow:0 12px 24px -12px rgba(8,41,28,.6)}
 .intro-card.flip{animation:introIn .35s var(--ease)}
 @keyframes introIn{from{opacity:0;transform:translateX(18px)}}
 .intro-msg{margin:0;font-size:clamp(19px,5vw,24px);font-weight:700;line-height:1.65}
-.intro-vis .t-row{flex-wrap:wrap;margin:0}
+.intro-vis .t-row{flex-wrap:nowrap;gap:clamp(3px,1.2vw,6px);margin:0}
+.intro-vis .t-row .t-tile{flex:0 1 46px;width:auto;min-width:0}
 .intro-vis .t-tile{position:relative}
 .intro-vis .t-tile i{position:absolute;right:4px;bottom:1px;font-size:11px;font-style:normal;color:#6b6b70;text-shadow:none}
 .intro-vis .t-tile.intro-new{outline:3px solid var(--gold);outline-offset:2px}
@@ -584,6 +585,18 @@ body.tutorial .rule-cap{display:none}
 .gm-list .b{min-height:52px;font-size:17px}
 #gm-close{width:100%}
 body[data-from="play"] #c-practice,body[data-from="play"] #c-start,body[data-from="play"] #b-start,body[data-from="play"] #h-practice,body[data-from="play"] #h-start{display:none}
+#excl-dlg{border:none;border-radius:16px;padding:18px;width:min(94vw,400px);background:var(--panel);color:var(--ink)}
+#excl-dlg::backdrop{background:rgba(0,0,0,.45)}
+#excl-dlg h3{margin:0 0 4px;font-size:18px}
+.excl-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:4px 0 8px}
+.excl-grid .t-tile{width:auto;padding:0;font-family:inherit;cursor:pointer;position:relative}
+.excl-grid .t-tile.off{opacity:.5;filter:grayscale(1)}
+.excl-grid .t-tile.off::after{content:'';position:absolute;left:12%;right:12%;top:50%;border-top:3px solid #b3261e;transform:rotate(-30deg)}
+.excl-note{min-height:20px;margin:0 0 10px;font-size:13px;font-weight:700;color:#b3261e}
+.excl-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.excl-btns .b{min-height:48px}
+.cpu-excl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
+.cpu-excl .b{padding:4px 12px;font-size:13px}
 </style>
 </head>
 <body>
@@ -599,6 +612,7 @@ body[data-from="play"] #c-practice,body[data-from="play"] #c-start,body[data-fro
     <button class="b hide" id="t-continue">つづきから</button>
     <button class="b" id="t-daily">今日の一戦<small id="t-daily-sub"></small></button>
     <button class="b" id="t-cpu">CPU戦</button>
+    <button class="b" id="t-excl">出さないカード<small id="t-excl-sub"></small></button>
     <button class="b" id="t-practice">練習</button>
     <button class="b" id="t-howto">遊び方</button>
     <div class="menu-row"><button class="b" id="t-cards">カードの使い方</button><button class="b" id="t-bonus">ボーナスの例</button></div>
@@ -757,6 +771,7 @@ body[data-from="play"] #c-practice,body[data-from="play"] #c-start,body[data-fro
       <p>自分の番には山札から1枚引き、手札7枚で場の数を作れたら完成です。作れなければ、1枚捨てます。</p>
       <p>ほかの人が捨てたカードでも、次の人が山札から引く前なら、そのカードを使って完成できます。CPUも同じように、あなたやほかのCPUの捨てたカードを狙ってきます。</p>
       <p>先に2回完成した人の勝ちです。</p>
+      <p class="cpu-excl"><span id="cpu-excl"></span> <button class="b" id="cpu-excl-btn">変更</button></p>
       <div class="cpu-lv" id="cpu-lv">
         <button class="b" data-lv="easy">やさしい</button><button class="b on" data-lv="normal">ふつう</button><button class="b" data-lv="hard">つよい</button>
       </div>
@@ -923,6 +938,13 @@ body[data-from="play"] #c-practice,body[data-from="play"] #c-start,body[data-fro
   <div class="sheet-head"><b>早見表</b><span class="sheet-note">500以下に限る</span><button class="b" id="sheetclose">閉じる</button></div>
   <div class="sheet-body cheat"><div class="now" id="cheatNow"></div><div id="cheat"></div></div>
 </aside>
+<dialog id="excl-dlg" aria-labelledby="ex-title">
+  <h3 id="ex-title">出さないカードを選ぶ</h3>
+  <p class="gm-sub">選んだカードを山札から抜いて遊びます。最大8種類まで選べます。数字は5種類以上、＋ − × ÷ は1種類以上残してください。今日の一戦と練習では、すべてのカードを使います。</p>
+  <div class="excl-grid" id="excl-grid"></div>
+  <p class="excl-note" id="excl-note" aria-live="polite"></p>
+  <div class="excl-btns"><button class="b" id="excl-reset">すべて戻す</button><button class="b primary" id="excl-ok">決定</button></div>
+</dialog>
 <dialog id="guide-menu" aria-labelledby="gm-title">
   <h3 id="gm-title">説明を見る</h3>
   <p class="gm-sub">見終わったら「戻る」で、いまのゲームに戻ります。</p>
@@ -993,7 +1015,7 @@ body[data-from="play"] #c-practice,body[data-from="play"] #c-start,body[data-fro
 // ---- 言語(日本語 / English) ----
 var LANG = (function(){ try { const v = localStorage.getItem('tachishiki-lang'); if(v === 'ja' || v === 'en') return v; } catch(e) {} return /^ja/i.test(navigator.language || '') ? 'ja' : 'en'; })();
 const JE = (ja, en) => LANG === 'en' ? en : ja;
-const EN_TEXT = {"タイトル": "Title", "説明": "Guide", "7枚のカードで数式をつくるゲーム": "Make an equation with 7 cards", "はじめる": "Start", "つづきから": "Continue", "今日の一戦": "Daily game", "CPU戦": "vs CPU", "練習": "Practice", "遊び方": "How to play", "カードの使い方": "Cards", "ボーナスの例": "Bonuses", "記録": "Records", "一人用 試作 ・ 2026-11-14 版": "Solo prototype ・ 2026-11-14", "戻る": "Back", "場の数": "Target", "山札": "Deck", "3人のCPUと対戦します。全員の手札は公開されています。": "Play against 3 CPUs. Everyone's hand is open.", "自分の番には山札から1枚引き、手札7枚で場の数を作れたら完成です。作れなければ、1枚捨てます。": "On your turn, draw one card. If your 7 cards make the target, you complete. If not, discard one card.", "ほかの人が捨てたカードでも、次の人が山札から引く前なら、そのカードを使って完成できます。CPUも同じように、あなたやほかのCPUの捨てたカードを狙ってきます。": "You can also complete with a card someone else discarded, until the next player draws. The CPUs will grab your discards and each other's in the same way.", "先に2回完成した人の勝ちです。": "The first to complete twice wins.", "やさしい": "Easy", "ふつう": "Normal", "つよい": "Hard", "あなた": "You", "完成": "Complete", "引く": "Draw", "捨てる": "Discard", "カードをタップすると選択されます。選択中に別のカードをタップすると、その位置へ移動します。捨てるときは、カードを選択してから「捨てる」を押してください。光っているカードは、引いたカードか、ほかの人の捨てたカードです。": "Tap a card to select it. While a card is selected, tap another card to move it there. To discard, select a card and press 'Discard'. The glowing card is the one you drew or someone else's discard.", "一人用 試作": "Solo prototype", "タイトルへ": "To title", "記録を見る": "View records", "音のオン・オフ": "Sound on/off", "音": "Sound", "場の数とは": "What is the target?", "ボーナス札": "Bonus card", "ボーナス札とは": "What is the bonus card?", "山札とは": "What is the deck?", "ターン": "Turn", "ターンとは": "What is a turn?", "7枚すべてを使って場の数を作ります": "Use all 7 cards to make the target", "遊び方のガイド": "Guide", "スキップ": "Skip", "次へ": "Next", "手札(ドラッグで並べ替え、矢印キーで移動)": "Hand (drag to reorder, arrow keys to move)", "カードの右下の数字は": "The small number on each card is its ", "基本点": "base points", "基本点とは": "What are base points?", "・ ★は": " ・ ★ marks the ", "です": "", "捨て札": "Discards", "捨て札とは": "What are discards?", "配り直し": "Redeal", "ヒント": "Hint", "早見表": "Cheat sheet", "電卓": "Calculator", "ヒントで式を表示したラウンドと、電卓を使ったターンの得点は半分になります。": "A hint halves that round's score, and the calculator halves the score of the turn you use it.", "スタート": "Start", "くわしいルール・設定": "Detailed rules & settings", "選んだカードをもう一度タップすると捨てます": "Tap a selected card again to discard it", "はじめから": "Restart", "ラウンド1からやり直します(途中の点数は消えます)": "Start over from round 1 (current points are lost)", "手札6枚と引いた1枚の、合計": "Your 6-card hand plus the card you drew make ", "7枚をすべて使って": "7 cards; use all of them", "、場の数と同じ値になる式を作ると完成です。": " to make an equation equal to the target, and you complete the round.", "カードは": "You can ", "ドラッグして好きな位置に移動": "drag cards anywhere", "できます。タップすると捨てるカードとして選択され、もう一度タップすると捨てられます(この欄の「2回タップで捨てる」で切り替えられます)。キーボードでは、←→で移動、Shift+←→で並べ替え、Enter で選択、Delete で捨てる操作ができます。": ". Tap a card to select it for discarding, and tap it again to discard it (switch this with 'Double-tap to discard' in this panel). Keyboard: ←→ move, Shift+←→ reorder, Enter select, Delete discard.", "完成できない場合は、カードを1枚捨てて山札から1枚引き、次のターンに進みます。": "If you cannot complete, discard one card, draw one from the deck, and go to the next turn.", ": 最初の手札の数字カードが3枚以下の場合は、1ラウンドに1回だけ、ターンを消費せずに手札を引き直せます。": ": If your first hand has 3 or fewer digit cards, you may redeal once per round without using a turn.", "数字カードを続けて並べると、1つの数として扱われます(1と2で12)。先頭が0の数は作れません。": "Digits placed side by side form one number (1 and 2 make 12). A number cannot start with 0.", "掛け算・割り算を、足し算・引き算より先に計算します。カッコのカードはありません。計算の途中や結果が小数になってもかまいません。": "× and ÷ are calculated before + and −. There are no bracket cards. Decimals along the way or in the result are fine.", "√ のかかる範囲": "Reach of √", ": カッコのカードがないため、": ": Since there are no brackets, ", "は √(4＋1) とも読めます。いずれかの読み方で場の数になれば完成です。^ は × ÷ より先に、続くときは右から計算します。! が続くときは多重階乗として扱います。省略した掛け算(A√B)は × ÷ より先に計算します。": " can also be read as √(4＋1). If any reading equals the target, you complete. ^ comes before × and ÷, and repeated ^ is calculated from the right. Repeated ! is a multifactorial. Implied multiplication (A√B) comes before × and ÷.", "式の先頭の − は、マイナスの数として使えます(−3＋13)。": "A − at the very start can be used as a negative sign (−3＋13).", "数字や ! の直後の √ は、掛け算の省略として扱います(7√9 = 7×√9)。": "A √ right after a digit or ! means multiplication (7√9 = 7×√9).", "最後のラウンドまで遊ぶと、結果がお使いの端末のブラウザに保存されます。「記録」から一覧を確認でき、終了画面から結果を共有できます。": "When you finish the last round, your result is saved in this browser. See them in 'Records' and share from the end screen.", ": 押したターンに限り、現在の並びの値を「標準の読み方」で表示します。そのターンに完成すると、点数は半分になります(ヒントと重なると4分の1)。標準の読み方では、√ は右隣の数だけにかかります。完成の判定では、√ のかかる範囲を自由に読みます。": ": For the turn you press it, shows the value of the current order in the 'standard reading'. Completing in that turn halves the score (a quarter with a hint too). In the standard reading, √ applies only to the number right after it; when judging completion, its reach is free.", "基本点(カードの使いにくさ。カードの右下の小さい数字):": "Base points (how hard a card is to use; the small number on each card):", "点数 = 7枚の基本点の合計 × 2^ブースト × 100": "Score = base points of the 7 cards × 2^boost × 100", "(ヒントで式を表示すると、そのラウンドの得点は半分になります。「作れません」と表示された場合は減りません)。": " (Showing an equation with a hint halves that round's score. It is not reduced if the hint says no equation exists.)", "ボーナス(ブースト):": "Bonuses (boost):", "称号(3ラウンドの合計点):": "Titles (total of 3 rounds):", "1回の完成ごとの評価(完成の演出で出る言葉):": "Rating per completion (shown in the celebration):", "※ボーナス札は、ラウンドごとに表示されるカードです。手札の同じカード(★)1枚につき、ブーストが1増えます。「記号そろい」が成立した場合、「記号づかい」は数えません。「スピード」と「ギリギリ」は一人用のみのボーナスです。": "* The bonus card is shown each round. Each matching card (★) in your hand adds 1 boost. If 'Symbol set' applies, 'Symbol user' does not count. 'Speed' and 'Last minute' are solo-only bonuses.", "500以下に限る": "Up to 500", "閉じる": "Close", "練習は以上です": "Practice complete", "カードを動かす、捨てる、完成させる、という流れは以上です。本番は3ラウンドで、合計点によって称号が決まります。": "That is the whole flow: move, discard, complete. The real game has 3 rounds, and your total decides your title.", "本番": "Play", "もう一度": "Again", "はじめからやり直しますか?": "Start over?", "続ける": "Continue", "自分の記録(上位20)": "Your records (top 20)", "お使いの端末のブラウザにのみ保存されます。": "Saved only in this browser on this device.", "記録を消す": "Delete records", "完成！": "Complete!", "ブースト?": "Boost?", "共有": "Share", "コピー": "Copy", "画像": "Image", "タップでスキップ": "Tap to skip", "説明": "Guide", "説明を見る": "Guide", "見終わったら「戻る」で、いまのゲームに戻ります。": "Press 'Back' when you are done to return to your game."};
+const EN_TEXT = {"タイトル": "Title", "説明": "Guide", "7枚のカードで数式をつくるゲーム": "Make an equation with 7 cards", "はじめる": "Start", "つづきから": "Continue", "今日の一戦": "Daily game", "CPU戦": "vs CPU", "練習": "Practice", "遊び方": "How to play", "カードの使い方": "Cards", "ボーナスの例": "Bonuses", "記録": "Records", "一人用 試作 ・ 2026-11-14 版": "Solo prototype ・ 2026-11-14", "戻る": "Back", "場の数": "Target", "山札": "Deck", "3人のCPUと対戦します。全員の手札は公開されています。": "Play against 3 CPUs. Everyone's hand is open.", "自分の番には山札から1枚引き、手札7枚で場の数を作れたら完成です。作れなければ、1枚捨てます。": "On your turn, draw one card. If your 7 cards make the target, you complete. If not, discard one card.", "ほかの人が捨てたカードでも、次の人が山札から引く前なら、そのカードを使って完成できます。CPUも同じように、あなたやほかのCPUの捨てたカードを狙ってきます。": "You can also complete with a card someone else discarded, until the next player draws. The CPUs will grab your discards and each other's in the same way.", "先に2回完成した人の勝ちです。": "The first to complete twice wins.", "やさしい": "Easy", "ふつう": "Normal", "つよい": "Hard", "あなた": "You", "完成": "Complete", "引く": "Draw", "捨てる": "Discard", "カードをタップすると選択されます。選択中に別のカードをタップすると、その位置へ移動します。捨てるときは、カードを選択してから「捨てる」を押してください。光っているカードは、引いたカードか、ほかの人の捨てたカードです。": "Tap a card to select it. While a card is selected, tap another card to move it there. To discard, select a card and press 'Discard'. The glowing card is the one you drew or someone else's discard.", "一人用 試作": "Solo prototype", "タイトルへ": "To title", "記録を見る": "View records", "音のオン・オフ": "Sound on/off", "音": "Sound", "場の数とは": "What is the target?", "ボーナス札": "Bonus card", "ボーナス札とは": "What is the bonus card?", "山札とは": "What is the deck?", "ターン": "Turn", "ターンとは": "What is a turn?", "7枚すべてを使って場の数を作ります": "Use all 7 cards to make the target", "遊び方のガイド": "Guide", "スキップ": "Skip", "次へ": "Next", "手札(ドラッグで並べ替え、矢印キーで移動)": "Hand (drag to reorder, arrow keys to move)", "カードの右下の数字は": "The small number on each card is its ", "基本点": "base points", "基本点とは": "What are base points?", "・ ★は": " ・ ★ marks the ", "です": "", "捨て札": "Discards", "捨て札とは": "What are discards?", "配り直し": "Redeal", "ヒント": "Hint", "早見表": "Cheat sheet", "電卓": "Calculator", "ヒントで式を表示したラウンドと、電卓を使ったターンの得点は半分になります。": "A hint halves that round's score, and the calculator halves the score of the turn you use it.", "スタート": "Start", "くわしいルール・設定": "Detailed rules & settings", "選んだカードをもう一度タップすると捨てます": "Tap a selected card again to discard it", "はじめから": "Restart", "ラウンド1からやり直します(途中の点数は消えます)": "Start over from round 1 (current points are lost)", "手札6枚と引いた1枚の、合計": "Your 6-card hand plus the card you drew make ", "7枚をすべて使って": "7 cards; use all of them", "、場の数と同じ値になる式を作ると完成です。": " to make an equation equal to the target, and you complete the round.", "カードは": "You can ", "ドラッグして好きな位置に移動": "drag cards anywhere", "できます。タップすると捨てるカードとして選択され、もう一度タップすると捨てられます(この欄の「2回タップで捨てる」で切り替えられます)。キーボードでは、←→で移動、Shift+←→で並べ替え、Enter で選択、Delete で捨てる操作ができます。": ". Tap a card to select it for discarding, and tap it again to discard it (switch this with 'Double-tap to discard' in this panel). Keyboard: ←→ move, Shift+←→ reorder, Enter select, Delete discard.", "完成できない場合は、カードを1枚捨てて山札から1枚引き、次のターンに進みます。": "If you cannot complete, discard one card, draw one from the deck, and go to the next turn.", ": 最初の手札の数字カードが3枚以下の場合は、1ラウンドに1回だけ、ターンを消費せずに手札を引き直せます。": ": If your first hand has 3 or fewer digit cards, you may redeal once per round without using a turn.", "数字カードを続けて並べると、1つの数として扱われます(1と2で12)。先頭が0の数は作れません。": "Digits placed side by side form one number (1 and 2 make 12). A number cannot start with 0.", "掛け算・割り算を、足し算・引き算より先に計算します。カッコのカードはありません。計算の途中や結果が小数になってもかまいません。": "× and ÷ are calculated before + and −. There are no bracket cards. Decimals along the way or in the result are fine.", "√ のかかる範囲": "Reach of √", ": カッコのカードがないため、": ": Since there are no brackets, ", "は √(4＋1) とも読めます。いずれかの読み方で場の数になれば完成です。^ は × ÷ より先に、続くときは右から計算します。! が続くときは多重階乗として扱います。省略した掛け算(A√B)は × ÷ より先に計算します。": " can also be read as √(4＋1). If any reading equals the target, you complete. ^ comes before × and ÷, and repeated ^ is calculated from the right. Repeated ! is a multifactorial. Implied multiplication (A√B) comes before × and ÷.", "式の先頭の − は、マイナスの数として使えます(−3＋13)。": "A − at the very start can be used as a negative sign (−3＋13).", "数字や ! の直後の √ は、掛け算の省略として扱います(7√9 = 7×√9)。": "A √ right after a digit or ! means multiplication (7√9 = 7×√9).", "最後のラウンドまで遊ぶと、結果がお使いの端末のブラウザに保存されます。「記録」から一覧を確認でき、終了画面から結果を共有できます。": "When you finish the last round, your result is saved in this browser. See them in 'Records' and share from the end screen.", ": 押したターンに限り、現在の並びの値を「標準の読み方」で表示します。そのターンに完成すると、点数は半分になります(ヒントと重なると4分の1)。標準の読み方では、√ は右隣の数だけにかかります。完成の判定では、√ のかかる範囲を自由に読みます。": ": For the turn you press it, shows the value of the current order in the 'standard reading'. Completing in that turn halves the score (a quarter with a hint too). In the standard reading, √ applies only to the number right after it; when judging completion, its reach is free.", "基本点(カードの使いにくさ。カードの右下の小さい数字):": "Base points (how hard a card is to use; the small number on each card):", "点数 = 7枚の基本点の合計 × 2^ブースト × 100": "Score = base points of the 7 cards × 2^boost × 100", "(ヒントで式を表示すると、そのラウンドの得点は半分になります。「作れません」と表示された場合は減りません)。": " (Showing an equation with a hint halves that round's score. It is not reduced if the hint says no equation exists.)", "ボーナス(ブースト):": "Bonuses (boost):", "称号(3ラウンドの合計点):": "Titles (total of 3 rounds):", "1回の完成ごとの評価(完成の演出で出る言葉):": "Rating per completion (shown in the celebration):", "※ボーナス札は、ラウンドごとに表示されるカードです。手札の同じカード(★)1枚につき、ブーストが1増えます。「記号そろい」が成立した場合、「記号づかい」は数えません。「スピード」と「ギリギリ」は一人用のみのボーナスです。": "* The bonus card is shown each round. Each matching card (★) in your hand adds 1 boost. If 'Symbol set' applies, 'Symbol user' does not count. 'Speed' and 'Last minute' are solo-only bonuses.", "500以下に限る": "Up to 500", "閉じる": "Close", "練習は以上です": "Practice complete", "カードを動かす、捨てる、完成させる、という流れは以上です。本番は3ラウンドで、合計点によって称号が決まります。": "That is the whole flow: move, discard, complete. The real game has 3 rounds, and your total decides your title.", "本番": "Play", "もう一度": "Again", "はじめからやり直しますか?": "Start over?", "続ける": "Continue", "自分の記録(上位20)": "Your records (top 20)", "お使いの端末のブラウザにのみ保存されます。": "Saved only in this browser on this device.", "記録を消す": "Delete records", "完成！": "Complete!", "ブースト?": "Boost?", "共有": "Share", "コピー": "Copy", "画像": "Image", "タップでスキップ": "Tap to skip", "出さないカード": "Remove cards", "出さないカードを選ぶ": "Choose cards to remove", "選んだカードを山札から抜いて遊びます。最大8種類まで選べます。数字は5種類以上、＋ − × ÷ は1種類以上残してください。今日の一戦と練習では、すべてのカードを使います。": "The chosen cards are taken out of the deck. You can remove up to 8 kinds. Keep at least 5 digits and at least one of + − × ÷. The daily game and practice always use every card.", "すべて戻す": "Reset", "決定": "OK", "変更": "Change", "説明": "Guide", "説明を見る": "Guide", "見終わったら「戻る」で、いまのゲームに戻ります。": "Press 'Back' when you are done to return to your game."};
 const NAME_EN = {"ボーナス札": "Bonus card", "素数の場": "Prime target", "スピード": "Speed", "ギリギリ": "Last minute", "小さい数だけ": "Low digits", "大きい数だけ": "High digits", "中間の数字": "Middle digits", "偶数だけ": "Evens only", "奇数だけ": "Odds only", "3桁の数": "3-digit number", "4桁の数": "4-digit number", "同じ数字3枚": "Three of a kind", "同じ数字3枚×2": "Two triples", "同じ数字4枚": "Four of a kind", "記号づかい": "Symbol user", "素数だけ": "Primes only", "記号そろい": "Symbol set", "左右対称": "Palindrome", "数神": "Math God", "名人": "Master", "達人": "Expert", "一人前": "Skilled", "見習い": "Apprentice", "レジェンド": "LEGEND", "ワンダフル": "WONDERFUL", "エクセレント": "EXCELLENT", "グレート": "GREAT", "ナイス": "NICE"};
 function NM(s){
   if(LANG !== 'en') return s;
@@ -1309,8 +1331,13 @@ function drawField(){
   for(;;){ shuffle(pile); const n = Number(pile[0]+pile[1]); if(n>=10) return n; }
 }
 
+// 出さないカード(山札から抜く種類)。今日の一戦と練習には使わない
+var EXCL = [];
+try { EXCL = JSON.parse(localStorage.getItem('tachishiki-excl') || '[]').filter(k => KINDS.includes(k)); } catch(e) {}
+const playKinds = excl => KINDS.filter(k => !(excl || []).includes(k));
+const exclText = excl => excl.length ? KINDS.filter(k => excl.includes(k)).map(k => SYMBOL[k] || k).join(' ') : JE('なし', 'none');
 function newGame(){
-  S = { round:0, total:0, scores:[], log:[] };
+  S = { round:0, total:0, scores:[], log:[], excl: EXCL.slice() };
   nextRound();
 }
 function newDaily(){
@@ -1321,7 +1348,8 @@ function newDaily(){
 function nextRound(){
   S.round++;
   let deck;
-  const fresh = () => { const d = []; KINDS.forEach(k => { for(let i=0;i<4;i++) d.push(k); }); shuffle(d); return d; };
+  const kinds = S.daily ? KINDS : playKinds(S.excl);
+  const fresh = () => { const d = []; kinds.forEach(k => { for(let i=0;i<4;i++) d.push(k); }); shuffle(d); return d; };
   if(S.daily){
     // 同じ日・同じラウンドなら、札の並びも同じ。最初の手が極端に悪い(数字が少なすぎ・多すぎ、四則が1枚以下)ときは、次の候補に進む(順番は日付で決まる)
     for(let at = 0; at < 80; at++){
@@ -1336,7 +1364,7 @@ function nextRound(){
   S.hand = deck.splice(0,6);
   S.hand.push(deck.pop());
   S.newIdx = 6;
-  S.dora = KINDS[Math.floor((S.rng || Math.random)() * KINDS.length)];
+  S.dora = kinds[Math.floor((S.rng || Math.random)() * kinds.length)];
   S.target = S.daily ? S.daily.fields[S.round - 1] : drawField();
   S.turn = 1;
   S.sel = -1;
@@ -1388,7 +1416,7 @@ function syncReady(){
   $('play').classList.toggle('waiting', w);
   if(w){
     $('ready-round').textContent = `ROUND ${S.round} / ${ROUNDS}`;
-    $('ready-sub').textContent = (S.daily ? JE(`今日の一戦 ${S.daily.md} です。全員が同じ盤面で遊びます。`, `Daily game ${S.daily.md}. Everyone plays the same deal. `) : '') + (S.round > 1 ? JE(`現在の合計は ${S.total.toLocaleString()}点です。準備ができたら「スタート」を押してください。`, `Your total is ${S.total.toLocaleString()} pts. Press "Start" when ready.`) : JE('準備ができたら「スタート」を押してください。場の数と手札が配られます。', 'Press "Start" when ready. The target and your hand will be dealt.'));
+    $('ready-sub').textContent = (S.excl && S.excl.length && !S.daily ? JE(`出さないカード: ${exclText(S.excl)}。`, `Removed cards: ${exclText(S.excl)}. `) : '') + (S.daily ? JE(`今日の一戦 ${S.daily.md} です。全員が同じ盤面で遊びます。`, `Daily game ${S.daily.md}. Everyone plays the same deal. `) : '') + (S.round > 1 ? JE(`現在の合計は ${S.total.toLocaleString()}点です。準備ができたら「スタート」を押してください。`, `Your total is ${S.total.toLocaleString()} pts. Press "Start" when ready.`) : JE('準備ができたら「スタート」を押してください。場の数と手札が配られます。', 'Press "Start" when ready. The target and your hand will be dealt.'));
     $('ready-tip').textContent = JE('コツ: ', 'Tip: ') + JE(...TIPS[S.readyTip || 0]);
   }
 }
@@ -1824,6 +1852,7 @@ const saveRecords = a => { try { localStorage.setItem(REC_KEY, JSON.stringify(a)
 function addRecord(total, scores, title, daily){
   const rec = { t: Date.now(), total, scores: scores.slice(), title };
   if(daily) rec.daily = daily;
+  if(!daily && S.excl && S.excl.length) rec.excl = S.excl.slice();
   const all = loadRecords();
   all.push(rec);
   all.sort((a, b) => b.total - a.total || a.t - b.t);
@@ -1842,7 +1871,7 @@ function showRecords(){
   $('rec-body').innerHTML = all.length
     ? all.map((r, i) => {
         const d = new Date(r.t);
-        return `<div class="rec-row"><span class="rec-no">${i + 1}</span><span class="rec-pt">${r.total.toLocaleString()}${JE('点', ' pts')}</span><span class="rec-title">${NM(r.title)}</span><span class="rec-sub">${r.daily ? JE('今日の一戦 ', 'Daily ') + r.daily + ' ・ ' : ''}${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ・ ${r.scores.map(v => v.toLocaleString()).join(' / ')}</span></div>`;
+        return `<div class="rec-row"><span class="rec-no">${i + 1}</span><span class="rec-pt">${r.total.toLocaleString()}${JE('点', ' pts')}</span><span class="rec-title">${NM(r.title)}</span><span class="rec-sub">${r.daily ? JE('今日の一戦 ', 'Daily ') + r.daily + ' ・ ' : ''}${r.excl ? JE('出さない: ', 'Removed: ') + exclText(r.excl) + ' ・ ' : ''}${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ・ ${r.scores.map(v => v.toLocaleString()).join(' / ')}</span></div>`;
       }).join('')
     : '<div class="rec-empty">' + JE('まだ記録がありません。最後のラウンドまで遊ぶと記録されます。', 'No records yet. A record is saved when you finish the last round.') + '</div>';
   $('rec-clear').disabled = !all.length;
@@ -1941,6 +1970,35 @@ function askRestart(mode){
   if(typeof $('restart-confirm').showModal === 'function') $('restart-confirm').showModal(); else $('restart-confirm').setAttribute('open', '');
 }
 $('homebtn').addEventListener('click', () => { if(S.tutorial) exitTutorial(true); showView('title'); });
+// ---- 出さないカードを選ぶ ----
+let exclDraft = [];
+function exclRender(){
+  $('excl-grid').innerHTML = KINDS.map(k => { const off = exclDraft.includes(k); return `<button class="t-tile ${kindClass(k)} ${off ? 'off' : ''}" data-k="${k}" aria-pressed="${off}" aria-label="${spk(k)}${off ? JE('(出さない)', ' (removed)') : ''}">${SYMBOL[k] || k}</button>`; }).join('');
+}
+function openExcl(){ exclDraft = EXCL.slice(); $('excl-note').textContent = ''; exclRender(); $('excl-dlg').showModal(); }
+$('excl-grid').addEventListener('click', e => {
+  const b = e.target.closest('[data-k]'); if(!b) return;
+  const k = b.dataset.k, next = exclDraft.includes(k) ? exclDraft.filter(x => x !== k) : exclDraft.concat(k);
+  const left = playKinds(next);
+  let why = '';
+  if(next.length > 8) why = JE('出さないカードは8種類までです。', 'You can remove up to 8 kinds.');
+  else if(left.filter(x => x >= '0' && x <= '9').length < 5) why = JE('数字は5種類以上残してください。', 'Keep at least 5 digits.');
+  else if(!left.some(x => '+-*/'.includes(x))) why = JE('＋ − × ÷ のどれかは残してください。', 'Keep at least one of + − × ÷.');
+  $('excl-note').textContent = why;
+  if(why) return;
+  exclDraft = next; exclRender(); clack(0.4);
+});
+$('excl-reset').addEventListener('click', () => { exclDraft = []; $('excl-note').textContent = ''; exclRender(); });
+$('excl-ok').addEventListener('click', () => {
+  EXCL = exclDraft.slice();
+  try { localStorage.setItem('tachishiki-excl', JSON.stringify(EXCL)); } catch(e) {}
+  $('excl-dlg').close();
+  refreshTitle();
+  if(C && $('cpu-excl')) $('cpu-excl').textContent = JE('出さないカード: ', 'Removed cards: ') + exclText(EXCL);
+  toast(EXCL.length ? JE('次に始めるゲームから反映されます', 'Applies from the next game you start') : JE('すべてのカードを使います', 'All cards are used'));
+});
+$('t-excl').addEventListener('click', openExcl);
+
 // ---- プレイ中に説明を見る(見終わったら、いまのゲームに戻る) ----
 var guideReturn = null;
 function openGuideMenu(from){ guideFrom = from; $('guide-menu').showModal(); }
@@ -1982,6 +2040,7 @@ let practiced = false;
 try { practiced = localStorage.getItem('tachishiki-practiced') === '1'; } catch(e) {}
 function refreshTitle(){
   const p = progressed();
+  $('t-excl-sub').textContent = exclText(EXCL);
   $('t-continue').classList.toggle('hide', !p);
   $('t-start').textContent = p ? JE('はじめから', 'Restart') : JE('はじめる', 'Start');
   const di = dailyInfo(), db = dailyBest(di.key);
@@ -2734,11 +2793,13 @@ function cpuOpen(){
   if(C) C.token++;
   C = { token: 1, level: cpuLevel, wins: [0, 0, 0, 0], round: 0, hands: [[], [], [], []], rivers: [[], [], [], []], drawn: [], status: [], row: [], sel: -1, msg: JE('強さを選んで「はじめる」を押してください。', 'Choose a level and press "Start".') };
   $('cpu-setup').classList.remove('hide'); $('cpu-result').classList.add('hide'); $('cpu-note').textContent = '';
+  $('cpu-excl').textContent = JE('出さないカード: ', 'Removed cards: ') + exclText(EXCL);
   showView('cpu'); cpuRender();
 }
 $('t-cpu').addEventListener('click', cpuOpen);
+$('cpu-excl-btn').addEventListener('click', () => openExcl());
 $('cpu-go').addEventListener('click', () => {
-  C.level = cpuLevel; C.parent = Math.floor(Math.random() * 4);
+  C.level = cpuLevel; C.excl = EXCL.slice(); C.parent = Math.floor(Math.random() * 4);
   $('cpu-setup').classList.add('hide');
   cpuRound();
 });
@@ -2747,7 +2808,7 @@ async function cpuRound(){
   const tk = ++C.token, lv = CPU_LV[C.level];
   const alive = () => C && tk === C.token;
   // 配る。場の数は山札からめくり、数字が出たら十の位→一の位(記号と、十の位の0は山に戻す)
-  const deck = []; KINDS.forEach(k => { for(let i = 0; i < 4; i++) deck.push(k); }); cpuShuffle(deck);
+  const deck = []; playKinds(C.excl).forEach(k => { for(let i = 0; i < 4; i++) deck.push(k); }); cpuShuffle(deck);
   const field = [], back = [];
   while(field.length < 2){ const k = deck.pop(); if(!isDig(k) || (!field.length && k === '0')) back.push(k); else field.push(k); }
   back.forEach(k => deck.splice(Math.floor(Math.random() * (deck.length + 1)), 0, k));
